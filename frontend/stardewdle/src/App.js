@@ -13,6 +13,7 @@ import FishDaily from "./pages/FishDaily";
 import FishRandom from "./pages/FishRandom";
 import FishGallery from "./pages/FishGallery";
 import CropsGallery from "./pages/CropsGallery";
+import GameBox from "./components/GameBox";
 
 function Landing() {
   const navigate = useNavigate();
@@ -177,6 +178,7 @@ export default function App() {
         <Route path="/fish/random" element={<FishRandom />} />
         <Route path="/gallery/fish" element={<FishGallery />} />
         <Route path="/gallery/crops" element={<CropsGallery />} />
+        <Route path="/crops/daily" element={<CropsDaily />} />
       </Routes>
     </Router>
   );
