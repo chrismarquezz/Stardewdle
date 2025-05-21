@@ -2,17 +2,40 @@ import { readFileSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
-// Setup __dirname for ES modules
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { DynamoDBDocumentClient, GetCommand } from "@aws-sdk/lib-dynamodb";
+
+// Setup __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Load crops.json
-const crops = JSON.parse(readFileSync(path.join(__dirname, "crops.json"), "utf8"));
+// Load crop data from JSON file
+const crops = JSON.parse(
+  readFileSync(path.join(__dirname, "crops.json"), "utf8")
+);
 
+// Setup DynamoDB
+const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
+
+// Helper functions
+const compareNumbers = (a, b) => {
+  if (a === b) return "match";
+  return a > b ? "higher" : "lower";
+};
+
+const compareSeasons = (a, b) => {
+  const aSet = new Set(a);
+  const bSet = new Set(b);
+  const overlap = [...aSet].filter(season => bSet.has(season));
+  if (overlap.length === a.length && a.length === b.length) return "match";
+  if (overlap.length > 0) return "partial";
+  return "mismatch";
+};
+
+// Lambda handler
 export const handler = async (event) => {
   try {
     const guess = JSON.parse(event.body).guess?.toLowerCase();
-
     if (!guess) {
       return {
         statusCode: 400,
@@ -20,10 +43,7 @@ export const handler = async (event) => {
       };
     }
 
-    // Find the guessed crop and the answer crop
     const guessedCrop = crops.find(c => c.name === guess);
-    const answerCrop = crops.find(c => c.name === "potato"); // Replace with dynamic word later
-
     if (!guessedCrop) {
       return {
         statusCode: 400,
@@ -31,26 +51,29 @@ export const handler = async (event) => {
       };
     }
 
-    if (!answerCrop) {
+    // Get today's word from DynamoDB
+    const today = new Date().toISOString().split("T")[0];
+    const { Item } = await ddb.send(new GetCommand({
+      TableName: "daily_words",
+      Key: { date: today }
+    }));
+
+    if (!Item || !Item.word) {
       return {
         statusCode: 500,
-        body: JSON.stringify({ error: "Answer crop not found." }),
+        body: JSON.stringify({ error: "No word found for today." }),
       };
     }
 
-    // Utility: compare numbers
-    const compareNumbers = (a, b) => {
-      if (a === b) return "match";
-      return a > b ? "higher" : "lower";
-    };
+    const answerCrop = crops.find(c => c.name === Item.word);
+    if (!answerCrop) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: "Answer crop not found in dataset." }),
+      };
+    }
 
-    // Utility: compare seasons
-    const compareSeasons = (a, b) => {
-      if (JSON.stringify(a.sort()) === JSON.stringify(b.sort())) return "match";
-      if (a.some(season => b.includes(season))) return "partial";
-      return "mismatch";
-    };
-
+    // Compare attributes
     const result = {
       type: guessedCrop.type === answerCrop.type ? "match" : "mismatch",
       regrows: guessedCrop.regrows === answerCrop.regrows ? "match" : "mismatch",
@@ -65,7 +88,7 @@ export const handler = async (event) => {
       body: JSON.stringify({ result }),
     };
   } catch (err) {
-    console.error("Error processing guess:", err);
+    console.error("Error:", err);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: "Internal server error." }),
