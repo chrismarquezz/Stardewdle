@@ -1,7 +1,6 @@
-import { readFileSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-
+import fetch from "node-fetch";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, PutCommand } from "@aws-sdk/lib-dynamodb";
 
@@ -10,9 +9,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Load crop list
-const crops = JSON.parse(
-  readFileSync(path.join(__dirname, "crops.json"), "utf8")
-);
+const cropURL = "https://stardewdle-data.s3.amazonaws.com/crops.json";
+const response = await fetch(cropURL);
+const crops = await response.json();
 
 // Set up DynamoDB
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
