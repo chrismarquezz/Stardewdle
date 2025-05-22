@@ -42,7 +42,7 @@
     "base_price": 15,
     "regrows": true,
     "image_url": "https://stardewvalleywiki.com/mediawiki/images/3/33/Coffee_Bean.png",
-    "type": ""
+    "type": "fruit"
   },
   {
     "name": "garlic",
@@ -455,7 +455,7 @@
     "base_price": 75,
     "regrows": true,
     "image_url": "https://stardewvalleywiki.com/mediawiki/images/3/32/Cactus_Fruit.png",
-    "type": ""
+    "type": "fruit"
   },
   {
     "name": "pineapple",
@@ -495,5 +495,258 @@
     "regrows": false,
     "image_url": "https://stardewvalleywiki.com/mediawiki/images/5/5b/Tea_Leaves.png",
     "type": "vegetable"
+  },
+  {
+    "name": "sweet_gem_berry",
+    "growth_time": 24,
+    "season": [
+      "fall"
+    ],
+    "base_price": 3000,
+    "regrows": false,
+    "image_url": "https://stardewvalleywiki.com/mediawiki/images/8/88/Sweet_Gem_Berry.png",
+    "type": "fruit"
+  },
+  {
+    "name": "wild_horseradish",
+    "growth_time": 7,
+    "season": [
+      "spring"
+    ],
+    "base_price": 50,
+    "regrows": false,
+    "image_url": "https://stardewvalleywiki.com/mediawiki/images/9/90/Wild_Horseradish.png",
+    "type": "forage"
+  },
+  {
+    "name": "daffodil",
+    "growth_time": 7,
+    "season": [
+      "spring"
+    ],
+    "base_price": 30,
+    "regrows": false,
+    "image_url": "https://stardewvalleywiki.com/mediawiki/images/4/4b/Daffodil.png",
+    "type": "forage"
+  },
+  {
+    "name": "leek",
+    "growth_time": 7,
+    "season": [
+      "spring"
+    ],
+    "base_price": 60,
+    "regrows": false,
+    "image_url": "https://stardewvalleywiki.com/mediawiki/images/5/57/Leek.png",
+    "type": "forage"
+  },
+  {
+    "name": "dandelion",
+    "growth_time": 7,
+    "season": [
+      "spring"
+    ],
+    "base_price": 40,
+    "regrows": false,
+    "image_url": "https://stardewvalleywiki.com/mediawiki/images/b/b1/Dandelion.png",
+    "type": "forage"
+  },
+  {
+    "name": "spice_berry",
+    "growth_time": 7,
+    "season": [
+      "summer"
+    ],
+    "base_price": 80,
+    "regrows": false,
+    "image_url": "https://stardewvalleywiki.com/mediawiki/images/c/c6/Spice_Berry.png",
+    "type": "fruit"
+  },
+  {
+    "name": "sweet_pea",
+    "growth_time": 7,
+    "season": [
+      "summer"
+    ],
+    "base_price": 50,
+    "regrows": false,
+    "image_url": "https://stardewvalleywiki.com/mediawiki/images/d/d9/Sweet_Pea.png",
+    "type": "flower"
+  },
+  {
+    "name": "common_mushroom",
+    "growth_time": 7,
+    "season": [
+      "fall"
+    ],
+    "base_price": 40,
+    "regrows": false,
+    "image_url": "https://stardewvalleywiki.com/mediawiki/images/2/2e/Common_Mushroom.png",
+    "type": "forage"
+  },
+  {
+    "name": "wild_plum",
+    "growth_time": 7,
+    "season": [
+      "fall"
+    ],
+    "base_price": 80,
+    "regrows": false,
+    "image_url": "https://stardewvalleywiki.com/mediawiki/images/3/3b/Wild_Plum.png",
+    "type": "fruit"
+  },
+  {
+    "name": "hazelnut",
+    "growth_time": 7,
+    "season": [
+      "fall"
+    ],
+    "base_price": 90,
+    "regrows": false,
+    "image_url": "https://stardewvalleywiki.com/mediawiki/images/3/31/Hazelnut.png",
+    "type": "forage"
+  },
+  {
+    "name": "blackberry",
+    "growth_time": 7,
+    "season": [
+      "fall"
+    ],
+    "base_price": 20,
+    "regrows": false,
+    "image_url": "https://stardewvalleywiki.com/mediawiki/images/2/25/Blackberry.png",
+    "type": "fruit"
+  },
+  {
+    "name": "winter_root",
+    "growth_time": 7,
+    "season": [
+      "winter"
+    ],
+    "base_price": 70,
+    "regrows": false,
+    "image_url": "https://stardewvalleywiki.com/mediawiki/images/1/11/Winter_Root.png",
+    "type": "forage"
+  },
+  {
+    "name": "crystal_fruit",
+    "growth_time": 7,
+    "season": [
+      "winter"
+    ],
+    "base_price": 150,
+    "regrows": false,
+    "image_url": "https://stardewvalleywiki.com/mediawiki/images/1/16/Crystal_Fruit.png",
+    "type": "forage"
+  },
+  {
+    "name": "snow_yam",
+    "growth_time": 7,
+    "season": [
+      "winter"
+    ],
+    "base_price": 100,
+    "regrows": false,
+    "image_url": "https://stardewvalleywiki.com/mediawiki/images/3/3f/Snow_Yam.png",
+    "type": "forage"
+  },
+  {
+    "name": "crocus",
+    "growth_time": 7,
+    "season": [
+      "winter"
+    ],
+    "base_price": 60,
+    "regrows": false,
+    "image_url": "https://stardewvalleywiki.com/mediawiki/images/2/2f/Crocus.png",
+    "type": "flower"
+  },
+  {
+    "name": "apricot",
+    "growth_time": 7,
+    "season": [
+      "spring"
+    ],
+    "base_price": 50,
+    "regrows": false,
+    "image_url": "https://stardewvalleywiki.com/mediawiki/images/f/fc/Apricot.png",
+    "type": "fruit"
+  },
+  {
+    "name": "cherry",
+    "growth_time": 7,
+    "season": [
+      "spring"
+    ],
+    "base_price": 80,
+    "regrows": false,
+    "image_url": "https://stardewvalleywiki.com/mediawiki/images/2/20/Cherry.png",
+    "type": "fruit"
+  },
+  {
+    "name": "banana",
+    "growth_time": 7,
+    "season": [
+      "summer"
+    ],
+    "base_price": 150,
+    "regrows": false,
+    "image_url": "https://stardewvalleywiki.com/mediawiki/images/6/69/Banana.png",
+    "type": "fruit"
+  },
+  {
+    "name": "mango",
+    "growth_time": 7,
+    "season": [
+      "summer"
+    ],
+    "base_price": 130,
+    "regrows": false,
+    "image_url": "https://stardewvalleywiki.com/mediawiki/images/3/38/Mango.png",
+    "type": "fruit"
+  },
+  {
+    "name": "orange",
+    "growth_time": 7,
+    "season": [
+      "summer"
+    ],
+    "base_price": 100,
+    "regrows": false,
+    "image_url": "https://stardewvalleywiki.com/mediawiki/images/4/43/Orange.png",
+    "type": "fruit"
+  },
+  {
+    "name": "peach",
+    "growth_time": 7,
+    "season": [
+      "summer"
+    ],
+    "base_price": 140,
+    "regrows": false,
+    "image_url": "https://stardewvalleywiki.com/mediawiki/images/e/e2/Peach.png",
+    "type": "fruit"
+  },
+  {
+    "name": "apple",
+    "growth_time": 7,
+    "season": [
+      "fall"
+    ],
+    "base_price": 100,
+    "regrows": false,
+    "image_url": "https://stardewvalleywiki.com/mediawiki/images/7/7d/Apple.png",
+    "type": "fruit"
+  },
+  {
+    "name": "pomegranate",
+    "growth_time": 7,
+    "season": [
+      "fall"
+    ],
+    "base_price": 140,
+    "regrows": false,
+    "image_url": "https://stardewvalleywiki.com/mediawiki/images/1/1b/Pomegranate.png",
+    "type": "fruit"
   }
 ]
