@@ -12,6 +12,7 @@
   "type": "module",
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.812.0",
-    "@aws-sdk/lib-dynamodb": "^3.814.0"
+    "@aws-sdk/lib-dynamodb": "^3.814.0",
+    "node-fetch": "^3.3.2"
   }
 }
