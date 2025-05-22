@@ -2,7 +2,10 @@ import GameBox from "../components/GameBox";
 
 export default function CropsDaily() {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-stone-100">
+    <div
+      className="min-h-screen w-full bg-cover bg-center bg-no-repeat flex justify-center items-center"
+      style={{ backgroundImage: "url('/images/background.jpg')" }}
+    >
       <GameBox />
     </div>
   );

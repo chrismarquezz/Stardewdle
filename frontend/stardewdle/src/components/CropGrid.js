@@ -6,7 +6,7 @@ export default function CropGrid({ selectedCrop, onSelect }) {
     <div
   className="grid gap-0"
   style={{
-    gridTemplateColumns: "repeat(9, 64px)",
+    gridTemplateColumns: "repeat(7, 64px)",
     gridAutoRows: "64px"
   }}
 >
