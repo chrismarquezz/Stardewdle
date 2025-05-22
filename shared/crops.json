@@ -461,8 +461,6 @@
     "name": "pineapple",
     "growth_time": 14,
     "season": [
-      "all",
-      "ginger island",
       "summer"
     ],
     "base_price": 300,
@@ -474,8 +472,6 @@
     "name": "taro_root",
     "growth_time": 10,
     "season": [
-      "all",
-      "ginger island",
       "summer"
     ],
     "base_price": 100,
@@ -748,5 +744,60 @@
     "regrows": false,
     "image_url": "https://stardewvalleywiki.com/mediawiki/images/1/1b/Pomegranate.png",
     "type": "fruit"
+  },
+  {
+    "name": "qi_fruit",
+    "growth_time": 4,
+    "season": [
+      "all"
+    ],
+    "base_price": 1,
+    "regrows": false,
+    "image_url": "https://stardewvalleywiki.com/mediawiki/images/b/b9/Qi_Fruit.png",
+    "type": "fruit"
+  },
+  {
+    "name": "chanterelle",
+    "growth_time": 4,
+    "season": [
+      "fall"
+    ],
+    "base_price": 140,
+    "regrows": false,
+    "image_url": "https://stardewvalleywiki.com/mediawiki/images/1/1d/Chanterelle.png",
+    "type": "forage"
+  },
+  {
+    "name": "morel",
+    "growth_time": 4,
+    "season": [
+      "spring"
+    ],
+    "base_price": 150,
+    "regrows": false,
+    "image_url": "https://stardewvalleywiki.com/mediawiki/images/b/b1/Morel.png",
+    "type": "forage"
+  },
+  {
+    "name": "red_mushroom",
+    "growth_time": 4,
+    "season": [
+      "all"
+    ],
+    "base_price": 75,
+    "regrows": false,
+    "image_url": "https://stardewvalleywiki.com/mediawiki/images/e/e1/Red_Mushroom.png",
+    "type": "forage"
+  },
+  {
+    "name": "purple_mushroom",
+    "growth_time": 4,
+    "season": [
+      "all"
+    ],
+    "base_price": 250,
+    "regrows": false,
+    "image_url": "https://stardewvalleywiki.com/mediawiki/images/4/4b/Purple_Mushroom.png",
+    "type": "forage"
   }
 ]
