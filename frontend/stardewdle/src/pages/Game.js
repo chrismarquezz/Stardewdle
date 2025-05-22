@@ -1,6 +1,6 @@
 import GameBox from "../components/GameBox";
 
-export default function CropsDaily() {
+export default function Game() {
   return (
     <div
       className="min-h-screen w-full bg-cover bg-center bg-no-repeat flex justify-center items-center"
