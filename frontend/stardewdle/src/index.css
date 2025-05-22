@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: 'Stardew';
+  src: url('../public/fonts/StardewValley.ttf') format('truetype');
+  font-display: swap;
+}
