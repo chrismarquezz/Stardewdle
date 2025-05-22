@@ -12,7 +12,7 @@ export default function CropCard({ crop, isSelected, onClick }) {
       }}
     >
       <img
-        src={crop.image}
+        src={crop.image_url}
         alt={crop.name}
         className="w-full h-full object-contain"
       />
