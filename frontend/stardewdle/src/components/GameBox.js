@@ -16,6 +16,8 @@ export default function GameBox() {
   const [gameOver, setGameOver] = useState(false);
   const [correctCrop, setCorrectCrop] = useState(null);
   const [showHelp, setShowHelp] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -72,9 +74,10 @@ export default function GameBox() {
       setSelectedCrop(null);
       if (isWin) {
   setGameOver(true);
-  new Audio("/sounds/reward.mp3").play().catch((e) =>
-    console.warn("Failed to play reward sound:", e)
-  );
+  if (!isMuted) {
+  new Audio("/sounds/menu-select.mp3").play();
+}
+
 }
 
     } catch (error) {
@@ -175,6 +178,18 @@ export default function GameBox() {
           <p className="mt-4 text-green-700 text-xl font-bold text-center">You guessed it!</p>
         )}
       </div>
+      {/* Mute/Unmute Button */}
+<div
+  onClick={() => setIsMuted(!isMuted)}
+  className="absolute bottom-16 -right-10 w-[50px] h-[50px] cursor-pointer z-10"
+>
+  <img
+    src={isMuted ? "/images/muted.png" : "/images/unmuted.png"}
+    alt="Toggle Sound"
+    className="w-full h-full"
+  />
+</div>
+
 
       {/* Help Button */}
       <div
