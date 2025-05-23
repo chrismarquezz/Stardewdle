@@ -74,10 +74,10 @@ export default function GameBox() {
       if (!isWin)
         setSelectedCrop(null);
       if (isWin) {
-        setGameOver(true);
-        if (!isMuted) {
-          new Audio("/sounds/menu-select.mp3").play();
-        }
+  setGameOver(true);
+  if (!isMuted) {
+  new Audio("/sounds/reward.mp3").play();
+}
 
       }
 
