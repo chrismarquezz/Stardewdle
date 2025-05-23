@@ -75,7 +75,7 @@ export default function GameBox() {
       if (isWin) {
   setGameOver(true);
   if (!isMuted) {
-  new Audio("/sounds/menu-select.mp3").play();
+  new Audio("/sounds/reward.mp3").play();
 }
 
 }
