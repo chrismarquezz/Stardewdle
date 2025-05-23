@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import CropGrid from "./CropGrid";
 import GuessGrid from "./GuessGrid";
+import CropLoader from "../components/CropLoader";
 
 
 function formatName(name) {
@@ -87,12 +88,9 @@ export default function GameBox() {
   };
 
   if (!correctCrop || crops.length === 0) {
-    return (
-      <div className="text-center text-gray-600 text-xl mt-12">
-        Loading crop of the day...
-      </div>
-    );
-  }
+  return <CropLoader />;
+}
+
 
   return (
     <div
