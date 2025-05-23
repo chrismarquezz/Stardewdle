@@ -55,6 +55,7 @@ export default function GameBox() {
     if (!selectedCrop || guesses.length >= 6 || gameOver) return;
 
     try {
+
       const response = await fetch(
         "https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/guess",
         {
@@ -72,8 +73,12 @@ export default function GameBox() {
       const isWin = result && Object.values(result).every((val) => val === "match");
 
       setGuesses(updatedGuesses);
-      if (!isWin)
+      if (!isWin){
         setSelectedCrop(null);
+        new Audio("/sounds/sell.mp3").play();
+
+      }
+
       if (isWin) {
   setGameOver(true);
   if (!isMuted) {
