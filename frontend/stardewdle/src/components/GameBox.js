@@ -71,14 +71,15 @@ export default function GameBox() {
       const isWin = result && Object.values(result).every((val) => val === "match");
 
       setGuesses(updatedGuesses);
-      setSelectedCrop(null);
+      if (!isWin)
+        setSelectedCrop(null);
       if (isWin) {
   setGameOver(true);
   if (!isMuted) {
   new Audio("/sounds/reward.mp3").play();
 }
 
-}
+      }
 
     } catch (error) {
       console.error("Error submitting guess:", error);
@@ -95,120 +96,142 @@ export default function GameBox() {
 
   return (
     <div
-  className="relative flex flex-row gap-10 p-8 shadow-xl bg-no-repeat bg-center mt-20"
-
+      className="relative flex flex-row shadow-xl bg-no-repeat bg-center mt-20 justify-between w-full pl-3"
       style={{
         backgroundImage: "url('/images/box-bg.png')",
         backgroundSize: "100% 100%",
-        width: "1400px",
+        width: "1600px",
+        height: "800px"
       }}
     >
       {/* Crop Grid */}
-      <div className="w-[576px] mt-[100px]">
-        <CropGrid
-          selectedCrop={selectedCrop}
-          onSelect={setSelectedCrop}
-          crops={crops}
-        />
-      </div>
+      <CropGrid
+        selectedCrop={selectedCrop}
+        onSelect={setSelectedCrop}
+        crops={crops}
+      />
 
       {/* Right Side */}
-      <div className="flex flex-col justify-between w-full pr-4">
+      <div className="flex flex-col align-center w-full place-items-center">
         {/* Selected Crop Display */}
-        <div className="flex flex-col items-center mb-10">
+        <div className="flex flex-row items-center h-full mr-24 mt-[80px] gap-4">
           {/* Crop image in center of frame */}
           <div
-  className="relative w-[140px] h-[140px] bg-center bg-no-repeat bg-contain"
-  style={{
-    backgroundImage: "url('/images/selected-frame.png')"
-  }}
->
-  {selectedCrop && (
-  <img
-    src={selectedCrop.image_url}
-    alt={selectedCrop.name}
-    className="absolute top-1/2 left-1/2 w-19 h-19 object-contain -translate-x-1/2 -translate-y-1/2"
-  />
-)}
-
-</div>
-
-          {/* Name on banner */}
-          <div
-  className="mt-4 w-[200px] h-[40px] flex items-center justify-center bg-center bg-no-repeat bg-contain"
-  style={{
-    backgroundImage: "url('/images/name-banner.png')"
-  }}
->
-  <p className="text-lg font-semibold text-center text-black tracking-wide">
-    {selectedCrop ? formatName(selectedCrop.name) : ""}
-  </p>
-</div>
-
-
-          {/* Submit Button */}
-          <div
-            onClick={() => {
-              if (!selectedCrop || guesses.length >= 6 || gameOver) return;
-              handleSubmit();
+            className="relative bg-no-repeat bg-contain"
+            style={{
+              backgroundImage: "url('/images/selected-frame.png')",
+              width: "240px",
+              height: "164px"
             }}
-            className={`relative w-[90px] h-[30px] mt-4 group ${
-              !selectedCrop || guesses.length >= 6 || gameOver
+          >
+            {selectedCrop && (
+              <img
+                src={selectedCrop.image_url}
+                alt={selectedCrop.name}
+                className="absolute top-1/2 left-1/2 object-contain -translate-x-1/2 -translate-y-1/2 h-[60%] w-[60%]"
+              />
+            )}
+
+          </div>
+          <div className="flex flex-col items-center">
+            {/* Name on banner */}
+            <div
+              className="flex items-center justify-center bg-center bg-no-repeat bg-contain"
+              style={{
+                backgroundImage: "url('/images/name-banner.png')",
+                width: "416px",
+                height: "76px"
+              }}
+            >
+              <p className="text-5xl text-center text-[#BC6131] tracking-wide">
+                {selectedCrop ? formatName(selectedCrop.name) : ""}
+              </p>
+            </div>
+
+
+            {/* Submit Button */}
+            {gameOver ? (
+              <p className="mt-4 text-green-700 text-5xl font-bold text-center whitespace-nowrap p-3"
+              style={{
+                height: "80px"
+              }}
+              >You guessed it!
+              </p>
+            ) : (
+              <div
+              onClick={() => {
+                if (!selectedCrop || guesses.length >= 6 || gameOver) return;
+                handleSubmit();
+              }}
+              className={`relative mt-4 group ${!selectedCrop || guesses.length >= 6 || gameOver
                 ? "opacity-40 pointer-events-none"
                 : "cursor-pointer hover:scale-105 transition-transform"
-            }`}
-          >
-            <img
-              src="/images/submit-button.png"
-              alt="Submit"
-              className="w-full h-full transition-opacity duration-200 group-hover:opacity-0"
-            />
-            <img
-              src="/images/submit-button-hover.png"
-              alt="Submit Hover"
-              className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-            />
+                }`}
+              style={{
+                width: "216px",
+                height: "80px"
+              }}
+            >
+              <img
+                src="/images/submit-button.png"
+                alt="Submit"
+                className="w-full h-full transition-opacity duration-200 group-hover:opacity-0"
+              />
+              <img
+                src="/images/submit-button-hover.png"
+                alt="Submit Hover"
+                className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+              />
+            </div>
+            )
+          }
+            
           </div>
+
         </div>
 
         {/* Guess Grid */}
-        <GuessGrid guesses={guesses} answer={correctCrop} />
-
-        {gameOver && (
-          <p className="mt-4 text-green-700 text-xl font-bold text-center">You guessed it!</p>
-        )}
+        <div className="mr-[74px] mb-[84px] pl-10 pr-10 bg-center bg-no-repeat bg-contain min-h-[440px]"
+        style={{
+                backgroundImage: "url('/images/guesses.png')",
+                width: "780px",
+                height: "453px"
+              }}
+        >
+          <GuessGrid guesses={guesses} answer={correctCrop} />
+        </div>
       </div>
       {/* Mute/Unmute Button */}
-<div
-  onClick={() => setIsMuted(!isMuted)}
-  className="absolute bottom-16 -right-10 w-[50px] h-[50px] cursor-pointer z-10"
->
-  <img
-    src={isMuted ? "/images/muted.png" : "/images/unmuted.png"}
-    alt="Toggle Sound"
-    className="w-full h-full"
-  />
-</div>
+      <div
+        onClick={() => setIsMuted(!isMuted)}
+        className="absolute bottom-16 -right-10 w-[50px] h-[50px] cursor-pointer z-10"
+      >
+        <img
+          src={isMuted ? "/images/muted.png" : "/images/unmuted.png"}
+          alt="Toggle Sound"
+          className="w-full h-full"
+        />
+      </div>
 
 
       {/* Help Button */}
       <div
-  onClick={() => setShowHelp(true)}
-  className="absolute bottom-0 -right-16 w-[50px] h-[50px] group cursor-pointer z-10"
->
-  {/* Default button image */}
-  <img
-    src="/images/question-mark.png"
-    alt="Help"
-    className="w-full h-full transition-opacity duration-200 group-hover:opacity-0"
-  />
-  {/* Hover button image */}
-  <img
-    src="/images/question-mark-hover.png"
-    alt="Help Hover"
-    className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-  />
-</div>
+        onClick={() => setShowHelp(true)}
+        className="absolute bottom-0 -right-16 w-[50px] h-[50px] group cursor-pointer z-10"
+      >
+        {/* Default button image */}
+        <img
+          src="/images/question-mark.png"
+          alt="Help"
+          className="w-full h-full transition-opacity duration-200 group-hover:opacity-0"
+        />
+        {/* Hover button image */}
+        <img
+          src="/images/question-mark-hover.png"
+          alt="Help Hover"
+          className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+        />
+      </div>
 
 
       {/* Help Modal */}

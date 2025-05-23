@@ -20,24 +20,24 @@ export default function CropGrid({ selectedCrop, onSelect }) {
   }, []);
 
   return (
-    <div
-  className="grid gap-0 ml-20 mb-20 mt-0"
-  style={{
-    gridTemplateColumns: "repeat(8, 64px)",
-    gridAutoRows: "64px",
-    width: "512px",
-    height: "576px",
-  }}
->
+    <div className="flex justify-center items-center w-full h-full w-[90%]">
+      <div
+        className="grid gap-[6px] place-items-center"
+        style={{
+          gridTemplateColumns: "repeat(8, 64px)",
+          gridAutoRows: "64px",
+        }}
+      >
 
-      {crops.map((crop) => (
-        <CropCard
-          key={crop.name}
-          crop={crop}
-          isSelected={selectedCrop?.name === crop.name}
-          onClick={onSelect}
-        />
-      ))}
+        {crops.map((crop) => (
+          <CropCard
+            key={crop.name}
+            crop={crop}
+            isSelected={selectedCrop?.name === crop.name}
+            onClick={onSelect}
+          />
+        ))}
+      </div>
     </div>
   );
 }

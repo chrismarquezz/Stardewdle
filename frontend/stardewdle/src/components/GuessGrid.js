@@ -32,14 +32,14 @@ export default function GuessGrid({ guesses, answer }) {
     const crop = guessEntry?.crop;
 
     return (
-      <div key={i} className="grid grid-cols-6 gap-2 items-center">
+      <div key={i} className="grid grid-cols-6 gap-2 items-center w-full">
         {/* Crop image */}
-        <div className="flex justify-center items-center h-14">
+        <div className="flex justify-center items-center h-12">
           {crop?.image_url ? (
             <img
               src={crop.image_url}
               alt={crop.name}
-              className="w-10 h-10 object-contain"
+              className="w-[50px] h-[50px] object-contain"
             />
           ) : null}
         </div>
@@ -53,7 +53,7 @@ export default function GuessGrid({ guesses, answer }) {
           return (
             <div
               key={j}
-              className={`h-14 rounded-md flex items-center justify-center text-sm font-bold text-white ${
+              className={`h-full flex items-center justify-center text-3xl text-white ${
                 color === "green"
                   ? "bg-green-500"
                   : color === "yellow"
@@ -82,14 +82,14 @@ export default function GuessGrid({ guesses, answer }) {
   });
 
   return (
-    <div className="space-y-2 mt-6">
+    <div className="space-y-1.5 mt-5 h-full w-full items-center justify-center ">
       {/* Headers */}
-      <div className="grid grid-cols-6 gap-2 mb-2">
-        <div className="text-center text-sm font-semibold text-gray-700">Crop</div>
+      <div className="grid grid-cols-6 gap-2">
+        <div className="text-center text-3xl text-[#BC6131]">Crop</div>
         {ATTRIBUTE_LABELS.map((label) => (
           <div
             key={label}
-            className="text-center text-sm font-semibold text-gray-700"
+            className="text-center text-3xl text-[#BC6131]"
           >
             {label}
           </div>
