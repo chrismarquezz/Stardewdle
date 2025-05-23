@@ -219,7 +219,10 @@ export default function GameBox() {
 
       {/* Help Button */}
       <div
-        onClick={() => setShowHelp(true)}
+        onClick={() => {
+              new Audio("/sounds/help-open.mp3").play();
+        setShowHelp(true)
+        }}
         className="absolute bottom-0 -right-16 w-[50px] h-[50px] group cursor-pointer z-10"
       >
         {/* Default button image */}
@@ -238,38 +241,59 @@ export default function GameBox() {
 
 
       {/* Help Modal */}
-      {showHelp && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40"
-          onClick={() => setShowHelp(false)}
-        >
-          <div
-            className="bg-white max-w-lg w-full rounded-2xl p-8 shadow-xl relative"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              onClick={() => setShowHelp(false)}
-              className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-xl"
-            >
-              &times;
-            </button>
-            <h2 className="text-2xl font-bold mb-4">How to Play</h2>
-            <ul className="list-disc list-inside text-gray-700 space-y-2">
-              <li>Select a crop from the grid.</li>
-              <li>Click "Submit" to guess the crop of the day.</li>
-              <li>You get 6 tries to guess the correct crop.</li>
-              <li>
-                The grid will show feedback:
-                <ul className="ml-4 list-disc">
-                  <li><span className="text-green-600 font-semibold">Green</span>: exact match</li>
-                  <li><span className="text-yellow-500 font-semibold">Yellow</span>: partial match</li>
-                  <li><span className="text-red-600 font-semibold">Red</span>: incorrect</li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
-      )}
+{showHelp && (
+  <div
+    className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40"
+    onClick={() => setShowHelp(false)}
+  >
+    <div
+      className="w-[708px] h-[1256] max-w-[90%] rounded-2xl p-10 shadow-2xl relative bg-no-repeat bg-cover bg-center"
+      style={{
+        backgroundImage: "url('/images/help-bg.png')",
+        backgroundSize: "100% 100%",
+      }}
+      onClick={(e) => e.stopPropagation()}
+    >
+      {/* Close Button */}
+      <button
+        onClick={() => {
+                        new Audio("/sounds/help-open.mp3").play();
+setShowHelp(false)}}
+        className="absolute top-1 left-4 text-[#BC6131] hover:text-white text-3xl"
+      >
+        x
+      </button>
+
+      {/* Help Content */}
+      <h2 className="text-6xl font-bold text-[#BC6131] mb-6 text-center">How to Play</h2>
+
+      <ul className="list-disc list-inside space-y-4 text-3xl text-[#BC6131] px-2">
+        <li>Select a crop from the grid.</li>
+        <li>Click "Submit" to guess the crop of the day.</li>
+        <li>You get 6 tries to guess correctly.</li>
+        <li>
+          The result grid shows feedback:
+          <ul className="ml-6 mt-2 list-disc space-y-2">
+  <li className="flex items-center gap-3">
+    <div className="w-6 h-6 bg-green-500 border-2 border-green-700 rounded-sm shadow-sm" />
+    Exact match
+  </li>
+  <li className="flex items-center gap-3">
+    <div className="w-6 h-6 bg-yellow-400 border-2 border-yellow-600 rounded-sm shadow-sm" />
+    Partial match
+  </li>
+  <li className="flex items-center gap-3">
+    <div className="w-6 h-6 bg-red-500 border-2 border-red-700 rounded-sm shadow-sm" />
+    Incorrect
+  </li>
+</ul>
+
+        </li>
+      </ul>
+    </div>
+  </div>
+)}
+
     </div>
   );
 }
