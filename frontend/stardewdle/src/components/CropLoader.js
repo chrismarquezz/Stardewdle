@@ -18,7 +18,7 @@ export default function CropLoader() {
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((i) => (i + 1) % cropImages.length);
-    }, 10); // Change image every 150ms
+    }, 50);
     return () => clearInterval(interval);
   }, []);
 
