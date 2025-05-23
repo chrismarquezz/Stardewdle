@@ -20,12 +20,19 @@ export default function CropGrid({ selectedCrop, onSelect }) {
   }, []);
 
   return (
-    <div className="flex justify-center items-center w-full h-full w-[90%]">
+    <div className="flex justify-center items-center w-full h-full w-[90%] mt-[2px]"
+    style={{
+        backgroundImage: "url('/images/cropgrid-bg.png')",
+        backgroundSize: "80% 80%",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
       <div
         className="grid gap-[6px] place-items-center"
         style={{
-          gridTemplateColumns: "repeat(8, 64px)",
-          gridAutoRows: "64px",
+          gridTemplateColumns: "repeat(8, 60px)",
+          gridAutoRows: "60px",
         }}
       >
 
