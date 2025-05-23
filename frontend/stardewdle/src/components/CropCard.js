@@ -1,7 +1,13 @@
 export default function CropCard({ crop, isSelected, onClick }) {
+
+  const handleClick = () => {
+      new Audio("/sounds/select.mp3").play();
+    onClick(crop);
+  };
+
   return (
     <div
-      onClick={() => onClick(crop)}
+      onClick={handleClick}
       className={`w-16 h-16 cursor-pointer p-1 flex items-center justify-center ${
         isSelected ? "border-4 border-green-400" : "border-0 border-transparent"
       }`}
