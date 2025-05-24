@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSound } from "../context/SoundContext";
 import CropGrid from "./CropGrid";
 import GuessGrid from "./GuessGrid";
 import CropLoader from "../components/CropLoader";
@@ -22,7 +23,8 @@ export default function GameBox() {
   const [gameOver, setGameOver] = useState(false);
   const [correctCrop, setCorrectCrop] = useState(null);
   const [showHelp, setShowHelp] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
+  const { isMuted, toggleMute } = useSound();
+  const isFinalGuess = guesses.length === 5; // next guess is 6th
 
 
   useEffect(() => {
@@ -78,10 +80,23 @@ export default function GameBox() {
       const isWin = result && Object.values(result).every((val) => val === "match");
 
       setGuesses(updatedGuesses);
-      if (!isWin){
-        setSelectedCrop(null);
-        new Audio("/sounds/sell.mp3").play();
-      }
+      if (!isWin) {
+  setSelectedCrop(null);
+
+  if (isFinalGuess) {
+    // this is the 6th and final guess
+    if (!isMuted) {
+      new Audio("/sounds/lose.mp3").play();
+    }
+  } else {
+    // guesses 1–5
+    if (!isMuted) {
+      new Audio("/sounds/sell.mp3").play();
+    }
+  }
+}
+
+
 
       if (isWin) {
   setGameOver(true);
@@ -116,6 +131,7 @@ export default function GameBox() {
         selectedCrop={selectedCrop}
         onSelect={setSelectedCrop}
         crops={crops}
+        isMuted={isMuted}
       />
 
       {/* Right Side */}
@@ -171,6 +187,7 @@ export default function GameBox() {
                 height: "80px"
               }}
               >
+                
                 Better luck next time!
               </p>
             </>
@@ -219,25 +236,27 @@ export default function GameBox() {
         </div>
       </div>
       {/* Mute/Unmute Button */}
-      <div
-        onClick={() => setIsMuted(!isMuted)}
-        className="absolute bottom-16 -right-10 w-[50px] h-[50px] cursor-pointer z-10"
-      >
-        <img
-          src={isMuted ? "/images/muted.png" : "/images/unmuted.png"}
-          alt="Toggle Sound"
-          className="w-full h-full"
-        />
-      </div>
+      <div onClick={toggleMute}
+  className="absolute bottom-16 -right-11 w-[30px] h-[30px] cursor-pointer z-10"
+>
+  <img
+    src={isMuted ? "/images/muted.png" : "/images/unmuted.png"}
+    alt="Toggle Sound"
+    className="w-full h-full"
+  />
+</div>
+
 
 
       {/* Help Button */}
       <div
         onClick={() => {
-              new Audio("/sounds/help-open.mp3").play();
+          if (!isMuted) {
+              new Audio("/sounds/help.mp3").play();
+          }
         setShowHelp(true)
         }}
-        className="absolute bottom-0 -right-16 w-[50px] h-[50px] group cursor-pointer z-10"
+        className="absolute bottom-1 -right-14 w-[50px] h-[50px] group cursor-pointer z-10"
       >
         {/* Default button image */}
         <img
@@ -271,7 +290,9 @@ export default function GameBox() {
       {/* Close Button */}
       <button
         onClick={() => {
-                        new Audio("/sounds/help-open.mp3").play();
+          if (!isMuted) {
+                        new Audio("/sounds/help.mp3").play();
+          }
 setShowHelp(false)}}
         className="absolute top-1 left-4 text-[#BC6131] hover:text-white text-3xl"
       >
