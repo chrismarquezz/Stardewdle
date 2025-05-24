@@ -1,4 +1,8 @@
+import { useSound } from "../context/SoundContext";
+
 export default function CropCard({ crop, isSelected, onClick }) {
+  const { isMuted } = useSound();
+
   const formattedName = crop.name
     .replace(/_/g, " ")
     .replace(/\w\S*/g, (w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
@@ -6,7 +10,10 @@ export default function CropCard({ crop, isSelected, onClick }) {
   return (
     <div
       onClick={() => {
-                new Audio("/sounds/select.mp3").play();
+        if (!isMuted){
+          new Audio("/sounds/select.mp3").play();
+        }
+          
 onClick(crop)}}
       className={`relative w-16 h-16 cursor-pointer p-1 flex items-center justify-center group ${
         isSelected ? "border-4 border-green-400" : "border-0 border-transparent"
