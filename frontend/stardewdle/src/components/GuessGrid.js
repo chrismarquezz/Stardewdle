@@ -1,12 +1,12 @@
-const ATTRIBUTE_KEYS = ["growth_time", "season", "base_price", "regrows", "type"];
-const ATTRIBUTE_LABELS = ["Growth", "Season", "Price", "Regrow", "Type"];
+const ATTRIBUTE_KEYS = ["growth_time", "base_price", "regrows", "type", "season"];
+const ATTRIBUTE_LABELS = ["Growth", "Price", "Regrow", "Type", "Season"];
 
 const BOX_IMAGE_MAP = {
-  growth_time: "boxSmall.png",
-  season: "boxLarge.png",
-  base_price: "boxSmall.png",
-  regrows: "boxSquare.png",
-  type: "boxSmall.png",
+  growth_time: "boxSmall.png", //106px
+  season: "boxLarge.png", //192px
+  base_price: "boxSmall.png", //106px
+  regrows: "boxSquare.png", //64px
+  type: "boxSmall.png", //150px
 };
 
 const W_STRETCH_MAP = {
@@ -16,6 +16,8 @@ const W_STRETCH_MAP = {
   regrows: "75",
   type: "90",
 };
+
+const COL_DIST = '64px 106px 106px 64px 150px 192px'
 
 function isFullMatch(crop, answer) {
   return ATTRIBUTE_KEYS.every((key) => {
@@ -57,6 +59,14 @@ function getColor(key, guessValue, correctValue) {
   return guessValue === correctValue ? "green" : "red";
 }
 
+function getArrow(key, guessValue, correctValue) {
+  if (key === "base_price" || key === "growth_time") {
+    return guessValue > correctValue ? "arrowDown" : guessValue < correctValue ? "arrowUp" : null;
+  }
+
+  return null;
+}
+
 export default function GuessGrid({ guesses, answer }) {
   const rows = Array.from({ length: 6 }).map((_, i) => {
     const guessEntry = guesses[i];
@@ -69,7 +79,7 @@ export default function GuessGrid({ guesses, answer }) {
 
     return (
       <div className="grid gap-1 items-center w-full"
-        style={{ gridTemplateColumns: '64px 106px 192px 106px 64px 150px' }}>
+        style={{ gridTemplateColumns: COL_DIST }}>
 
         {/* Crop image */}
         <div
@@ -107,6 +117,7 @@ export default function GuessGrid({ guesses, answer }) {
           const value = crop?.[key];
           const correctValue = answer?.[key];
           const color = guessEntry ? getColor(key, value, correctValue) : "white";
+          const arrow = guessEntry ? getArrow(key, value, correctValue) : "null"
 
           return (
             <div
@@ -155,9 +166,9 @@ export default function GuessGrid({ guesses, answer }) {
                     : typeof value === "boolean"
                       ? value ? "Yes" : "No"
                       : key === "base_price"
-                        ? `${value}g`
+                        ? <>{value}g {arrow ? <img src={`/images/${arrow}.png`} alt={arrow} className="h-4 w-4 ml-1" /> : ""}</>
                         : key === "growth_time"
-                          ? `${value} days`
+                          ? <>{value} days {arrow ? <img src={`/images/${arrow}.png`} alt={arrow} className="h-4 w-4 ml-1" /> : ""}</>
                           : capitalize(value ?? "")
                   : ""}
               </div>
@@ -172,7 +183,7 @@ export default function GuessGrid({ guesses, answer }) {
   return (
     <div className="space-y-[2px] mt-4 h-full w-full items-center justify-center">
       {/* Headers */}
-      <div className="grid gap-1" style={{ gridTemplateColumns: '64px 106px 192px 106px 64px 150px' }}>
+      <div className="grid gap-1" style={{ gridTemplateColumns: COL_DIST }}>
 
         <div className="text-center text-3xl text-[#BC6131] leading-none">Crop</div>
         {ATTRIBUTE_LABELS.map((label) => (
