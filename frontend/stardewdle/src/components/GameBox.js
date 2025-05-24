@@ -84,249 +84,246 @@ export default function GameBox() {
         setSelectedCrop(null);
         new Audio("/sounds/sell.mp3").play();
       }
-  setSelectedCrop(null);
+      setSelectedCrop(null);
 
-  if (isFinalGuess) {
-    // this is the 6th and final guess
-    if (!isMuted) {
-      new Audio("/sounds/lose.mp3").play();
+      if (isFinalGuess) {
+        // this is the 6th and final guess
+        if (!isMuted) {
+          new Audio("/sounds/lose.mp3").play();
+        }
+      } else {
+        // guesses 1–5
+        if (!isMuted) {
+          new Audio("/sounds/sell.mp3").play();
+        }
+      }
+    if (isWin) {
+      setGameOver(true);
+      if (!isMuted) {
+        new Audio("/sounds/reward.mp3").play();
+      }
     }
-  } else {
-    // guesses 1–5
-    if (!isMuted) {
-      new Audio("/sounds/sell.mp3").play();
-    }
+    
+  } catch (error) {
+    console.error("Error submitting guess:", error);
   }
+};
+
+if (!correctCrop || crops.length === 0) {
+  return <CropLoader />;
 }
 
-      if (isWin) {
-        setGameOver(true);
-        if (!isMuted) {
-          new Audio("/sounds/reward.mp3").play();
-        }
 
-      }
+return (
+  <div
+    className="relative flex flex-row shadow-xl bg-no-repeat bg-center mt-3 justify-between w-full pl-3"
+    style={{
+      backgroundImage: "url('/images/box-bg.png')",
+      backgroundSize: "100% 100%",
+      width: "1600px",
+      height: "800px"
+    }}
+  >
+    {/* Crop Grid */}
+    <CropGrid
+      selectedCrop={selectedCrop}
+      onSelect={setSelectedCrop}
+      crops={crops}
+      isMuted={isMuted}
+    />
 
-    } catch (error) {
-      console.error("Error submitting guess:", error);
-    }
-  };
+    {/* Right Side */}
+    <div className="flex flex-col align-center w-full place-items-center">
+      {/* Selected Crop Display */}
+      <div className="flex flex-row items-center h-full mr-24 mt-[80px] gap-4">
+        {/* Crop image in center of frame */}
+        <div
+          className="relative bg-no-repeat bg-contain"
+          style={{
+            backgroundImage: "url('/images/selected-frame.png')",
+            width: "240px",
+            height: "164px"
+          }}
+        >
+          {selectedCrop && (
+            <img
+              src={selectedCrop.image_url}
+              alt={selectedCrop.name}
+              className="absolute top-1/2 left-1/2 object-contain -translate-x-1/2 -translate-y-1/2 h-[60%] w-[60%]"
+            />
+          )}
 
-  if (!correctCrop || crops.length === 0) {
-    return <CropLoader />;
-  }
-
-
-  return (
-    <div
-      className="relative flex flex-row shadow-xl bg-no-repeat bg-center mt-3 justify-between w-full pl-3"
-      style={{
-        backgroundImage: "url('/images/box-bg.png')",
-        backgroundSize: "100% 100%",
-        width: "1600px",
-        height: "800px"
-      }}
-    >
-      {/* Crop Grid */}
-      <CropGrid
-        selectedCrop={selectedCrop}
-        onSelect={setSelectedCrop}
-        crops={crops}
-        isMuted={isMuted}
-      />
-
-      {/* Right Side */}
-      <div className="flex flex-col align-center w-full place-items-center">
-        {/* Selected Crop Display */}
-        <div className="flex flex-row items-center h-full mr-24 mt-[80px] gap-4">
-          {/* Crop image in center of frame */}
+        </div>
+        <div className="flex flex-col items-center">
+          {/* Name on banner */}
           <div
-            className="relative bg-no-repeat bg-contain"
+            className="flex items-center justify-center bg-center bg-no-repeat bg-contain"
             style={{
-              backgroundImage: "url('/images/selected-frame.png')",
-              width: "240px",
-              height: "164px"
+              backgroundImage: "url('/images/name-banner.png')",
+              width: "416px",
+              height: "76px"
             }}
           >
-            {selectedCrop && (
-              <img
-                src={selectedCrop.image_url}
-                alt={selectedCrop.name}
-                className="absolute top-1/2 left-1/2 object-contain -translate-x-1/2 -translate-y-1/2 h-[60%] w-[60%]"
-              />
-            )}
-
+            <p className="text-5xl text-center text-[#BC6131] tracking-wide">
+              {selectedCrop ? formatName(selectedCrop.name) : ""}
+            </p>
           </div>
-          <div className="flex flex-col items-center">
-            {/* Name on banner */}
-            <div
-              className="flex items-center justify-center bg-center bg-no-repeat bg-contain"
+
+
+          {/* Submit Button */}
+          {gameOver ? (
+            <p className="mt-4 text-green-700 text-5xl font-bold text-center whitespace-nowrap p-3"
               style={{
-                backgroundImage: "url('/images/name-banner.png')",
-                width: "416px",
-                height: "76px"
+                height: "80px"
               }}
-            >
-              <p className="text-5xl text-center text-[#BC6131] tracking-wide">
-                {selectedCrop ? formatName(selectedCrop.name) : ""}
-              </p>
-            </div>
-
-
-            {/* Submit Button */}
-            {gameOver ? (
-              <p className="mt-4 text-green-700 text-5xl font-bold text-center whitespace-nowrap p-3"
+            >You guessed it!
+            </p>
+          ) : guesses.length >= 6 ? (
+            <>
+              <p className="mt-4 text-red-600 text-5xl font-bold text-center whitespace-nowrap p-3"
                 style={{
-                  height: "80px"
-                }}
-              >You guessed it!
-              </p>
-            ) : guesses.length >= 6 ? (
-              <>
-                <p className="mt-4 text-red-600 text-5xl font-bold text-center whitespace-nowrap p-3"
-                  style={{
-                    height: "80px"
-                  }}
-                >
-                  Better luck next time!
-                </p>
-              </>
-            ) : (
-              <div
-                onClick={() => {
-                  if (!selectedCrop || guesses.length >= 6 || gameOver) return;
-                  handleSubmit();
-                }}
-                className={`relative mt-4 group ${!selectedCrop || guesses.length >= 6 || gameOver
-                  ? "opacity-40 pointer-events-none"
-                  : "cursor-pointer hover:scale-105 transition-transform"
-                  }`}
-                style={{
-                  width: "216px",
                   height: "80px"
                 }}
               >
-                <img
-                  src="/images/submit-button.png"
-                  alt="Submit"
-                  className="w-full h-full transition-opacity duration-200 group-hover:opacity-0"
-                />
-                <img
-                  src="/images/submit-button-hover.png"
-                  alt="Submit Hover"
-                  className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                />
-              </div>
-            )
-            }
-
-          </div>
-
-        </div>
-
-        {/* Guess Grid */}
-        <div className="mr-[74px] mb-[84px] pl-9 bg-center bg-no-repeat bg-contain min-h-[440px]"
-          style={{
-            backgroundImage: "url('/images/guesses.png')",
-            width: "780px",
-            height: "453px"
-          }}
-        >
-          <GuessGrid guesses={guesses} answer={correctCrop} />
-        </div>
-      </div>
-      {/* Mute/Unmute Button */}
-      <div onClick={toggleMute}
-  className="absolute bottom-16 -right-11 w-[30px] h-[30px] cursor-pointer z-10"
->
-  <img
-    src={isMuted ? "/images/muted.png" : "/images/unmuted.png"}
-    alt="Toggle Sound"
-    className="w-full h-full"
-  />
-</div>
-
-
-
-      {/* Help Button */}
-      <div
-        onClick={() => {
-          if (!isMuted) {
-              new Audio("/sounds/help.mp3").play();
-          }
-        setShowHelp(true)
-        }}
-        className="absolute bottom-1 -right-14 w-[50px] h-[50px] group cursor-pointer z-10"
-      >
-        {/* Default button image */}
-        <img
-          src="/images/question-mark.png"
-          alt="Help"
-          className="w-full h-full transition-opacity duration-200 group-hover:opacity-0"
-        />
-        {/* Hover button image */}
-        <img
-          src="/images/question-mark-hover.png"
-          alt="Help Hover"
-          className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-        />
-      </div>
-
-
-      {/* Help Modal */}
-      {showHelp && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40"
-          onClick={() => setShowHelp(false)}
-        >
-          <div
-            className="w-[708px] h-[1256] max-w-[90%] rounded-2xl p-10 shadow-2xl relative bg-no-repeat bg-cover bg-center"
-            style={{
-              backgroundImage: "url('/images/help-bg.png')",
-              backgroundSize: "100% 100%",
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Close Button */}
-            <button
+                Better luck next time!
+              </p>
+            </>
+          ) : (
+            <div
               onClick={() => {
-                new Audio("/sounds/help-open.mp3").play();
-                setShowHelp(false)
+                if (!selectedCrop || guesses.length >= 6 || gameOver) return;
+                handleSubmit();
               }}
-              className="absolute top-1 left-5 text-[#BC6131] hover:text-white text-6xl"
+              className={`relative mt-4 group ${!selectedCrop || guesses.length >= 6 || gameOver
+                ? "opacity-40 pointer-events-none"
+                : "cursor-pointer hover:scale-105 transition-transform"
+                }`}
+              style={{
+                width: "216px",
+                height: "80px"
+              }}
             >
-              x
-            </button>
+              <img
+                src="/images/submit-button.png"
+                alt="Submit"
+                className="w-full h-full transition-opacity duration-200 group-hover:opacity-0"
+              />
+              <img
+                src="/images/submit-button-hover.png"
+                alt="Submit Hover"
+                className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+              />
+            </div>
+          )
+          }
 
-            {/* Help Content */}
-            <h2 className="text-6xl font-bold text-[#BC6131] mb-6 text-center">How to Play</h2>
-
-            <ul className="list-disc list-inside space-y-4 text-3xl text-[#BC6131] px-2">
-              <li>Select a crop from the grid.</li>
-              <li>Click "Submit" to guess the crop of the day.</li>
-              <li>You get 6 tries to guess correctly.</li>
-              <li>
-                The result grid shows feedback:
-                <ul className="ml-6 mt-2 list-disc space-y-2">
-                  <li className="flex items-center gap-3">
-                    <div className="w-6 h-6 bg-green-500 border-2 border-green-700 rounded-sm shadow-sm" />
-                    Exact match
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <div className="w-6 h-6 bg-yellow-400 border-2 border-yellow-600 rounded-sm shadow-sm" />
-                    Partial match
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <div className="w-6 h-6 bg-red-500 border-2 border-red-700 rounded-sm shadow-sm" />
-                    Incorrect
-                  </li>
-                </ul>
-
-              </li>
-            </ul>
-          </div>
         </div>
-      )}
+
+      </div>
+
+      {/* Guess Grid */}
+      <div className="mr-[74px] mb-[84px] pl-9 bg-center bg-no-repeat bg-contain min-h-[440px]"
+        style={{
+          backgroundImage: "url('/images/guesses.png')",
+          width: "780px",
+          height: "453px"
+        }}
+      >
+        <GuessGrid guesses={guesses} answer={correctCrop} />
+      </div>
     </div>
-  );
+    {/* Mute/Unmute Button */}
+    <div onClick={toggleMute}
+      className="absolute bottom-16 -right-11 w-[30px] h-[30px] cursor-pointer z-10"
+    >
+      <img
+        src={isMuted ? "/images/muted.png" : "/images/unmuted.png"}
+        alt="Toggle Sound"
+        className="w-full h-full"
+      />
+    </div>
+
+
+
+    {/* Help Button */}
+    <div
+      onClick={() => {
+        if (!isMuted) {
+          new Audio("/sounds/help.mp3").play();
+        }
+        setShowHelp(true)
+      }}
+      className="absolute bottom-1 -right-14 w-[50px] h-[50px] group cursor-pointer z-10"
+    >
+      {/* Default button image */}
+      <img
+        src="/images/question-mark.png"
+        alt="Help"
+        className="w-full h-full transition-opacity duration-200 group-hover:opacity-0"
+      />
+      {/* Hover button image */}
+      <img
+        src="/images/question-mark-hover.png"
+        alt="Help Hover"
+        className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+      />
+    </div>
+
+
+    {/* Help Modal */}
+    {showHelp && (
+      <div
+        className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40"
+        onClick={() => setShowHelp(false)}
+      >
+        <div
+          className="w-[708px] h-[1256] max-w-[90%] rounded-2xl p-10 shadow-2xl relative bg-no-repeat bg-cover bg-center"
+          style={{
+            backgroundImage: "url('/images/help-bg.png')",
+            backgroundSize: "100% 100%",
+          }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Close Button */}
+          <button
+            onClick={() => {
+              new Audio("/sounds/help-open.mp3").play();
+              setShowHelp(false)
+            }}
+            className="absolute top-1 left-5 text-[#BC6131] hover:text-white text-6xl"
+          >
+            x
+          </button>
+
+          {/* Help Content */}
+          <h2 className="text-6xl font-bold text-[#BC6131] mb-6 text-center">How to Play</h2>
+
+          <ul className="list-disc list-inside space-y-4 text-3xl text-[#BC6131] px-2">
+            <li>Select a crop from the grid.</li>
+            <li>Click "Submit" to guess the crop of the day.</li>
+            <li>You get 6 tries to guess correctly.</li>
+            <li>
+              The result grid shows feedback:
+              <ul className="ml-6 mt-2 list-disc space-y-2">
+                <li className="flex items-center gap-3">
+                  <div className="w-6 h-6 bg-green-500 border-2 border-green-700 rounded-sm shadow-sm" />
+                  Exact match
+                </li>
+                <li className="flex items-center gap-3">
+                  <div className="w-6 h-6 bg-yellow-400 border-2 border-yellow-600 rounded-sm shadow-sm" />
+                  Partial match
+                </li>
+                <li className="flex items-center gap-3">
+                  <div className="w-6 h-6 bg-red-500 border-2 border-red-700 rounded-sm shadow-sm" />
+                  Incorrect
+                </li>
+              </ul>
+
+            </li>
+          </ul>
+        </div>
+      </div>
+    )}
+  </div>
+);
 }
