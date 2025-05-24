@@ -270,7 +270,11 @@ return (
     {showHelp && (
       <div
         className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40"
-        onClick={() => setShowHelp(false)}
+        onClick={() => {
+          if (!isMuted) {
+              new Audio("/sounds/help.mp3").play();
+              }
+              setShowHelp(false)}}
       >
         <div
           className="w-[708px] h-[1256] max-w-[90%] rounded-2xl p-10 shadow-2xl relative bg-no-repeat bg-cover bg-center"
