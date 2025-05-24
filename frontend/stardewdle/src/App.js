@@ -13,8 +13,6 @@ import Landing from "./pages/Landing";
 import Game from "./pages/Game";
 import Farm from "./pages/Collections";
 
-
-
 export default function App() {
   return (
     <SoundProvider>
