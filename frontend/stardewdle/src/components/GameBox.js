@@ -283,7 +283,7 @@ return (
           {/* Close Button */}
           <button
             onClick={() => {
-              new Audio("/sounds/help-open.mp3").play();
+              new Audio("/sounds/help.mp3").play();
               setShowHelp(false)
             }}
             className="absolute top-1 left-5 text-[#BC6131] hover:text-white text-6xl"
