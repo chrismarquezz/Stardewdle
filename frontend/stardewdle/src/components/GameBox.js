@@ -14,6 +14,11 @@ export default function GameBox() {
   const [crops, setCrops] = useState([]);
   const [selectedCrop, setSelectedCrop] = useState(null);
   const [guesses, setGuesses] = useState([]);
+  useEffect(() => {
+    if (guesses.length >= 6) {
+      setSelectedCrop(correctCrop);
+    }
+  }, [guesses]);
   const [gameOver, setGameOver] = useState(false);
   const [correctCrop, setCorrectCrop] = useState(null);
   const [showHelp, setShowHelp] = useState(false);
@@ -159,6 +164,16 @@ export default function GameBox() {
               }}
               >You guessed it!
               </p>
+            ) : guesses.length >= 6 ? (
+            <>
+              <p className="mt-4 text-red-600 text-5xl font-bold text-center whitespace-nowrap p-3"
+              style={{
+                height: "80px"
+              }}
+              >
+                Better luck next time!
+              </p>
+            </>
             ) : (
               <div
               onClick={() => {
@@ -193,7 +208,7 @@ export default function GameBox() {
         </div>
 
         {/* Guess Grid */}
-        <div className="mr-[74px] mb-[84px] pl-10 pr-10 bg-center bg-no-repeat bg-contain min-h-[440px]"
+        <div className="mr-[74px] mb-[84px] pl-9 bg-center bg-no-repeat bg-contain min-h-[440px]"
         style={{
                 backgroundImage: "url('/images/guesses.png')",
                 width: "780px",
