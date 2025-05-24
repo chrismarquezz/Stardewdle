@@ -80,10 +80,6 @@ export default function GameBox() {
       const isWin = result && Object.values(result).every((val) => val === "match");
 
       setGuesses(updatedGuesses);
-      if (!isWin) {
-        setSelectedCrop(null);
-        new Audio("/sounds/sell.mp3").play();
-      }
       setSelectedCrop(null);
 
       if (isFinalGuess) {
