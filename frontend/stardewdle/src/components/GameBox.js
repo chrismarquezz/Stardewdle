@@ -222,11 +222,11 @@ return (
       </div>
 
       {/* Guess Grid */}
-      <div className="mr-[74px] mb-[84px] pl-9 bg-center bg-no-repeat bg-contain min-h-[440px]"
+      <div className="mr-[78px] mb-[84px] pl-9 bg-center bg-no-repeat bg-cover min-h-[440px]"
         style={{
           backgroundImage: "url('/images/guesses.png')",
-          width: "780px",
-          height: "453px"
+          width: "772px",
+          height: "456px"
         }}
       >
         <GuessGrid guesses={guesses} answer={correctCrop} />
