@@ -76,7 +76,6 @@ export default function GameBox() {
       if (!isWin){
         setSelectedCrop(null);
         new Audio("/sounds/sell.mp3").play();
-
       }
 
       if (isWin) {
