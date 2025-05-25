@@ -80,7 +80,7 @@ export default function GameBox() {
       const isWin = result && Object.values(result).every((val) => val === "match");
 
       setGuesses(updatedGuesses);
-      setSelectedCrop(null);
+      if (!(!gameOver && guesses.length < 6)) setSelectedCrop(null);
 
       if (isFinalGuess) {
         // this is the 6th and final guess
