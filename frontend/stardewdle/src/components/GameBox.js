@@ -123,7 +123,7 @@ return (
     {/* Crop Grid */}
     <CropGrid
       selectedCrop={selectedCrop}
-      onSelect={setSelectedCrop}
+      onSelect={(!gameOver && guesses.length < 6) ? setSelectedCrop : () => {}}
       crops={crops}
       isMuted={isMuted}
     />
