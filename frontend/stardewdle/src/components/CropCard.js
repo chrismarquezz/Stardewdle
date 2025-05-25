@@ -1,7 +1,7 @@
 import { useSound } from "../context/SoundContext";
 
-export default function CropCard({ crop, isSelected, onClick }) {
-  const { isMuted } = useSound();
+export default function CropCard({ crop, isSelected, onClick, isMuted}) {
+  //const { isMuted } = useSound();
 
   const formattedName = crop.name
     .replace(/_/g, " ")
