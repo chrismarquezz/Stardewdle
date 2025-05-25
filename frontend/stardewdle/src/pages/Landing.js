@@ -43,7 +43,7 @@ export default function Landing() {
   <div
     onClick={() => {
       new Audio("/sounds/menu-select.mp3").play();
-      navigate("/gallery/crops");
+      navigate("/collections");
     }}
     className="relative w-[400px] cursor-pointer group transform transition-transform duration-200 hover:scale-105"
   >
