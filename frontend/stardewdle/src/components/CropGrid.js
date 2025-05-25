@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import CropCard from "./CropCard";
 
-export default function CropGrid({ selectedCrop, onSelect }) {
+export default function CropGrid({ selectedCrop, onSelect, isMuted }) {
   const [crops, setCrops] = useState([]);
 
   useEffect(() => {
@@ -42,6 +42,7 @@ export default function CropGrid({ selectedCrop, onSelect }) {
             crop={crop}
             isSelected={selectedCrop?.name === crop.name}
             onClick={onSelect}
+            isMuted={isMuted}
           />
         ))}
       </div>
