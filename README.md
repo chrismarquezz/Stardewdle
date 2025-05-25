@@ -45,9 +45,9 @@ Built with **React** on the frontend and an **AWS-supported** backend, the game 
 
 | Guess Board | Attribute Feedback |
 |-------------|--------------------|
-| ![Game Screenshot 1](![Gameplay ss1](https://github.com/user-attachments/assets/9f63cf4f-87c8-41b7-89f1-e3a317899fe8))
+| ![Game Screenshot 1](https://github.com/user-attachments/assets/9f63cf4f-87c8-41b7-89f1-e3a317899fe8)
 
- | ![Game Screenshot 2](![Gameplay ss2](https://github.com/user-attachments/assets/74e6a4d8-02c1-4ea0-a012-5b9e5a8c30ff))
+ | ![Game Screenshot 2](https://github.com/user-attachments/assets/74e6a4d8-02c1-4ea0-a012-5b9e5a8c30ff)
 
  |
 <br />
