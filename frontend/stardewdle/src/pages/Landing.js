@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
+import { useSound } from "../context/SoundContext";
 
 export default function Landing() {
+  const { isMuted } = useSound();
   const navigate = useNavigate();
 
   return (
@@ -22,7 +24,9 @@ export default function Landing() {
   {/* Play Button */}
   <div
     onClick={() => {
-      new Audio("/sounds/menu-select.mp3").play();
+      if (!isMuted) {
+        new Audio("/sounds/menu-select.mp3").play();
+      }
       navigate("/game");
     }}
     className="relative w-[400px] cursor-pointer group transform transition-transform duration-200 hover:scale-105"
@@ -42,7 +46,9 @@ export default function Landing() {
   {/* Collections Button */}
   <div
     onClick={() => {
-      new Audio("/sounds/menu-select.mp3").play();
+      if (!isMuted) {
+        new Audio("/sounds/menu-select.mp3").play();
+      }
       navigate("/gallery/crops");
     }}
     className="relative w-[400px] cursor-pointer group transform transition-transform duration-200 hover:scale-105"

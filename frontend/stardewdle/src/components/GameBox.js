@@ -15,18 +15,18 @@ export default function GameBox() {
   const [crops, setCrops] = useState([]);
   const [selectedCrop, setSelectedCrop] = useState(null);
   const [guesses, setGuesses] = useState([]);
-  useEffect(() => {
-    if (guesses.length >= 6) {
-      setSelectedCrop(correctCrop);
-    }
-  }, [guesses]);
   const [gameOver, setGameOver] = useState(false);
   const [correctCrop, setCorrectCrop] = useState(null);
   const [showHelp, setShowHelp] = useState(false);
   const { isMuted, toggleMute } = useSound();
   const isFinalGuess = guesses.length === 5; // next guess is 6th
 
-
+  useEffect(() => {
+    if (guesses.length >= 6) {
+      setSelectedCrop(correctCrop);
+    }
+  }, [guesses]);
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -82,23 +82,26 @@ export default function GameBox() {
       setGuesses(updatedGuesses);
       if (!(!gameOver && guesses.length < 6)) setSelectedCrop(null);
 
-      if (isFinalGuess) {
-        // this is the 6th and final guess
-        if (!isMuted) {
-          new Audio("/sounds/lose.mp3").play();
-        }
-      } else {
-        // guesses 1–5
-        if (!isMuted) {
-          new Audio("/sounds/sell.mp3").play();
-        }
-      }
-    if (isWin) {
-      setGameOver(true);
-      if (!isMuted) {
-        new Audio("/sounds/reward.mp3").play();
-      }
+      if (isWin) {
+  setGameOver(true);
+  if (!isMuted) {
+    new Audio("/sounds/reward.mp3").play();
+  }
+} else {
+  // Not a win
+  if (isFinalGuess) {
+    // Final guess and it's incorrect
+    if (!isMuted) {
+      new Audio("/sounds/lose.mp3").play();
     }
+  } else {
+    // Early guess and incorrect
+    if (!isMuted) {
+      new Audio("/sounds/sell.mp3").play();
+    }
+  }
+}
+
     
   } catch (error) {
     console.error("Error submitting guess:", error);
@@ -229,15 +232,24 @@ return (
       </div>
     </div>
     {/* Mute/Unmute Button */}
-    <div onClick={toggleMute}
-      className="absolute bottom-16 -right-11 w-[30px] h-[30px] cursor-pointer z-10"
-    >
-      <img
-        src={isMuted ? "/images/muted.png" : "/images/unmuted.png"}
-        alt="Toggle Sound"
-        className="w-full h-full"
-      />
-    </div>
+    {/* Mute/Unmute Button */}
+<div
+  onClick={() => {
+    if (isMuted) {
+      new Audio("/sounds/pluck.mp3").play();
+    }
+    toggleMute(); // ← actually change mute state
+  }}
+  className="absolute bottom-16 -right-11 w-[30px] h-[30px] cursor-pointer z-10"
+>
+  <img
+    src={isMuted ? "/images/muted.png" : "/images/unmuted.png"}
+    alt="Toggle Sound"
+    className="w-full h-full"
+/>
+</div>
+
+
 
 
 
