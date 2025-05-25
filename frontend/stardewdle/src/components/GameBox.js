@@ -125,7 +125,7 @@ return (
       selectedCrop={selectedCrop}
       onSelect={(!gameOver && guesses.length < 6) ? setSelectedCrop : () => {}}
       crops={crops}
-      isMuted={isMuted}
+      isMuted={(!gameOver && guesses.length < 6) ? isMuted : true}
     />
 
     {/* Right Side */}
