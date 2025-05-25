@@ -1,7 +1,9 @@
 import GameBox from "../components/GameBox";
-import { useNavigate } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
+import { useSound } from "../context/SoundContext";
 
 export default function Game() {
+  const { isMuted } = useSound();
   const navigate = useNavigate();
 
   return (
@@ -26,7 +28,10 @@ export default function Game() {
         <div className="w-full flex justify-center pt-2">
           <div
             onClick={() => {
-              new Audio("/sounds/mouseClick.mp3").play();
+              if (!isMuted) {
+                new Audio("/sounds/mouseClick.mp3").play();
+
+              }
               navigate("/");
             }}
             className="relative w-[624px] cursor-pointer group transform transition-transform duration-200 hover:scale-105"
@@ -43,7 +48,6 @@ export default function Game() {
             />
           </div>
         </div>
-
         <GameBox />
       </div>
     </div>
