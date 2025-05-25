@@ -112,7 +112,7 @@ export default function GuessGrid({ guesses, answer }) {
     />
     {/* Tooltip label */}
     <div
-      className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-semibold text-[#BC6131] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
+      className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-medium text-[#BC6131] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
       style={{
         backgroundImage: "url('/images/label.png')",
         backgroundSize: "100% 100%",
@@ -164,7 +164,7 @@ export default function GuessGrid({ guesses, answer }) {
   {guessEntry
     ? key === "season" ? (
       <div className="flex gap-1 items-center justify-center">
-        {(value === "all"
+        {(value == "all"
           ? ["spring", "summer", "fall", "winter"]
           : Array.isArray(value)
           ? value.map((s) => s.toLowerCase())
@@ -177,7 +177,7 @@ export default function GuessGrid({ guesses, answer }) {
               className="h-6 w-9"
             />
             <div
-              className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-semibold text-[#BC6131] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
+              className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-medium text-[#BC6131] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
               style={{
                 backgroundImage: "url('/images/label.png')",
                 backgroundSize: "100% 100%",

@@ -31,7 +31,7 @@ onClick(crop)}}
 
       {/* Custom Label Tooltip */}
       <div
-  className="absolute -top-5 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-semibold text-[#BC6131] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
+  className="absolute -top-5 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-medium text-[#BC6131] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
   style={{
     backgroundImage: "url('/images/label.png')",
     backgroundSize: "100% 100%",
