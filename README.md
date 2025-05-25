@@ -28,7 +28,7 @@ Built with **React** on the frontend and an **AWS-supported** backend, the game 
 
 ## 🔧 Tech Stack
 
-- **Frontend**: React, TailwindCSS
+- **Frontend**: React, JavaScript, TailwindCSS
 - **Backend**: (Insert Backend Here)
 - **Deployment**: AWS Amplify (Frontend), (Insert Backend Here)
 - **Data**: Stardew Valley Wiki (scraped and cleaned)
