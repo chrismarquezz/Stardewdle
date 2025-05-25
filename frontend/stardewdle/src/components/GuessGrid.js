@@ -104,12 +104,29 @@ export default function GuessGrid({ guesses, answer }) {
 
           {/* Crop image */}
           {crop?.image_url && (
-            <img
-              src={crop.image_url}
-              alt={crop.name}
-              className="relative z-10 w-[40px] h-[40px] object-contain"
-            />
-          )}
+  <div className="relative group w-[40px] h-[40px] flex items-center justify-center">
+    <img
+      src={crop.image_url}
+      alt={crop.name}
+      className="relative z-10 w-[40px] h-[40px] object-contain"
+    />
+    {/* Tooltip label */}
+    <div
+      className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-semibold text-[#BC6131] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
+      style={{
+        backgroundImage: "url('/images/label.png')",
+        backgroundSize: "100% 100%",
+        backgroundRepeat: "no-repeat",
+        height: "28px",
+      }}
+    >
+      {crop.name
+        .replace(/_/g, " ")
+        .replace(/\w\S*/g, (w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())}
+    </div>
+  </div>
+)}
+
         </div>
 
         {/* Attribute boxes */}
