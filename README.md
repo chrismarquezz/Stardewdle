@@ -28,10 +28,10 @@ Built with **React** on the frontend and an **AWS-supported** backend, the game 
 
 ## 🔧 Tech Stack
 
-- **Frontend**: React, JavaScript, TailwindCSS
-- **Backend**: (Insert Backend Here)
-- **Deployment**: AWS Amplify (Frontend), (Insert Backend Here)
-- **Data**: Stardew Valley Wiki (scraped and cleaned)
+- **Frontend**: React, JavaScript, TailwindCSS  
+- **Backend**: AWS Lambda (Node.js), API Gateway, DynamoDB  
+- **Deployment**: AWS Amplify (Frontend), AWS API Gateway + Lambda (Backend)  
+- **Data**: Stardew Valley Wiki (scraped and cleaned using Python scripts - BeautifulSoup + Requests)
 
 <br />
 
@@ -60,10 +60,6 @@ cd stardewdle
 cd frontend
 npm install
 npm start
-
-# In another terminal, start backend
-cd backend
-pip install -r requirements.txt
 ```
 
 > Make sure you have Node.js installed.
