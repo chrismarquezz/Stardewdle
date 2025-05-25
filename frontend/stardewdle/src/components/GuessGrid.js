@@ -144,34 +144,69 @@ export default function GuessGrid({ guesses, answer }) {
 
               {/* Content */}
               <div className={`relative z-10 flex items-center justify-center ${color === "yellow" ? "text-black" : "text-white"}`}>
-                {guessEntry
-                  ? key === "season"
-                    ? (
-                      <div className="flex gap-1 items-center justify-center">
-                        {(value == "all"
-                          ? ["spring", "summer", "fall", "winter"]
-                          : Array.isArray(value)
-                            ? value.map((s) => s.toLowerCase())
-                            : []
-                        ).map((season) => (
-                          <img
-                            key={season}
-                            src={`/images/${season}.png`}
-                            alt={season}
-                            className="h-6 w-9"
-                          />
-                        ))}
-                      </div>
-                    )
-                    : typeof value === "boolean"
-                      ? value ? "Yes" : "No"
-                      : key === "base_price"
-                        ? <>{value}g {arrow ? <img src={`/images/${arrow}.png`} alt={arrow} className="h-[6px] w-[10px] ml-1" /> : ""}</>
-                        : key === "growth_time"
-                          ? <>{value} days {arrow ? <img src={`/images/${arrow}.png`} alt={arrow} className="h-[6px] w-[10px] ml-1" /> : ""}</>
-                          : capitalize(value ?? "")
-                  : ""}
-              </div>
+  {guessEntry
+    ? key === "season" ? (
+      <div className="flex gap-1 items-center justify-center">
+        {(value === "all"
+          ? ["spring", "summer", "fall", "winter"]
+          : Array.isArray(value)
+          ? value.map((s) => s.toLowerCase())
+          : []
+        ).map((season) => (
+          <div key={season} className="relative group flex items-center justify-center">
+            <img
+              src={`/images/${season}.png`}
+              alt={season}
+              className="h-6 w-9"
+            />
+            <div
+              className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-semibold text-[#BC6131] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
+              style={{
+                backgroundImage: "url('/images/label.png')",
+                backgroundSize: "100% 100%",
+                backgroundRepeat: "no-repeat",
+                height: "28px"
+              }}
+            >
+              {season.charAt(0).toUpperCase() + season.slice(1)}
+            </div>
+          </div>
+        ))}
+      </div>
+    ) : typeof value === "boolean" ? (
+      value ? "Yes" : "No"
+    ) : key === "base_price" ? (
+      <>
+        {value}g{" "}
+        {arrow ? (
+          <img
+            src={`/images/${arrow}.png`}
+            alt={arrow}
+            className="h-[6px] w-[10px] ml-1"
+          />
+        ) : (
+          ""
+        )}
+      </>
+    ) : key === "growth_time" ? (
+      <>
+        {value} days{" "}
+        {arrow ? (
+          <img
+            src={`/images/${arrow}.png`}
+            alt={arrow}
+            className="h-[6px] w-[10px] ml-1"
+          />
+        ) : (
+          ""
+        )}
+      </>
+    ) : (
+      capitalize(value ?? "")
+    )
+    : ""}
+</div>
+
             </div>
 
           );
