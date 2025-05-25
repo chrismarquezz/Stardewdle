@@ -1,5 +1,3 @@
-import { useSound } from "../context/SoundContext";
-
 export default function CropCard({ crop, isSelected, onClick, isMuted}) {
   //const { isMuted } = useSound();
 
