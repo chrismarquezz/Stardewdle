@@ -61,7 +61,7 @@ function getColor(key, guessValue, correctValue) {
 
 function getArrow(key, guessValue, correctValue) {
   if (key === "base_price" || key === "growth_time") {
-    return guessValue > correctValue ? "arrowDown" : guessValue < correctValue ? "arrowUp" : null;
+    return guessValue > correctValue ? "arrow4D" : guessValue < correctValue ? "arrow4U" : null;
   }
 
   return null;
@@ -166,9 +166,9 @@ export default function GuessGrid({ guesses, answer }) {
                     : typeof value === "boolean"
                       ? value ? "Yes" : "No"
                       : key === "base_price"
-                        ? <>{value}g {arrow ? <img src={`/images/${arrow}.png`} alt={arrow} className="h-4 w-4 ml-1" /> : ""}</>
+                        ? <>{value}g {arrow ? <img src={`/images/${arrow}.png`} alt={arrow} className="h-[6px] w-[10px] ml-1" /> : ""}</>
                         : key === "growth_time"
-                          ? <>{value} days {arrow ? <img src={`/images/${arrow}.png`} alt={arrow} className="h-4 w-4 ml-1" /> : ""}</>
+                          ? <>{value} days {arrow ? <img src={`/images/${arrow}.png`} alt={arrow} className="h-[6px] w-[10px] ml-1" /> : ""}</>
                           : capitalize(value ?? "")
                   : ""}
               </div>
