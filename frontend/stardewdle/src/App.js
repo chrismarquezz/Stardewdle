@@ -11,7 +11,7 @@ import './App.css'; // or App.css
 
 import Landing from "./pages/Landing";
 import Game from "./pages/Game";
-import Farm from "./pages/Collections";
+import Collections from "./pages/Collections";
 
 export default function App() {
   return (
@@ -19,8 +19,8 @@ export default function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Landing />} />
-        <Route path="/farm" element={<Farm />} />
         <Route path="/game" element={<Game />} />
+        <Route path="/collections" element={<Collections />} />
       </Routes>
     </Router>
     </SoundProvider>
