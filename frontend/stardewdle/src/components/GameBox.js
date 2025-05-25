@@ -310,20 +310,7 @@ export default function GameBox() {
         </div>
       </div>
       {/* Mute/Unmute Button */}
-      <div onClick={toggleMute}
-        className="absolute bottom-16 -right-11 w-[30px] h-[30px] cursor-pointer z-10"
-      >
-        <img
-          src={isMuted ? "/images/muted.png" : "/images/unmuted.png"}
-          alt="Toggle Sound"
-          className="w-full h-full"
-        />
-      </div>
-
-    </div>
-    {/* Mute/Unmute Button */}
-    {/* Mute/Unmute Button */}
-<div
+      <div
   onClick={() => {
     if (isMuted) {
       new Audio("/sounds/pluck.mp3").play();
@@ -338,6 +325,8 @@ export default function GameBox() {
     className="w-full h-full"
 />
 </div>
+    {/* Mute/Unmute Button */}
+
 
       {/* Help Button */}
       <div
