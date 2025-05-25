@@ -1,10 +1,22 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
-// Create context
 const SoundContext = createContext();
 
-export function SoundProvider({ children }) {
+export const SoundProvider = ({ children }) => {
   const [isMuted, setIsMuted] = useState(false);
+
+  // Load from localStorage on first render
+  useEffect(() => {
+    const saved = localStorage.getItem("isMuted");
+    if (saved !== null) {
+      setIsMuted(JSON.parse(saved));
+    }
+  }, []);
+
+  // Save to localStorage when it changes
+  useEffect(() => {
+    localStorage.setItem("isMuted", JSON.stringify(isMuted));
+  }, [isMuted]);
 
   const toggleMute = () => setIsMuted((prev) => !prev);
 
@@ -13,9 +25,6 @@ export function SoundProvider({ children }) {
       {children}
     </SoundContext.Provider>
   );
-}
+};
 
-// Custom hook to use in any component
-export function useSound() {
-  return useContext(SoundContext);
-}
+export const useSound = () => useContext(SoundContext);
