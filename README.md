@@ -43,11 +43,10 @@ Built with **React** on the frontend and an **AWS-supported** backend, the game 
 
 ## 🖼️ Screenshots
 
-![Game Screenshot 1](https://github.com/user-attachments/assets/9f63cf4f-87c8-41b7-89f1-e3a317899fe8)
+![Game Screenshot 1](https://github.com/user-attachments/assets/4132c7a0-4a5b-4fb2-8f2f-d19c3e0315b0)
 
 ![Game Screenshot 2](https://github.com/user-attachments/assets/74e6a4d8-02c1-4ea0-a012-5b9e5a8c30ff)
 <br />
-
 
 ## 🛠️ Running Locally
 
