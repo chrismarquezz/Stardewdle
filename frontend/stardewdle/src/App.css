@@ -46,3 +46,36 @@ body {
   cursor: url('/public/images/cursor-hover.png'), pointer;
 }
 
+.buttonMain {
+  position: relative;
+  transition: transform 0.2s;
+}
+
+.buttonMain:hover {
+  transform: scale(1.125);
+}
+
+/* Keep base and hover image styles the same */
+.buttonBase,
+.buttonHover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: opacity 200ms;
+}
+
+.buttonBase {
+  z-index: 1;
+  opacity: 1;
+}
+
+.buttonHover {
+  z-index: 2;
+  opacity: 0;
+}
+
+.buttonMain:hover .buttonHover {
+  opacity: 1;
+}
