@@ -33,17 +33,17 @@ export default function Gallery() {
               }
               navigate("/");
             }}
-            className="relative w-[624px] cursor-pointer group transform transition-transform duration-200 hover:scale-105"
+            className="buttonMain w-[624px] h-[114px] clickable"
           >
             <img
               src="/images/stardewdleLogo.png"
               alt="Stardewdle Home"
-              className="w-full transition-opacity duration-200 group-hover:opacity-0"
+              className="buttonBase"
             />
             <img
               src="/images/stardewdleLogo.png"
               alt="Stardewdle Home Hover"
-              className="absolute top-0 left-0 w-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+              className="buttonHover"
             />
           </div>
         </div>
