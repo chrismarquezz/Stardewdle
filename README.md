@@ -54,7 +54,7 @@ Built with **React** on the frontend and an **AWS-supported** backend, the game 
 ```bash
 # Clone the repo
 git clone https://github.com/chrismarquezz/stardewdle.git
-cd stardewdle/stardewdle
+cd frontend/stardewdle
 
 # Install frontend dependencies
 npm install
