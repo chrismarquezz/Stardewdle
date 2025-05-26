@@ -88,7 +88,6 @@ export default function Landing() {
             />
           </button>
 
-
           <button
             onClick={() => {
               if (!isMuted) {
@@ -114,22 +113,46 @@ export default function Landing() {
 
       </div>
 
-      {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
-          <div className="bg-white rounded-lg p-6 w-96 shadow-lg relative">
-            <button
-              onClick={() => setShowModal(false)}
-              className="absolute top-2 right-2 text-gray-600 hover:text-gray-900"
-            >
-              &times;
-            </button>
-            <h2 className="text-lg font-semibold mb-4">Modal Title</h2>
-            <p>This is your modal content.</p>
-          </div>
-        </div>
-      )}
+  {showModal && (
+  <div
+    className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+    onClick={() => {
+      if (!isMuted) {
+        new Audio("/sounds/mouseClick.mp3").play();
+      }
+    setShowModal(false)}}
+  >
+    <div
+      className="relative w-[1248px] h-[704px] p-6 shadow-lg bg-cover bg-center"
+      style={{
+        backgroundImage: "url('/images/paper-note.png')",
+      }}
+      onClick={(e) => e.stopPropagation()} // Prevents modal from closing when clicked inside
+    >
+      <button
+        onClick={() => {
+      if (!isMuted) {
+        new Audio("/sounds/mouseClick.mp3").play();
+      }
+    setShowModal(false)}}
+        className="absolute top-2 left-9 text-red-500 text-6xl hover:text-gray-300"
+      >
+        x
+      </button>
+      <div className="p-4">
+        <h2 className="text-gray-600 text-center text-7xl font-semibold mb-8">Credits</h2>
+        <ul className="text-gray-600 text-5xl list-disc list-inside space-y-24">
+  <p>- Built by Chris and Omar.</p>
+  <p>- Artwork and sounds by ConcernedApe.</p>
+  <p>- Inspired by Wordle and Stardew Valley.</p>
+</ul>
 
+      </div>
     </div>
+  </div>
+)}
+
+</div>
 
   );
 }
