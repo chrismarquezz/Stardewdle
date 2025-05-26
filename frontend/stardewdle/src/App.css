@@ -39,5 +39,10 @@
 
 body {
   font-family: 'Stardew', sans-serif;
+  cursor: url('/public/images/cursor.png'), auto;
+}
+
+.clickable {
+  cursor: url('/public/images/cursor-hover.png'), pointer;
 }
 
