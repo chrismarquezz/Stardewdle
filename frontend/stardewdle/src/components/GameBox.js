@@ -273,7 +273,7 @@ export default function GameBox() {
                 }}
                 className={`relative mt-4 group ${!selectedCrop || guesses.length >= 6 || gameOver
                   ? "opacity-40 pointer-events-none"
-                  : "cursor-pointer hover:scale-105 transition-transform"
+                  : "clickable hover:scale-105 transition-transform"
                   }`}
                 style={{
                   width: "216px",
@@ -317,7 +317,7 @@ export default function GameBox() {
     }
     toggleMute(); // ← actually change mute state
   }}
-  className="absolute bottom-16 -right-11 w-[30px] h-[30px] cursor-pointer z-10"
+  className="absolute bottom-16 -right-11 w-[30px] h-[30px] clickable z-10"
 >
   <img
     src={isMuted ? "/images/muted.png" : "/images/unmuted.png"}
@@ -336,7 +336,7 @@ export default function GameBox() {
           }
           setShowHelp(true)
         }}
-        className="absolute bottom-1 -right-14 w-[50px] h-[50px] group cursor-pointer z-10"
+        className="absolute bottom-1 -right-14 w-[50px] h-[50px] group clickable z-10"
       >
         {/* Default button image */}
         <img
