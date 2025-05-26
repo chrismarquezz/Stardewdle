@@ -386,31 +386,32 @@ export default function GameBox() {
             </button>
 
             {/* Help Content */}
-            <h2 className="text-6xl font-bold text-[#BC6131] mb-6 text-center">How to Play</h2>
+            {/* Help Content */}
+<h2 className="text-6xl font-bold text-[#BC6131] mb-6 text-center">How to Play</h2>
 
-            <ul className="list-disc list-inside space-y-4 text-3xl text-[#BC6131] px-2">
-              <li>Select a crop from the grid.</li>
-              <li>Click "Submit" to guess the crop of the day.</li>
-              <li>You get 6 tries to guess correctly.</li>
-              <li>
-                The result grid shows feedback:
-                <ul className="ml-6 mt-2 list-disc space-y-2">
-                  <li className="flex items-center gap-3">
-                    <div className="w-6 h-6 bg-green-500 border-2 border-green-700 rounded-sm shadow-sm" />
-                    Exact match
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <div className="w-6 h-6 bg-yellow-400 border-2 border-yellow-600 rounded-sm shadow-sm" />
-                    Partial match
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <div className="w-6 h-6 bg-red-500 border-2 border-red-700 rounded-sm shadow-sm" />
-                    Incorrect
-                  </li>
-                </ul>
+<div className="space-y-4 text-3xl text-[#BC6131] px-2">
+  <p>- Select a crop from the grid.</p>
+  <p>- Click "Submit" to guess the crop of the day.</p>
+  <p>- You get 6 tries to guess correctly.</p>
+  <div>
+    <p>- The result grid shows feedback:</p>
+    <div className="ml-10 mt-4 space-y-4">
+      <div className="flex items-center gap-3">
+        <div className="w-6 h-6 bg-green-500 border-2 border-green-700 rounded-sm shadow-sm" />
+        <span>Exact match</span>
+      </div>
+      <div className="flex items-center gap-3">
+        <div className="w-6 h-6 bg-yellow-400 border-2 border-yellow-600 rounded-sm shadow-sm" />
+        <span>Partial match</span>
+      </div>
+      <div className="flex items-center gap-3">
+        <div className="w-6 h-6 bg-red-500 border-2 border-red-700 rounded-sm shadow-sm" />
+        <span>Incorrect</span>
+      </div>
+    </div>
+  </div>
+</div>
 
-              </li>
-            </ul>
           </div>
         </div>
       )}
