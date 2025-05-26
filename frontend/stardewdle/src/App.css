@@ -1,0 +1,81 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+body {
+  font-family: 'Stardew', sans-serif;
+  cursor: url('/public/images/cursor.png'), auto;
+}
+
+.clickable {
+  cursor: url('/public/images/cursor-hover.png'), pointer;
+}
+
+.buttonMain {
+  position: relative;
+  transition: transform 0.2s;
+}
+
+.buttonMain:hover {
+  transform: scale(1.125);
+}
+
+/* Keep base and hover image styles the same */
+.buttonBase,
+.buttonHover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: opacity 200ms;
+}
+
+.buttonBase {
+  z-index: 1;
+  opacity: 1;
+}
+
+.buttonHover {
+  z-index: 2;
+  opacity: 0;
+}
+
+.buttonMain:hover .buttonHover {
+  opacity: 1;
+}
