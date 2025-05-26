@@ -73,7 +73,7 @@ export default function Landing() {
         new Audio("/sounds/mouseClick.mp3").play();
       }
       window.open('https://github.com/chrismarquezz/Stardewdle', '_blank')}}
-  className="relative w-14 h-14"
+  className="relative w-14 h-14 transition-transform hover:scale-105"
 >
   <img
     src="/images/github.png"
@@ -94,7 +94,7 @@ export default function Landing() {
         new Audio("/sounds/mouseClick.mp3").play();
       }
       setShowModal(true);}}
-  className="relative w-14 h-14"
+  className="relative w-14 h-14 transition-transform hover:scale-105"
 >
   <img
     src="/images/credits.png"
@@ -107,7 +107,6 @@ export default function Landing() {
     className="w-full h-full object-contain"
   />
 </button>
-
 
 </div>
 
