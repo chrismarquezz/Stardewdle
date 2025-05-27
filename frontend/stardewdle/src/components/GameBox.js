@@ -36,7 +36,44 @@ export default function GameBox() {
 
   const [showHelp, setShowHelp] = useState(false);
   const { isMuted, toggleMute } = useSound();
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [shareText, setShareText] = useState('');
+  const [timeLeft, setTimeLeft] = useState(getTimeUntilMidnight());
+
   const isFinalGuess = guesses.length === 5; // next guess is 6th
+
+  function getTimeUntilMidnight() {
+    const now = new Date();
+    const midnight = new Date();
+    midnight.setHours(24, 0, 0, 0);
+    const diff = midnight - now;
+
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    return { hours, minutes, seconds };
+  }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeLeft(getTimeUntilMidnight());
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+
+  function generateShareText(resultGrid, win) {
+    const header = win ? "🌱 I solved today's Stardewdle!" : "💀 I couldn't solve today's Stardewdle.";
+    const grid = resultGrid
+      .map(row => row.map(cell => {
+        if (cell === 'correct') return '🟩';
+        if (cell === 'partial') return '🟨';
+        return '🟥';
+      }).join(''))
+      .join('\n');
+    return `${header}\n\n${grid}\n\nPlay at: https://your-game-url.com`;
+  }
 
   useEffect(() => {
     if (guesses.length >= 6) {
@@ -161,25 +198,37 @@ export default function GameBox() {
 
 
       if (isWin) {
-        setGameOver(true);
-        if (!isMuted) {
-          new Audio("/sounds/reward.mp3").play();
-        }
-        setSelectedCrop(correctCrop);
-      } else {
-        // Not a win
-        if (isFinalGuess) {
-          // Final guess and it's incorrect
-          if (!isMuted) {
-            new Audio("/sounds/lose.mp3").play();
-          }
-        } else {
-          // Early guess and incorrect
-          if (!isMuted) {
-            new Audio("/sounds/sell.mp3").play();
-          }
-        }
-      }
+  setGameOver(true);
+  if (!isMuted) {
+    new Audio("/sounds/reward.mp3").play();
+  }
+
+  const text = generateShareText(
+    [...guesses, { crop: selectedCrop, result }],
+    true
+  );
+  setShareText(text);
+  setShowShareModal(true);
+} else {
+  if (isFinalGuess) {
+    setGameOver(true);
+    if (!isMuted) {
+      new Audio("/sounds/lose.mp3").play();
+    }
+
+    const text = generateShareText(
+      [...guesses, { crop: selectedCrop, result }],
+      false
+    );
+    setShareText(text);
+    setShowShareModal(true);
+  } else {
+    if (!isMuted) {
+      new Audio("/sounds/sell.mp3").play();
+    }
+  }
+}
+
 
 
     } catch (error) {
@@ -416,6 +465,42 @@ export default function GameBox() {
           </div>
         </div>
       )}
+
+      {showShareModal && (
+  <div
+    className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+    onClick={() => setShowShareModal(false)}
+  >
+    <div
+      className="relative w-[500px] p-6 bg-white rounded-lg shadow-lg"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <button
+        onClick={() => setShowShareModal(false)}
+        className="absolute top-2 right-4 text-2xl text-gray-500 hover:text-gray-800"
+      >
+        &times;
+      </button>
+      <h2 className="text-3xl font-bold text-center text-[#BC6131] mb-4">Share Your Result</h2>
+
+      <pre className="bg-gray-100 p-4 rounded text-lg whitespace-pre-wrap">{shareText}</pre>
+
+      <p className="mt-4 text-center text-gray-600 text-xl">
+        🕒 Next crop in: {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s
+      </p>
+
+      <button
+        onClick={() => {
+          navigator.clipboard.writeText(shareText);
+        }}
+        className="mt-4 w-full bg-[#BC6131] text-white py-2 px-4 rounded hover:bg-[#9c4f26] transition"
+      >
+        Copy to Clipboard
+      </button>
+    </div>
+  </div>
+)}
+
     </div>
   );
 }
