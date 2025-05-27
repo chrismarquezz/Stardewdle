@@ -3,7 +3,7 @@ import { useSound } from "../context/SoundContext";
 import CropGrid from "./CropGrid";
 import GuessGrid from "./GuessGrid";
 import CropLoader from "../components/CropLoader";
-const DAILY_RESET_ENABLED = true; // Set to true to re-enable
+const DAILY_RESET_ENABLED = false; // Set to true to re-enable
 
 function formatName(name) {
   return name
@@ -74,12 +74,6 @@ export default function GameBox() {
       .join('\n');
     return `${header}\n\n${grid}\n\nPlay at: https://your-game-url.com`;
   }
-
-  useEffect(() => {
-    if (guesses.length >= 6) {
-      setSelectedCrop(correctCrop);
-    }
-  }, [guesses, correctCrop]);
 
   useEffect(() => {
     if (!DAILY_RESET_ENABLED) return;
@@ -199,7 +193,7 @@ export default function GameBox() {
 
       if (isWin) {
   setGameOver(true);
-  setSelectedCrop(correctCrop); // Set the correct crop when winning
+  setSelectedCrop(correctCrop);
   if (!isMuted) {
     new Audio("/sounds/reward.mp3").play();
   }
@@ -213,6 +207,8 @@ export default function GameBox() {
 } else {
   if (isFinalGuess) {
     setGameOver(true);
+      setSelectedCrop(correctCrop);
+
     if (!isMuted) {
       new Audio("/sounds/lose.mp3").play();
     }
@@ -249,7 +245,8 @@ export default function GameBox() {
         backgroundImage: "url('/images/box-bg.png')",
         backgroundSize: "100% 100%",
         width: "1600px",
-        height: "800px"
+        height: "800px",
+        transform: `scale(.95)`,
       }}
     >
       {/* Crop Grid */}
@@ -297,9 +294,8 @@ export default function GameBox() {
               </p>
             </div>
 
-
             {/* Submit Button */}
-            {gameOver ? (
+            {(gameOver && (guesses[5] ? guesses[5].crop.name === correctCrop.name : true)) ? (
               <p className="mt-4 text-green-700 text-5xl font-bold text-center whitespace-nowrap p-3"
                 style={{
                   height: "80px"
