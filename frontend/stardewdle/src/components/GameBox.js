@@ -161,30 +161,31 @@ export default function GameBox() {
 
 
       if (isWin) {
-  setGameOver(true);
-  if (!isMuted) {
-    new Audio("/sounds/reward.mp3").play();
-  }
-} else {
-  // Not a win
-  if (isFinalGuess) {
-    // Final guess and it's incorrect
-    if (!isMuted) {
-      new Audio("/sounds/lose.mp3").play();
-    }
-  } else {
-    // Early guess and incorrect
-    if (!isMuted) {
-      new Audio("/sounds/sell.mp3").play();
-    }
-  }
-}
+        setGameOver(true);
+        if (!isMuted) {
+          new Audio("/sounds/reward.mp3").play();
+        }
+        setSelectedCrop(correctCrop);
+      } else {
+        // Not a win
+        if (isFinalGuess) {
+          // Final guess and it's incorrect
+          if (!isMuted) {
+            new Audio("/sounds/lose.mp3").play();
+          }
+        } else {
+          // Early guess and incorrect
+          if (!isMuted) {
+            new Audio("/sounds/sell.mp3").play();
+          }
+        }
+      }
 
-    
-  } catch (error) {
-    console.error("Error submitting guess:", error);
-  }
-};
+
+    } catch (error) {
+      console.error("Error submitting guess:", error);
+    }
+  };
 
   if (!correctCrop || crops.length === 0) {
     return <CropLoader />;
@@ -311,21 +312,21 @@ export default function GameBox() {
       </div>
       {/* Mute/Unmute Button */}
       <div
-  onClick={() => {
-    if (isMuted) {
-      new Audio("/sounds/pluck.mp3").play();
-    }
-    toggleMute(); // ← actually change mute state
-  }}
-  className="absolute bottom-16 -right-11 w-[30px] h-[30px] clickable z-10"
->
-  <img
-    src={isMuted ? "/images/muted.png" : "/images/unmuted.png"}
-    alt="Toggle Sound"
-    className="w-full h-full"
-/>
-</div>
-    {/* Mute/Unmute Button */}
+        onClick={() => {
+          if (isMuted) {
+            new Audio("/sounds/pluck.mp3").play();
+          }
+          toggleMute(); // ← actually change mute state
+        }}
+        className="absolute bottom-16 -right-11 w-[30px] h-[30px] clickable z-10"
+      >
+        <img
+          src={isMuted ? "/images/muted.png" : "/images/unmuted.png"}
+          alt="Toggle Sound"
+          className="w-full h-full"
+        />
+      </div>
+      {/* Mute/Unmute Button */}
 
 
       {/* Help Button */}
@@ -387,30 +388,30 @@ export default function GameBox() {
 
             {/* Help Content */}
             {/* Help Content */}
-<h2 className="text-6xl font-bold text-[#BC6131] mb-6 text-center">How to Play</h2>
+            <h2 className="text-6xl font-bold text-[#BC6131] mb-6 text-center">How to Play</h2>
 
-<div className="space-y-4 text-3xl text-[#BC6131] px-2">
-  <p>- Select a crop from the grid.</p>
-  <p>- Click "Submit" to guess the crop of the day.</p>
-  <p>- You get 6 tries to guess correctly.</p>
-  <div>
-    <p>- The result grid shows feedback:</p>
-    <div className="ml-10 mt-4 space-y-4">
-      <div className="flex items-center gap-3">
-        <div className="w-6 h-6 bg-green-500 border-2 border-green-700 rounded-sm shadow-sm" />
-        <span>Exact match</span>
-      </div>
-      <div className="flex items-center gap-3">
-        <div className="w-6 h-6 bg-yellow-400 border-2 border-yellow-600 rounded-sm shadow-sm" />
-        <span>Partial match</span>
-      </div>
-      <div className="flex items-center gap-3">
-        <div className="w-6 h-6 bg-red-500 border-2 border-red-700 rounded-sm shadow-sm" />
-        <span>Incorrect</span>
-      </div>
-    </div>
-  </div>
-</div>
+            <div className="space-y-4 text-3xl text-[#BC6131] px-2">
+              <p>- Select a crop from the grid.</p>
+              <p>- Click "Submit" to guess the crop of the day.</p>
+              <p>- You get 6 tries to guess correctly.</p>
+              <div>
+                <p>- The result grid shows feedback:</p>
+                <div className="ml-10 mt-4 space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-6 h-6 bg-green-500 border-2 border-green-700 rounded-sm shadow-sm" />
+                    <span>Exact match</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-6 h-6 bg-yellow-400 border-2 border-yellow-600 rounded-sm shadow-sm" />
+                    <span>Partial match</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-6 h-6 bg-red-500 border-2 border-red-700 rounded-sm shadow-sm" />
+                    <span>Incorrect</span>
+                  </div>
+                </div>
+              </div>
+            </div>
 
           </div>
         </div>
