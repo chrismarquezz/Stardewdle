@@ -199,6 +199,7 @@ export default function GameBox() {
 
       if (isWin) {
   setGameOver(true);
+  setSelectedCrop(correctCrop); // Set the correct crop when winning
   if (!isMuted) {
     new Audio("/sounds/reward.mp3").play();
   }
