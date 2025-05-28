@@ -30,7 +30,7 @@
       "fall"
     ],
     "base_price": 100,
-    "regrows": false,
+    "regrows": true,
     "image_url": "https://stardewvalleywiki.com/mediawiki/images/7/7d/Apple.png",
     "type": "fruit"
   },
@@ -41,7 +41,7 @@
       "spring"
     ],
     "base_price": 50,
-    "regrows": false,
+    "regrows": true,
     "image_url": "https://stardewvalleywiki.com/mediawiki/images/f/fc/Apricot.png",
     "type": "fruit"
   },
@@ -63,7 +63,7 @@
       "summer"
     ],
     "base_price": 150,
-    "regrows": false,
+    "regrows": true,
     "image_url": "https://stardewvalleywiki.com/mediawiki/images/6/69/Banana.png",
     "type": "fruit"
   },
@@ -184,7 +184,7 @@
       "spring"
     ],
     "base_price": 80,
-    "regrows": false,
+    "regrows": true,
     "image_url": "https://stardewvalleywiki.com/mediawiki/images/2/20/Cherry.png",
     "type": "fruit"
   },
@@ -396,7 +396,7 @@
       "summer"
     ],
     "base_price": 130,
-    "regrows": false,
+    "regrows": true,
     "image_url": "https://stardewvalleywiki.com/mediawiki/images/3/38/Mango.png",
     "type": "fruit"
   },
@@ -429,7 +429,7 @@
       "summer"
     ],
     "base_price": 100,
-    "regrows": false,
+    "regrows": true,
     "image_url": "https://stardewvalleywiki.com/mediawiki/images/4/43/Orange.png",
     "type": "fruit"
   },
@@ -451,7 +451,7 @@
       "summer"
     ],
     "base_price": 140,
-    "regrows": false,
+    "regrows": true,
     "image_url": "https://stardewvalleywiki.com/mediawiki/images/e/e2/Peach.png",
     "type": "fruit"
   },
@@ -473,7 +473,7 @@
       "fall"
     ],
     "base_price": 140,
-    "regrows": false,
+    "regrows": true,
     "image_url": "https://stardewvalleywiki.com/mediawiki/images/1/1b/Pomegranate.png",
     "type": "fruit"
   },

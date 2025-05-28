@@ -79,3 +79,7 @@ body {
 .buttonMain:hover .buttonHover {
   opacity: 1;
 }
+
+img {
+  image-rendering: pixelated;
+}
