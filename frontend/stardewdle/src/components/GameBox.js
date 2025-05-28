@@ -6,7 +6,7 @@ import CropLoader from "../components/CropLoader";
 import ShareModal from "./ShareModal";
 import HelpModal from "./HelpModal";
 
-const DAILY_RESET_ENABLED = false; // Set to true to re-enable
+const DAILY_RESET_ENABLED = true; // Set to true to re-enable
 
 function formatName(name) {
   return name
@@ -331,7 +331,7 @@ export default function GameBox() {
                   }}
                   className="w-[40px] h-[40px] cursor-pointer z-10"
                 >
-                  <div className="w-full h-full relative group">
+                  <div className="clickable w-full h-full relative group">
                     {/* Default button image */}
                     <img
                       src="/images/share-button.png"
@@ -363,7 +363,7 @@ export default function GameBox() {
                     }}
                     className="w-[40px] h-[40px] cursor-pointer z-10"
                   >
-                    <div className="w-full h-full relative group">
+                    <div className="clickable w-full h-full relative group">
                       {/* Default button image */}
                       <img
                         src="/images/share-button.png"
