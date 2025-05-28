@@ -48,8 +48,8 @@ export default function Game() {
       <div className="relative z-10 w-full h-full flex justify-center items-center">
         <div
           style={{
-            width: "1600px",  // Design width
-            height: "900px",  // Design height
+            width: "1600px", // Design width
+            height: "900px", // Design height
             transform: `scale(${scaleFactor})`,
             transformOrigin: "top center",
           }}

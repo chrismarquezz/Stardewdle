@@ -60,9 +60,8 @@ export default function ShareModal({
 
         {/* Share Text Block */}
         <p className="bg-[#FFD789] w-[80%] mx-auto bg-opacity-60 border-4 border-[#BC6131] p-4 text-[#BC6131] text-2xl whitespace-pre text-center font-Stardew leading-none">
-  {shareText}
-</p>
-
+          {shareText}
+        </p>
 
         {/* Copy Section */}
         <div className="mt-2 w-[50%] mx-auto flex flex-col items-center relative">
