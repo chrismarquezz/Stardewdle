@@ -95,8 +95,8 @@ export default function CollectionsBox() {
                 Grows in {selectedCrop.growth_time} days <br />
                 Sells for {selectedCrop.base_price}g <br />
                 Does {selectedCrop.regrows ? "" : "not"} regrow  <br />
-                <div className="flex gap-1 items-center justify-center">
-                  Grows during: {(selectedCrop.season == "all"
+                <div className="flex gap-3 items-center justify-center">
+                  {"Grows during: "} {(selectedCrop.season == "all"
                     ? ["spring", "summer", "fall", "winter"]
                     : Array.isArray(selectedCrop.season) 
                       ? selectedCrop.season.map((s) => s.toLowerCase())

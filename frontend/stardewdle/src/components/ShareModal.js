@@ -42,7 +42,7 @@ export default function ShareModal({
         {/* Close Button */}
         <button
           onClick={playCloseSound}
-          className="absolute top-1 left-5 text-[#BC6131] hover:text-white text-6xl"
+          className="clickable absolute top-1 left-5 text-[#BC6131] hover:text-white text-6xl"
         >
           x
         </button>
@@ -59,24 +59,23 @@ export default function ShareModal({
         </p>
 
         {/* Share Text Block */}
-        <pre className="bg-gray-100 p-4 rounded text-[#BC6131] text-lg whitespace-pre text-center leading-none">
-          {shareText}
-        </pre>
+        <p className="bg-[#FFD789] w-[80%] mx-auto bg-opacity-60 border-4 border-[#BC6131] p-4 text-[#BC6131] text-2xl whitespace-pre text-center font-Stardew leading-none">
+  {shareText}
+</p>
+
 
         {/* Copy Section */}
-        <div className="mt-6 w-full flex flex-col items-center relative">
+        <div className="mt-2 w-[50%] mx-auto flex flex-col items-center relative">
           <button
-            onClick={handleCopy}
-            className="w-full bg-[#BC6131] text-white py-2 px-4 text-3xl rounded hover:bg-[#9c4f26] transition"
+            onClick={() => {
+              navigator.clipboard.writeText(shareText);
+              setCopied(true);
+              setTimeout(() => setCopied(false), 2000); // Revert after 2 seconds
+            }}
+            className="mt-6 clickable w-full bg-[#BC6131] text-white text-4xl py-2 hover:bg-[#9c4f26] transition"
           >
-            Share your results
+            {copied ? "Copied to Clipboard!" : "Share"}
           </button>
-
-          {copied && (
-            <div className="mt-2 text-2xl text-[#BC6131] font-semibold z-10">
-              Copied to clipboard!
-            </div>
-          )}
         </div>
       </div>
     </div>,
