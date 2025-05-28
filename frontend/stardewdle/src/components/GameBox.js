@@ -379,6 +379,13 @@ export default function GameBox() {
           <GuessGrid guesses={guesses} answer={correctCrop} />
         </div>
       </div>
+      {gameOver && !showShareModal && (
+  <button
+    onClick={() => setShowShareModal(true)}
+className="absolute bottom-24 -right-11 w-[30px] h-[30px] clickable z-10"  >
+    Share
+  </button>
+)}
       {/* Mute/Unmute Button */}
       <div
         onClick={() => {
