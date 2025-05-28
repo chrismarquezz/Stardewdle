@@ -15,10 +15,7 @@ function formatName(name) {
 }
 
 export default function CollectionsBox() {
-  const [selectedCrop, setSelectedCrop] = useState(() => {
-    const saved = localStorage.getItem("stardewdle-selectedCrop");
-    return saved ? JSON.parse(saved) : null;
-  });
+  const [selectedCrop, setSelectedCrop] = useState(null)
 
   const [crops, setCrops] = useState([]);
   const { isMuted, toggleMute } = useSound();
