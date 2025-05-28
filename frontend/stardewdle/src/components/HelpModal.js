@@ -1,4 +1,4 @@
-import ReactDOM from 'react-dom';
+import ReactDOM from "react-dom";
 
 export default function HelpModal({ isMuted, onClose }) {
   const playCloseSound = () => {
@@ -28,7 +28,9 @@ export default function HelpModal({ isMuted, onClose }) {
           x
         </button>
 
-        <h2 className="text-6xl font-bold text-[#BC6131] mb-6 text-center">How to Play</h2>
+        <h2 className="text-6xl font-bold text-[#BC6131] mb-6 text-center">
+          How to Play
+        </h2>
 
         <div className="space-y-4 text-3xl text-[#BC6131] px-2">
           <p>- Select a crop from the grid.</p>

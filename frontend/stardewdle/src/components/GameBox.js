@@ -92,6 +92,18 @@ export default function GameBox() {
   }
 
   useEffect(() => {
+    if (gameOver && !shareText && guesses.length > 0) {
+      const isWin = guesses.some(
+        (g) =>
+          g.crop.name.toLowerCase() === correctCrop?.name.toLowerCase() &&
+          Object.values(g.result).every((val) => val === "match")
+      );
+      const text = generateShareText(guesses, isWin);
+      setShareText(text);
+    }
+  }, [gameOver, shareText, guesses, correctCrop]);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       setTimeLeft(getTimeUntilMidnightUTC());
     }, 1000);
@@ -273,7 +285,7 @@ export default function GameBox() {
       {/* Crop Grid */}
       <CropGrid
         selectedCrop={selectedCrop}
-        onSelect={!gameOver && guesses.length < 6 ? setSelectedCrop : () => { }}
+        onSelect={!gameOver && guesses.length < 6 ? setSelectedCrop : () => {}}
         crops={crops}
         isMuted={!gameOver && guesses.length < 6 ? isMuted : true}
       />
@@ -315,12 +327,12 @@ export default function GameBox() {
             </div>
 
             {/* Submit Button */}
-            {(gameOver && (guesses[5] ? guesses[5].crop.name === correctCrop.name : true)) ? (
+            {gameOver &&
+            (guesses[5] ? guesses[5].crop.name === correctCrop.name : true) ? (
               <div className="mt-4 flex items-center justify-center gap-4">
                 <p className="text-green-700 text-5xl font-bold whitespace-nowrap">
                   You guessed it!
                 </p>
-
 
                 <div
                   onClick={() => {
@@ -346,7 +358,6 @@ export default function GameBox() {
                     />
                   </div>
                 </div>
-
               </div>
             ) : guesses.length >= 6 ? (
               <>
@@ -386,10 +397,11 @@ export default function GameBox() {
                   if (!selectedCrop || guesses.length >= 6 || gameOver) return;
                   handleSubmit();
                 }}
-                className={`relative mt-4 group ${!selectedCrop || guesses.length >= 6 || gameOver
-                  ? "opacity-40 pointer-events-none"
-                  : "clickable hover:scale-105 transition-transform"
-                  }`}
+                className={`relative mt-4 group ${
+                  !selectedCrop || guesses.length >= 6 || gameOver
+                    ? "opacity-40 pointer-events-none"
+                    : "clickable hover:scale-105 transition-transform"
+                }`}
                 style={{
                   width: "216px",
                   height: "80px",

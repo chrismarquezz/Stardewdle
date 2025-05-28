@@ -13,7 +13,7 @@ function formatName(name) {
 }
 
 export default function CollectionsBox() {
-  const [selectedCrop, setSelectedCrop] = useState(null)
+  const [selectedCrop, setSelectedCrop] = useState(null);
 
   const [crops, setCrops] = useState([]);
   const { isMuted, toggleMute } = useSound();
@@ -26,7 +26,6 @@ export default function CollectionsBox() {
           const cropResponse = await fetch(cropURL);
           const cropList = await cropResponse.json();
           setCrops(cropList);
-
         } catch (error) {
           console.error("Failed to fetch crop data or word:", error);
         }
@@ -67,7 +66,8 @@ export default function CollectionsBox() {
           <div
             className="relative bg-no-repeat bg-contain"
             style={{
-              backgroundImage: "url('/images/collections/collectionsSelected.png')",
+              backgroundImage:
+                "url('/images/collections/collectionsSelected.png')",
               width: "212px",
               height: "212px",
             }}
@@ -85,22 +85,25 @@ export default function CollectionsBox() {
               <p className="text-7xl text-center text-[#c9ba98]">
                 {formatName(selectedCrop.name)}
                 <hr className="w-[400px] mt-4 border-t-4 border-[#c9ba98] mx-auto" />
-
               </p>
 
               <p className="text-4xl text-center text-[#c9ba98] tracking-wide">
                 {formatName(selectedCrop.type)} <br />
                 Grows in {selectedCrop.growth_time} days <br />
                 Sells for {selectedCrop.base_price}g <br />
-                Does {selectedCrop.regrows ? "" : "not"} regrow  <br />
+                Does {selectedCrop.regrows ? "" : "not"} regrow <br />
                 <div className="flex gap-3 items-center justify-center">
-                  {"Grows during: "} {(selectedCrop.season == "all"
+                  {"Grows during: "}{" "}
+                  {(selectedCrop.season == "all"
                     ? ["spring", "summer", "fall", "winter"]
-                    : Array.isArray(selectedCrop.season) 
-                      ? selectedCrop.season.map((s) => s.toLowerCase())
-                      : []
+                    : Array.isArray(selectedCrop.season)
+                    ? selectedCrop.season.map((s) => s.toLowerCase())
+                    : []
                   ).map((season) => (
-                    <div key={season} className="relative group flex items-center justify-center gap-3">
+                    <div
+                      key={season}
+                      className="relative group flex items-center justify-center gap-3"
+                    >
                       <img
                         src={`/images/${season}.png`}
                         alt={season}
@@ -109,10 +112,11 @@ export default function CollectionsBox() {
                       <div
                         className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-medium text-[#c9ba98] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
                         style={{
-                          backgroundImage: "url('/images/collections/collectionsLabel.png')",
+                          backgroundImage:
+                            "url('/images/collections/collectionsLabel.png')",
                           backgroundSize: "100% 100%",
                           backgroundRepeat: "no-repeat",
-                          height: "28px"
+                          height: "28px",
                         }}
                       >
                         {season.charAt(0).toUpperCase() + season.slice(1)}
@@ -122,8 +126,9 @@ export default function CollectionsBox() {
                 </div>
               </p>
             </>
-          ) : ("")
-          }
+          ) : (
+            ""
+          )}
         </div>
       </div>
 
