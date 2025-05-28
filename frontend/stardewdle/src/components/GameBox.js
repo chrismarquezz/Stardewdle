@@ -121,6 +121,8 @@ export default function GameBox() {
           );
           const data = await response.json();
           const word = data.word;
+          setCorrectGuesses(data.correct_guesses);
+
 
           const cropData = cropList.find(
             (crop) => crop.name.toLowerCase() === word.toLowerCase()
@@ -237,21 +239,11 @@ export default function GameBox() {
     setGameOver(true);
     if (!isMuted) new Audio("/sounds/lose.mp3").play();
 
-    // ✅ Fetch win stats after final loss
-    try {
-      const res = await fetch("https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/word");
-      const data = await res.json();
-      setCorrectGuesses(data.correct_guesses);
-    } catch (err) {
-      console.error("Failed to fetch win stats:", err);
-    }
-
     const text = generateShareText([...guesses, newGuess], false);
     setShareText(text);
     setShowShareModal(true);
   }
 }
-
 
   } catch (error) {
     console.error("Error submitting guess:", error);
