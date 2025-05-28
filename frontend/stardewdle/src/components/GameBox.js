@@ -322,7 +322,7 @@ export default function GameBox() {
     You guessed it!
   </p>
 
-  {gameOver && !showShareModal && (
+  {gameOver && (
   <div
     onClick={() => {
       if (!isMuted) {
