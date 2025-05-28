@@ -53,7 +53,6 @@ export default function GameBox() {
   });
   const [gameOver, setGameOver] = useState(() => {
     const saved = localStorage.getItem("stardewdle-gameOver");
-    setSelectedCrop(correctCrop);
     return saved ? JSON.parse(saved) : false;
   });
 
