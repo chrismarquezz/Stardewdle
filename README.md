@@ -21,7 +21,7 @@ Built with **React** on the frontend and an **AWS-supported** backend, the game 
   - Growth Time (days)
   - Sell Price (at Normal quality)
   - Regrows (Yes/No)
-  - Crop Type (Fruit/Vegetable/Mushroom/Forage)
+  - Crop Type (Fruit/Vegetable/Mushroom/Forage/Flower)
   - Season (Spring, Summer, Fall, Winter)
 
 <br />
@@ -45,7 +45,11 @@ Built with **React** on the frontend and an **AWS-supported** backend, the game 
 
 ![Game Screenshot 1](https://github.com/user-attachments/assets/4132c7a0-4a5b-4fb2-8f2f-d19c3e0315b0)
 
-![Game Screenshot 2](https://github.com/user-attachments/assets/74e6a4d8-02c1-4ea0-a012-5b9e5a8c30ff)
+![Game Screenshot 2](https://github.com/user-attachments/assets/6676bfd0-e63c-46cf-a8bd-d571fed966c8)
+
+![Game Screenshot 3](https://github.com/user-attachments/assets/0d207cbd-5605-4b08-a660-e2b632035b1a)
+
+
 <br />
 
 ## 🛠️ Running Locally
@@ -73,12 +77,18 @@ npm start
 
 ## 📌 Features To Come
 
-- Collections - a page to display all crop data.
-- Statistics - see how many people have guessed a crop already, how much time until the next crop, etc
-- Sharing - show off how many guesses it took you
+- Nothing new for now
 
 <br />
 
-## 📄 License
+## 📄 Credits
 
-This project is open source and available under the [MIT License](LICENSE).
+All images and sound assets used in this game are created by **ConcernedApe** for *Stardew Valley*.  
+This project is a fan-made game and is not affiliated with or endorsed by **ConcernedApe**.
+
+<br />
+
+## Disclaimer
+
+This project is for educational and personal use only.  
+No copyright infringement is intended.
