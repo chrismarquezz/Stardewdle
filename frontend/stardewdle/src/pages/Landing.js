@@ -9,7 +9,6 @@ export default function Landing() {
 
   return (
     <div
-
       className="min-h-screen w-full bg-cover bg-center bg-no-repeat flex flex-col items-center"
       style={{ backgroundImage: "url('/images/background.jpg')" }}
     >
@@ -72,15 +71,14 @@ export default function Landing() {
               if (!isMuted) {
                 new Audio("/sounds/mouseClick.mp3").play();
               }
-              window.open('https://github.com/chrismarquezz/Stardewdle', '_blank')
+              window.open(
+                "https://github.com/chrismarquezz/Stardewdle",
+                "_blank"
+              );
             }}
             className="buttonMain w-[75px] h-[75px] clickable"
           >
-            <img
-              src="/images/github.png"
-              alt="GitHub"
-              className="buttonBase"
-            />
+            <img src="/images/github.png" alt="GitHub" className="buttonBase" />
             <img
               src="/images/github-hover.png"
               alt="GitHub Hover"
@@ -97,62 +95,57 @@ export default function Landing() {
             }}
             className="buttonMain w-[75px] h-[75px] clickable"
           >
-            <img
-              src="/images/credits.png"
-              alt="Info"
-              className="buttonBase"
-            />
+            <img src="/images/credits.png" alt="Info" className="buttonBase" />
             <img
               src="/images/credits-hover.png"
               alt="Info Hover"
               className="buttonHover"
             />
           </button>
-
         </div>
-
       </div>
 
-  {showModal && (
-  <div
-    className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-    onClick={() => {
-      if (!isMuted) {
-        new Audio("/sounds/mouseClick.mp3").play();
-      }
-    setShowModal(false)}}
-  >
-    <div
-      className="relative w-[1248px] h-[704px] p-6 shadow-lg bg-cover bg-center"
-      style={{
-        backgroundImage: "url('/images/paper-note.png')",
-      }}
-      onClick={(e) => e.stopPropagation()} // Prevents modal from closing when clicked inside
-    >
-      <button
-        onClick={() => {
-      if (!isMuted) {
-        new Audio("/sounds/mouseClick.mp3").play();
-      }
-    setShowModal(false)}}
-        className="absolute top-2 left-9 text-red-500 text-6xl hover:text-gray-300"
-      >
-        x
-      </button>
-      <div className="p-4">
-        <h2 className="text-gray-600 text-center text-7xl font-semibold mb-8">Credits</h2>
-        <ul className="text-gray-600 text-5xl list-disc list-inside space-y-24">
-  <p>- Built by Chris and Omar.</p>
-  <p>- Artwork and sounds by ConcernedApe.</p>
-  <p>- Inspired by Wordle and Stardew Valley.</p>
-</ul>
-
-      </div>
+      {showModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+          onClick={() => {
+            if (!isMuted) {
+              new Audio("/sounds/mouseClick.mp3").play();
+            }
+            setShowModal(false);
+          }}
+        >
+          <div
+            className="relative w-[1248px] h-[704px] p-6 shadow-lg bg-cover bg-center"
+            style={{
+              backgroundImage: "url('/images/paper-note.png')",
+            }}
+            onClick={(e) => e.stopPropagation()} // Prevents modal from closing when clicked inside
+          >
+            <button
+              onClick={() => {
+                if (!isMuted) {
+                  new Audio("/sounds/mouseClick.mp3").play();
+                }
+                setShowModal(false);
+              }}
+              className="absolute top-2 left-9 text-red-500 text-6xl hover:text-gray-300"
+            >
+              x
+            </button>
+            <div className="p-4">
+              <h2 className="text-gray-600 text-center text-7xl font-semibold mb-8">
+                Credits
+              </h2>
+              <ul className="text-gray-600 text-5xl list-disc list-inside space-y-24">
+                <p>- Built by Chris and Omar.</p>
+                <p>- Artwork and sounds by ConcernedApe.</p>
+                <p>- Inspired by Wordle and Stardew Valley.</p>
+              </ul>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
-  </div>
-)}
-
-</div>
-
   );
 }
