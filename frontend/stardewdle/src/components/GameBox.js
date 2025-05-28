@@ -6,7 +6,7 @@ import CropLoader from "../components/CropLoader";
 import ShareModal from "./ShareModal";
 import HelpModal from "./HelpModal";
 
-const DAILY_RESET_ENABLED = true; // Set to true to re-enable
+const DAILY_RESET_ENABLED = false; // Set to true to re-enable
 
 function formatName(name) {
   return name
@@ -273,7 +273,7 @@ export default function GameBox() {
       {/* Crop Grid */}
       <CropGrid
         selectedCrop={selectedCrop}
-        onSelect={!gameOver && guesses.length < 6 ? setSelectedCrop : () => {}}
+        onSelect={!gameOver && guesses.length < 6 ? setSelectedCrop : () => { }}
         crops={crops}
         isMuted={!gameOver && guesses.length < 6 ? isMuted : true}
       />
@@ -315,49 +315,70 @@ export default function GameBox() {
             </div>
 
             {/* Submit Button */}
-            {gameOver ? (
+            {(gameOver && (guesses[5] ? guesses[5].crop.name === correctCrop.name : true)) ? (
               <div className="mt-4 flex items-center justify-center gap-4">
-  <p className="text-green-700 text-5xl font-bold whitespace-nowrap">
-    You guessed it!
-  </p>
+                <p className="text-green-700 text-5xl font-bold whitespace-nowrap">
+                  You guessed it!
+                </p>
 
-  {gameOver && (
-  <div
-    onClick={() => {
-      if (!isMuted) {
-        new Audio("/sounds/help.mp3").play();
-      }
-      setShowShareModal(true);
-    }}
-    className="w-[40px] h-[40px] cursor-pointer z-10"
-  >
-    <div className="w-full h-full relative group">
-      {/* Default button image */}
-      <img
-        src="/images/share-button.png"
-        alt="Share"
-        className="w-full h-full transition-opacity duration-200 group-hover:opacity-0"
-      />
-      {/* Hover button image */}
-      <img
-        src="/images/share-button-hover.png"
-        alt="Share Hover"
-        className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-      />
-    </div>
-  </div>
-)}
-</div>
+
+                <div
+                  onClick={() => {
+                    if (!isMuted) {
+                      new Audio("/sounds/help.mp3").play();
+                    }
+                    setShowShareModal(true);
+                  }}
+                  className="w-[40px] h-[40px] cursor-pointer z-10"
+                >
+                  <div className="w-full h-full relative group">
+                    {/* Default button image */}
+                    <img
+                      src="/images/share-button.png"
+                      alt="Share"
+                      className="w-full h-full transition-opacity duration-200 group-hover:opacity-0"
+                    />
+                    {/* Hover button image */}
+                    <img
+                      src="/images/share-button-hover.png"
+                      alt="Share Hover"
+                      className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                    />
+                  </div>
+                </div>
+
+              </div>
             ) : guesses.length >= 6 ? (
               <>
-                <p
-                  className="mt-4 text-red-600 text-5xl font-bold text-center whitespace-nowrap p-3"
-                  style={{
-                    height: "80px",
-                  }}
-                >
-                  Better luck next time!
-                </p>
+                <div className="mt-4 flex items-center justify-center gap-4">
+                  <p className="text-red-600 text-5xl font-bold whitespace-nowrap">
+                    Better luck next time!
+                  </p>
+                  <div
+                    onClick={() => {
+                      if (!isMuted) {
+                        new Audio("/sounds/help.mp3").play();
+                      }
+                      setShowShareModal(true);
+                    }}
+                    className="w-[40px] h-[40px] cursor-pointer z-10"
+                  >
+                    <div className="w-full h-full relative group">
+                      {/* Default button image */}
+                      <img
+                        src="/images/share-button.png"
+                        alt="Share"
+                        className="w-full h-full transition-opacity duration-200 group-hover:opacity-0"
+                      />
+                      {/* Hover button image */}
+                      <img
+                        src="/images/share-button-hover.png"
+                        alt="Share Hover"
+                        className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                      />
+                    </div>
+                  </div>
+                </div>
               </>
             ) : (
               <div
@@ -365,11 +386,10 @@ export default function GameBox() {
                   if (!selectedCrop || guesses.length >= 6 || gameOver) return;
                   handleSubmit();
                 }}
-                className={`relative mt-4 group ${
-                  !selectedCrop || guesses.length >= 6 || gameOver
-                    ? "opacity-40 pointer-events-none"
-                    : "clickable hover:scale-105 transition-transform"
-                }`}
+                className={`relative mt-4 group ${!selectedCrop || guesses.length >= 6 || gameOver
+                  ? "opacity-40 pointer-events-none"
+                  : "clickable hover:scale-105 transition-transform"
+                  }`}
                 style={{
                   width: "216px",
                   height: "80px",
@@ -402,7 +422,7 @@ export default function GameBox() {
           <GuessGrid guesses={guesses} answer={correctCrop} />
         </div>
       </div>
-      
+
       {/* Mute/Unmute Button */}
       <div
         onClick={() => {
