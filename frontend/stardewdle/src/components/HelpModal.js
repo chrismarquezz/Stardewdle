@@ -1,3 +1,5 @@
+import ReactDOM from 'react-dom';
+
 export default function HelpModal({ isMuted, onClose }) {
   const playCloseSound = () => {
     if (!isMuted) {
@@ -6,7 +8,7 @@ export default function HelpModal({ isMuted, onClose }) {
     onClose();
   };
 
-  return (
+  return ReactDOM.createPortal(
     <div
       className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40"
       onClick={playCloseSound}
@@ -51,6 +53,7 @@ export default function HelpModal({ isMuted, onClose }) {
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
