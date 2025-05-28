@@ -81,6 +81,14 @@ npm start
 
 <br />
 
-## 📄 License
+## 📄 Credits
 
-This project is open source and available under the [MIT License](LICENSE).
+All images and sound assets used in this game are created by **ConcernedApe** for *Stardew Valley*.  
+This project is a fan-made game and is not affiliated with or endorsed by **ConcernedApe**.
+
+<br />
+
+## Disclaimer
+
+This project is for educational and personal use only.  
+No copyright infringement is intended.
