@@ -20,10 +20,6 @@ export default function CollectionsBox() {
     return saved ? JSON.parse(saved) : null;
   });
 
-  const [storedDate, setStoredDate] = useState(() => {
-    const saved = localStorage.getItem("stardewdle-date");
-    return saved ? saved : new Date().toISOString().split("T")[0]; // Default to today's date
-  });
   const [crops, setCrops] = useState([]);
   const { isMuted, toggleMute } = useSound();
 
@@ -91,13 +87,13 @@ export default function CollectionsBox() {
           </div>
           {selectedCrop ? (
             <>
-              <p className="text-7xl text-center text-[#D5C9AC]">
+              <p className="text-7xl text-center text-[#c9ba98]">
                 {formatName(selectedCrop.name)}
-                <hr className="w-[400px] mt-4 border-t-4 border-[#D5C9AC]" />
+                <hr className="w-[400px] mt-4 border-t-4 border-[#c9ba98] mx-auto" />
 
               </p>
 
-              <p className="text-4xl text-center text-[#D5C9AC] tracking-wide">
+              <p className="text-4xl text-center text-[#c9ba98] tracking-wide">
                 Grows in {selectedCrop.growth_time} days <br />
                 Sells for {selectedCrop.base_price}g <br />
                 Does {selectedCrop.regrows ? "" : "not"} regrow  <br />
@@ -115,9 +111,9 @@ export default function CollectionsBox() {
                         className="h-8 w-12"
                       />
                       <div
-                        className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-medium text-[#BC6131] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
+                        className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-medium text-[#c9ba98] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
                         style={{
-                          backgroundImage: "url('/images/label.png')",
+                          backgroundImage: "url('/images/collections/collectionsLabel.png')",
                           backgroundSize: "100% 100%",
                           backgroundRepeat: "no-repeat",
                           height: "28px"
