@@ -23,7 +23,7 @@ export default function HelpModal({ isMuted, onClose }) {
       >
         <button
           onClick={playCloseSound}
-          className="absolute top-1 left-5 text-[#BC6131] hover:text-white text-6xl"
+          className="clickable absolute top-1 left-5 text-[#BC6131] hover:text-white text-6xl"
         >
           x
         </button>
