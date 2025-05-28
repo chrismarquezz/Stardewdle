@@ -10,16 +10,25 @@ function formatName(name) {
     .replace(/_/g, " ")
     .replace(/\w\S*/g, (w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
 }
+function getTimeUntilMidnightUTC() {
+  const now = new Date();
+  const utcNow = new Date(now.toUTCString());
+  const utcMidnight = new Date(Date.UTC(
+    utcNow.getUTCFullYear(),
+    utcNow.getUTCMonth(),
+    utcNow.getUTCDate() + 1, // next UTC midnight
+    0, 0, 0
+  ));
+  const diff = utcMidnight - utcNow;
+
+  const hours = Math.floor(diff / (1000 * 60 * 60));
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+  return { hours, minutes, seconds };
+}
 
 export default function GameBox() {
-  const [guesses, setGuesses] = useState(() => {
-    const saved = localStorage.getItem('stardewdle-guesses');
-    return saved ? JSON.parse(saved) : [];
-  });
-  const [gameOver, setGameOver] = useState(() => {
-    const saved = localStorage.getItem('stardewdle-gameOver');
-    return saved ? JSON.parse(saved) : false;
-  });
   const [correctCrop, setCorrectCrop] = useState(() => {
     const saved = localStorage.getItem('stardewdle-correctCrop');
     return saved ? JSON.parse(saved) : null;
@@ -28,6 +37,17 @@ export default function GameBox() {
     const saved = localStorage.getItem('stardewdle-selectedCrop');
     return saved ? JSON.parse(saved) : null;
   });
+  const [guesses, setGuesses] = useState(() => {
+    const saved = localStorage.getItem('stardewdle-guesses');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [gameOver, setGameOver] = useState(() => {
+    const saved = localStorage.getItem('stardewdle-gameOver');
+    setSelectedCrop(correctCrop);
+    return saved ? JSON.parse(saved) : false;
+  });
+  
+  
   const [storedDate, setStoredDate] = useState(() => {
     const saved = localStorage.getItem('stardewdle-date');
     return saved ? saved : new Date().toISOString().split('T')[0]; // Default to today's date
@@ -38,42 +58,44 @@ export default function GameBox() {
   const { isMuted, toggleMute } = useSound();
   const [showShareModal, setShowShareModal] = useState(false);
   const [shareText, setShareText] = useState('');
-  const [timeLeft, setTimeLeft] = useState(getTimeUntilMidnight());
+  const [timeLeft, setTimeLeft] = useState(getTimeUntilMidnightUTC());
+  const [correctGuesses, setCorrectGuesses] = useState(null);
+
 
   const isFinalGuess = guesses.length === 5; // next guess is 6th
 
-  function getTimeUntilMidnight() {
-    const now = new Date();
-    const midnight = new Date();
-    midnight.setHours(24, 0, 0, 0);
-    const diff = midnight - now;
+  function generateShareText(resultGrid, win) {
+    const header = win
+      ? "🌱 I solved today's Stardewdle!"
+      : "💀 I couldn't solve today's Stardewdle.";
 
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    const grid = resultGrid
+      .map(row =>
+        Object.values(row.result)
+          .map(val => {
+            if (val === "match") return "🟩";
+            if (val === "close") return "🟨";
+            return "🟥";
+          })
+          .join("")
+      )
+      .join("\n");
 
-    return { hours, minutes, seconds };
-  }
+    return `${header}\n\n${grid}\n\nPlay at: https://main.d1drmb6trexkqn.amplifyapp.com/`;
+}
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTimeLeft(getTimeUntilMidnight());
+      setTimeLeft(getTimeUntilMidnightUTC());
     }, 1000);
     return () => clearInterval(interval);
   }, []);
 
-
-  function generateShareText(resultGrid, win) {
-    const header = win ? "🌱 I solved today's Stardewdle!" : "💀 I couldn't solve today's Stardewdle.";
-    const grid = resultGrid
-      .map(row => row.map(cell => {
-        if (cell === 'correct') return '🟩';
-        if (cell === 'partial') return '🟨';
-        return '🟥';
-      }).join(''))
-      .join('\n');
-    return `${header}\n\n${grid}\n\nPlay at: https://your-game-url.com`;
-  }
+  useEffect(() => {
+    if (guesses.length >= 6) {
+      setSelectedCrop(correctCrop);
+    }
+  }, [guesses, correctCrop]);
 
   useEffect(() => {
     if (!DAILY_RESET_ENABLED) return;
@@ -137,6 +159,7 @@ export default function GameBox() {
         const data = await response.json();
         const word = data.word;
 
+
         const cropData = cropList.find(
           (crop) => crop.name.toLowerCase() === word.toLowerCase()
         );
@@ -193,45 +216,47 @@ export default function GameBox() {
 
       if (isWin) {
   setGameOver(true);
+  if (!isMuted) new Audio("/sounds/reward.mp3").play();
   setSelectedCrop(correctCrop);
-  if (!isMuted) {
-    new Audio("/sounds/reward.mp3").play();
+
+  // ✅ Fetch win stats now (after game over)
+  try {
+    const res = await fetch("https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/word");
+    const data = await res.json();
+    setCorrectGuesses(data.correct_guesses);
+  } catch (err) {
+    console.error("Failed to fetch win stats:", err);
   }
 
-  const text = generateShareText(
-    [...guesses, { crop: selectedCrop, result }],
-    true
-  );
+  const text = generateShareText([...guesses, newGuess], true);
   setShareText(text);
   setShowShareModal(true);
+
 } else {
   if (isFinalGuess) {
     setGameOver(true);
-      setSelectedCrop(correctCrop);
+    if (!isMuted) new Audio("/sounds/lose.mp3").play();
 
-    if (!isMuted) {
-      new Audio("/sounds/lose.mp3").play();
+    // ✅ Fetch win stats after final loss
+    try {
+      const res = await fetch("https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/word");
+      const data = await res.json();
+      setCorrectGuesses(data.correct_guesses);
+    } catch (err) {
+      console.error("Failed to fetch win stats:", err);
     }
 
-    const text = generateShareText(
-      [...guesses, { crop: selectedCrop, result }],
-      false
-    );
+    const text = generateShareText([...guesses, newGuess], false);
     setShareText(text);
     setShowShareModal(true);
-  } else {
-    if (!isMuted) {
-      new Audio("/sounds/sell.mp3").play();
-    }
   }
 }
 
 
-
-    } catch (error) {
-      console.error("Error submitting guess:", error);
-    }
-  };
+  } catch (error) {
+    console.error("Error submitting guess:", error);
+  }
+};
 
   if (!correctCrop || crops.length === 0) {
     return <CropLoader />;
@@ -245,8 +270,7 @@ export default function GameBox() {
         backgroundImage: "url('/images/box-bg.png')",
         backgroundSize: "100% 100%",
         width: "1600px",
-        height: "800px",
-        transform: `scale(.95)`,
+        height: "800px"
       }}
     >
       {/* Crop Grid */}
@@ -294,8 +318,9 @@ export default function GameBox() {
               </p>
             </div>
 
+
             {/* Submit Button */}
-            {(gameOver && (guesses[5] ? guesses[5].crop.name === correctCrop.name : true)) ? (
+            {gameOver ? (
               <p className="mt-4 text-green-700 text-5xl font-bold text-center whitespace-nowrap p-3"
                 style={{
                   height: "80px"
@@ -358,21 +383,21 @@ export default function GameBox() {
       </div>
       {/* Mute/Unmute Button */}
       <div
-        onClick={() => {
-          if (isMuted) {
-            new Audio("/sounds/pluck.mp3").play();
-          }
-          toggleMute(); // ← actually change mute state
-        }}
-        className="absolute bottom-16 -right-11 w-[30px] h-[30px] clickable z-10"
-      >
-        <img
-          src={isMuted ? "/images/muted.png" : "/images/unmuted.png"}
-          alt="Toggle Sound"
-          className="w-full h-full"
-        />
-      </div>
-      {/* Mute/Unmute Button */}
+  onClick={() => {
+    if (isMuted) {
+      new Audio("/sounds/pluck.mp3").play();
+    }
+    toggleMute(); // ← actually change mute state
+  }}
+  className="absolute bottom-16 -right-11 w-[30px] h-[30px] clickable z-10"
+>
+  <img
+    src={isMuted ? "/images/muted.png" : "/images/unmuted.png"}
+    alt="Toggle Sound"
+    className="w-full h-full"
+/>
+</div>
+    {/* Mute/Unmute Button */}
 
 
       {/* Help Button */}
@@ -433,7 +458,6 @@ export default function GameBox() {
             </button>
 
             {/* Help Content */}
-            {/* Help Content */}
             <h2 className="text-6xl font-bold text-[#BC6131] mb-6 text-center">How to Play</h2>
 
             <div className="space-y-4 text-3xl text-[#BC6131] px-2">
@@ -472,31 +496,45 @@ export default function GameBox() {
       className="relative w-[500px] p-6 bg-white rounded-lg shadow-lg"
       onClick={(e) => e.stopPropagation()}
     >
+      {/* Close Button */}
       <button
         onClick={() => setShowShareModal(false)}
         className="absolute top-2 right-4 text-2xl text-gray-500 hover:text-gray-800"
       >
         &times;
       </button>
+
+      {/* Title */}
       <h2 className="text-3xl font-bold text-center text-[#BC6131] mb-4">Share Your Result</h2>
 
-      <pre className="bg-gray-100 p-4 rounded text-lg whitespace-pre-wrap">{shareText}</pre>
+      {/* Share Text Block */}
+      <pre className="bg-gray-100 p-4 rounded text-lg whitespace-pre-wrap text-center">
+        {shareText}
+      </pre>
 
+      {/* UTC Timer */}
       <p className="mt-4 text-center text-gray-600 text-xl">
-        🕒 Next crop in: {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s
+        Next crop in: {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s
       </p>
 
+      {/* Wins Today */}
+      <p className="mt-2 text-center text-gray-600 text-lg">
+        ✅ {correctGuesses ?? 0} people have solved it today
+      </p>
+
+      {/* Copy Button */}
       <button
-        onClick={() => {
-          navigator.clipboard.writeText(shareText);
-        }}
-        className="mt-4 w-full bg-[#BC6131] text-white py-2 px-4 rounded hover:bg-[#9c4f26] transition"
+        onClick={() => navigator.clipboard.writeText(shareText)}
+        className="mt-6 w-full bg-[#BC6131] text-white py-2 px-4 rounded hover:bg-[#9c4f26] transition"
       >
         Copy to Clipboard
       </button>
     </div>
   </div>
 )}
+
+
+
 
     </div>
   );
