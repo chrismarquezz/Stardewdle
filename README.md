@@ -73,9 +73,7 @@ npm start
 
 ## 📌 Features To Come
 
-- Collections - a page to display all crop data.
-- Statistics - see how many people have guessed a crop already, how much time until the next crop, etc
-- Sharing - show off how many guesses it took you
+- Nothing new for now
 
 <br />
 
