@@ -3,8 +3,6 @@ import { useSound } from "../../context/SoundContext";
 import CollectionsGrid from "./CollectionsGrid";
 import CropLoader from "../CropLoader";
 
-const DAILY_RESET_ENABLED = false; // Set to true to re-enable
-
 function formatName(name) {
   return name
     .replace(/_/g, " ")
@@ -15,10 +13,7 @@ function formatName(name) {
 }
 
 export default function CollectionsBox() {
-  const [selectedCrop, setSelectedCrop] = useState(() => {
-    const saved = localStorage.getItem("stardewdle-selectedCrop");
-    return saved ? JSON.parse(saved) : null;
-  });
+  const [selectedCrop, setSelectedCrop] = useState(null)
 
   const [crops, setCrops] = useState([]);
   const { isMuted, toggleMute } = useSound();
