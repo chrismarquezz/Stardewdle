@@ -20,8 +20,9 @@ export default function CropGrid({ selectedCrop, onSelect, isMuted }) {
   }, []);
 
   return (
-    <div className="flex justify-center items-center w-full h-full w-[90%] mt-[2px]"
-    style={{
+    <div
+      className="flex justify-center items-center w-full h-full w-[90%] mt-[2px]"
+      style={{
         backgroundImage: "url('/images/cropgrid-bg.png')",
         backgroundSize: "80% 80%",
         backgroundPosition: "center",
@@ -35,7 +36,6 @@ export default function CropGrid({ selectedCrop, onSelect, isMuted }) {
           gridAutoRows: "60px",
         }}
       >
-
         {crops.map((crop) => (
           <CropCard
             key={crop.name}

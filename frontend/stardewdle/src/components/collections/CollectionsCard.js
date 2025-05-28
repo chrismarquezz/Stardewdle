@@ -1,9 +1,17 @@
-export default function CollectionsCard({ crop, isSelected, onClick, isMuted }) {
+export default function CollectionsCard({
+  crop,
+  isSelected,
+  onClick,
+  isMuted,
+}) {
   //const { isMuted } = useSound();
 
   const formattedName = crop.name
     .replace(/_/g, " ")
-    .replace(/\w\S*/g, (w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
+    .replace(
+      /\w\S*/g,
+      (w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
+    );
 
   return (
     <div
@@ -12,10 +20,11 @@ export default function CollectionsCard({ crop, isSelected, onClick, isMuted }) 
           new Audio("/sounds/select.mp3").play();
         }
 
-        onClick(crop)
+        onClick(crop);
       }}
-      className={`relative w-16 h-16 clickable p-1 flex items-center justify-center group ${isSelected ? "border-4 border-green-400" : "border-0 border-transparent"
-        }`}
+      className={`relative w-16 h-16 clickable p-1 flex items-center justify-center group ${
+        isSelected ? "border-4 border-green-400" : "border-0 border-transparent"
+      }`}
       style={{
         backgroundImage: "url('/images/collections/collectionsItemBoxAlt.png')",
         backgroundSize: "cover",
@@ -41,7 +50,6 @@ export default function CollectionsCard({ crop, isSelected, onClick, isMuted }) 
       >
         {formattedName}
       </div>
-
     </div>
   );
 }
