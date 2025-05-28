@@ -1,5 +1,7 @@
+import ReactDOM from 'react-dom';
+
 export default function ShareModal({ shareText, correctGuesses, timeLeft, onClose }) {
-  return (
+  return ReactDOM.createPortal(
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
       onClick={onClose}
@@ -44,6 +46,7 @@ export default function ShareModal({ shareText, correctGuesses, timeLeft, onClos
           Copy to Clipboard
         </button>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
