@@ -21,7 +21,7 @@ Built with **React** on the frontend and an **AWS-supported** backend, the game 
   - Growth Time (days)
   - Sell Price (at Normal quality)
   - Regrows (Yes/No)
-  - Crop Type (Fruit/Vegetable/Mushroom/Forage)
+  - Crop Type (Fruit/Vegetable/Mushroom/Forage/Flower)
   - Season (Spring, Summer, Fall, Winter)
 
 <br />
