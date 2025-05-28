@@ -3,8 +3,6 @@ import { useSound } from "../../context/SoundContext";
 import CollectionsGrid from "./CollectionsGrid";
 import CropLoader from "../CropLoader";
 
-const DAILY_RESET_ENABLED = false; // Set to true to re-enable
-
 function formatName(name) {
   return name
     .replace(/_/g, " ")
