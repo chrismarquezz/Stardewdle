@@ -6,7 +6,7 @@ import CropLoader from "../components/CropLoader";
 import ShareModal from "./ShareModal";
 import HelpModal from "./HelpModal";
 
-const DAILY_RESET_ENABLED = false; // Set to true to re-enable
+const DAILY_RESET_ENABLED = true; // Set to true to re-enable
 
 function formatName(name) {
   return name
@@ -322,7 +322,7 @@ export default function GameBox() {
     You guessed it!
   </p>
 
-  {gameOver && !showShareModal && (
+  {gameOver && (
   <div
     onClick={() => {
       if (!isMuted) {
