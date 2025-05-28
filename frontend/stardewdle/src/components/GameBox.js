@@ -74,8 +74,8 @@ export default function GameBox() {
 
   function generateShareText(resultGrid, win) {
     const header = win
-      ? "🌱 I solved today's Stardewdle!"
-      : "💀 I couldn't solve today's Stardewdle.";
+      ? "I solved today's Stardewdle!"
+      : "I couldn't solve today's Stardewdle.";
 
     const grid = resultGrid
       .map((row) =>
@@ -317,14 +317,38 @@ export default function GameBox() {
 
             {/* Submit Button */}
             {gameOver ? (
-              <p
-                className="mt-4 text-green-700 text-5xl font-bold text-center whitespace-nowrap p-3"
-                style={{
-                  height: "80px",
-                }}
-              >
-                You guessed it!
-              </p>
+              <div className="mt-4 flex items-center justify-center gap-4">
+  <p className="text-green-700 text-5xl font-bold whitespace-nowrap">
+    You guessed it!
+  </p>
+
+  {gameOver && !showShareModal && (
+  <div
+    onClick={() => {
+      if (!isMuted) {
+        new Audio("/sounds/help.mp3").play();
+      }
+      setShowShareModal(true);
+    }}
+    className="w-[40px] h-[40px] cursor-pointer z-10"
+  >
+    <div className="w-full h-full relative group">
+      {/* Default button image */}
+      <img
+        src="/images/share-button.png"
+        alt="Share"
+        className="w-full h-full transition-opacity duration-200 group-hover:opacity-0"
+      />
+      {/* Hover button image */}
+      <img
+        src="/images/share-button-hover.png"
+        alt="Share Hover"
+        className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+      />
+    </div>
+  </div>
+)}
+</div>
             ) : guesses.length >= 6 ? (
               <>
                 <p
@@ -379,13 +403,7 @@ export default function GameBox() {
           <GuessGrid guesses={guesses} answer={correctCrop} />
         </div>
       </div>
-      {gameOver && !showShareModal && (
-  <button
-    onClick={() => setShowShareModal(true)}
-className="absolute bottom-24 -right-11 w-[30px] h-[30px] clickable z-10"  >
-    Share
-  </button>
-)}
+      
       {/* Mute/Unmute Button */}
       <div
         onClick={() => {
@@ -438,6 +456,7 @@ className="absolute bottom-24 -right-11 w-[30px] h-[30px] clickable z-10"  >
           correctGuesses={correctGuesses}
           timeLeft={timeLeft}
           onClose={() => setShowShareModal(false)}
+          isMuted={isMuted}
         />
       )}
     </div>

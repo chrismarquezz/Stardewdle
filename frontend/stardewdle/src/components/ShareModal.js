@@ -1,50 +1,83 @@
-import ReactDOM from 'react-dom';
+import ReactDOM from "react-dom";
+import React, { useState } from "react";
 
-export default function ShareModal({ shareText, correctGuesses, timeLeft, onClose }) {
+export default function ShareModal({
+  shareText,
+  correctGuesses,
+  timeLeft,
+  onClose,
+  isMuted,
+}) {
+  const [copied, setCopied] = useState(false);
+
+  const playCloseSound = () => {
+    if (!isMuted) {
+      new Audio("/sounds/help.mp3").play();
+    }
+    onClose();
+  };
+  const handleCopy = () => {
+    navigator.clipboard.writeText(shareText);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000); // hide after 2 seconds
+  };
+
   return ReactDOM.createPortal(
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-      onClick={onClose}
-    >
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      {/* Backdrop */}
       <div
-        className="relative w-[500px] p-6 bg-white rounded-lg shadow-lg"
+        className="absolute inset-0 bg-black bg-opacity-50"
+        onClick={playCloseSound}
+      />
+
+      {/* Modal Content */}
+      <div
+        className="w-[800px] h-[1256] max-w-[90%] rounded-2xl p-10 shadow-2xl relative bg-no-repeat bg-cover bg-center"
+        style={{
+          backgroundImage: "url('/images/help-bg.png')",
+          backgroundSize: "100% 100%",
+        }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
-          onClick={onClose}
-          className="absolute top-2 right-4 text-2xl text-gray-500 hover:text-gray-800"
+          onClick={playCloseSound}
+          className="absolute top-1 left-5 text-[#BC6131] hover:text-white text-6xl"
         >
-          &times;
+          x
         </button>
-
-        {/* Title */}
-        <h2 className="text-3xl font-bold text-center text-[#BC6131] mb-4">
-          Share Your Result
+        {/* UTC Timer */}
+        <h2 className="text-6xl font-bold text-center text-[#BC6131] mb-2">
+          {" "}
+          Next crop in: {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}
+          s
         </h2>
 
+        {/* Wins Today */}
+        <p className="mt-2 text-center text-[#BC6131] text-2xl mb-4">
+          {correctGuesses ?? 0} people have solved today's puzzle!
+        </p>
+
         {/* Share Text Block */}
-        <pre className="bg-gray-100 p-4 rounded text-lg whitespace-pre-wrap text-center">
+        <pre className="bg-gray-100 p-4 rounded text-[#BC6131] text-lg whitespace-pre text-center leading-none">
           {shareText}
         </pre>
 
-        {/* UTC Timer */}
-        <p className="mt-4 text-center text-gray-600 text-xl">
-          Next crop in: {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s
-        </p>
+        {/* Copy Section */}
+        <div className="mt-6 w-full flex flex-col items-center relative">
+          <button
+            onClick={handleCopy}
+            className="w-full bg-[#BC6131] text-white py-2 px-4 text-3xl rounded hover:bg-[#9c4f26] transition"
+          >
+            Share your results
+          </button>
 
-        {/* Wins Today */}
-        <p className="mt-2 text-center text-gray-600 text-lg">
-          ✅ {correctGuesses ?? 0} people have solved it today
-        </p>
-
-        {/* Copy Button */}
-        <button
-          onClick={() => navigator.clipboard.writeText(shareText)}
-          className="mt-6 w-full bg-[#BC6131] text-white py-2 px-4 rounded hover:bg-[#9c4f26] transition"
-        >
-          Copy to Clipboard
-        </button>
+          {copied && (
+            <div className="mt-2 text-2xl text-[#BC6131] font-semibold z-10">
+              Copied to clipboard!
+            </div>
+          )}
+        </div>
       </div>
     </div>,
     document.body
