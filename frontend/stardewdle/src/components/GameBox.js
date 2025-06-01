@@ -81,7 +81,7 @@ export default function GameBox() {
         Object.values(row.result)
           .map((val) => {
             if (val === "match") return "🟩";
-            if (val === "close") return "🟨";
+            if (val === "partial") return "🟨";
             return "🟥";
           })
           .join("")
