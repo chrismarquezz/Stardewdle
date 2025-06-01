@@ -49,25 +49,50 @@ function capitalize(value) {
 
 function getColor(key, guessValue, correctValue) {
   if (key === "season") {
-    const SEASONS = ["spring", "summer", "fall", "winter"];
+    const SEASONS = new Set(["spring", "summer", "fall", "winter"]); // Use a Set for SEASONS for efficient lookups
 
-const guessed =
-  guessValue === "all" ? SEASONS : Array.isArray(guessValue) ? guessValue : [];
-const correct =
-  correctValue === "all" ? SEASONS : Array.isArray(correctValue) ? correctValue : [];
+    const normalizeToSet = (val) => {
+      if (val === "all") return SEASONS; // Return the full SEASONS set
+      if (Array.isArray(val)) {
+        // If an array contains "all", normalize it to all seasons
+        if (val.includes("all")) {
+          return SEASONS;
+        }
+        return new Set(val); // Convert the input array to a Set
+      }
+      // If it's a single string (e.g., "spring"), return a Set with that string
+      if (typeof val === 'string') return new Set([val]);
+      return new Set(); // Fallback for unexpected types
+    };
 
-const allMatch =
-  guessed.length === correct.length &&
-  guessed.every((s) => correct.includes(s));
+    const guessedSet = normalizeToSet(guessValue);
+    const correctSet = normalizeToSet(correctValue);
 
-if (allMatch) return "green";
+    // Check for "match" (both sets are identical in terms of elements and size)
+    const allMatch =
+      guessedSet.size === correctSet.size &&
+      [...guessedSet].every(season => correctSet.has(season));
 
-const partialMatch = guessed.some((s) => correct.includes(s));
-return partialMatch ? "yellow" : "red";
+    if (allMatch) {
+      return "green";
+    }
+
+    // Check for "partial" (at least one common element)
+    const partialMatch = [...guessedSet].some(season => correctSet.has(season));
+
+    if (partialMatch) {
+      return "yellow";
+    }
+
+    // No common elements
+    return "red";
   }
 
+  // Original logic for non-season keys (assumes direct equality check)
   return guessValue === correctValue ? "green" : "red";
 }
+
+
 
 function getArrow(key, guessValue, correctValue) {
   if (key === "base_price" || key === "growth_time") {
