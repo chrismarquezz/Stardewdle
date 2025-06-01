@@ -49,17 +49,21 @@ function capitalize(value) {
 
 function getColor(key, guessValue, correctValue) {
   if (key === "season") {
-    const guessed = Array.isArray(guessValue) ? guessValue : [];
-    const correct = Array.isArray(correctValue) ? correctValue : [];
+    const SEASONS = ["spring", "summer", "fall", "winter"];
 
-    const allMatch =
-      guessed.length === correct.length &&
-      guessed.every((s) => correct.includes(s));
+const guessed =
+  guessValue === "all" ? SEASONS : Array.isArray(guessValue) ? guessValue : [];
+const correct =
+  correctValue === "all" ? SEASONS : Array.isArray(correctValue) ? correctValue : [];
 
-    if (allMatch) return "green";
+const allMatch =
+  guessed.length === correct.length &&
+  guessed.every((s) => correct.includes(s));
 
-    const partialMatch = guessed.some((s) => correct.includes(s));
-    return partialMatch ? "yellow" : "red";
+if (allMatch) return "green";
+
+const partialMatch = guessed.some((s) => correct.includes(s));
+return partialMatch ? "yellow" : "red";
   }
 
   return guessValue === correctValue ? "green" : "red";
