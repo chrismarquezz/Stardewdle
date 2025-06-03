@@ -7,6 +7,7 @@ export default function ShareModal({
   timeLeft,
   onClose,
   isMuted,
+  scaleFactor, // Accept scaleFactor
 }) {
   const [copied, setCopied] = useState(false);
 
@@ -32,13 +33,22 @@ export default function ShareModal({
 
       {/* Modal Content */}
       <div
-        className="w-[800px] h-[1256] max-w-[90%] rounded-2xl p-10 shadow-2xl relative bg-no-repeat bg-cover bg-center"
+        className="relative w-full h-full shadow-lg p-10" // Removed direct background styles
         style={{
-          backgroundImage: "url('/images/help-bg.png')",
-          backgroundSize: "100% 100%",
+          transform: `scale(${scaleFactor*1.2})`, // Apply scaling here
+          transformOrigin: "center", // Scale from center
         }}
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Background image for the modal, now as an inner div */}
+        <div
+          className="absolute inset-0 bg-no-repeat bg-cover bg-center -z-10" // -z-10 to place it behind content
+          style={{
+            backgroundImage: "url('/images/help-bg.png')",
+            backgroundSize: "100% 100%", // Stretch background image to fill
+          }}
+        />
+
         {/* Close Button */}
         <button
           onClick={playCloseSound}
@@ -66,11 +76,7 @@ export default function ShareModal({
         {/* Copy Section */}
         <div className="mt-2 w-[50%] mx-auto flex flex-col items-center relative">
           <button
-            onClick={() => {
-              navigator.clipboard.writeText(shareText);
-              setCopied(true);
-              setTimeout(() => setCopied(false), 2000); // Revert after 2 seconds
-            }}
+            onClick={handleCopy} // Use the handleCopy function
             className="mt-6 clickable w-full bg-[#BC6131] text-white text-4xl py-2 hover:bg-[#9c4f26] transition"
           >
             {copied ? "Copied to Clipboard!" : "Share"}

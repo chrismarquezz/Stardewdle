@@ -1,7 +1,7 @@
-import GameBox from "../components/GameBox";
 import { useNavigate } from "react-router-dom";
 import { useSound } from "../context/SoundContext";
 import { useState, useEffect } from "react";
+import GameBox from "../components/GameBox"; // Ensure this import is present
 
 export default function Game() {
   const { isMuted } = useSound();
@@ -78,7 +78,8 @@ export default function Game() {
             </div>
           </div>
 
-          <GameBox />
+          {/* Pass scaleFactor to GameBox */}
+          <GameBox scaleFactor={scaleFactor} />
         </div>
       </div>
     </div>
