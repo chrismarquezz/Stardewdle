@@ -2,7 +2,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import fetch from "node-fetch";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocumentClient, GetCommand } from "@aws-sdk/lib-dynamodb";
+import { DynamoDBDocumentClient, GetCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 
 // Setup __dirname
 const __filename = fileURLToPath(import.meta.url);
@@ -23,13 +23,37 @@ const compareNumbers = (a, b) => {
 };
 
 const compareSeasons = (a, b) => {
-  const aSet = new Set(a);
-  const bSet = new Set(b);
+  const SEASONS = ["spring", "summer", "fall", "winter"];
+
+  const normalizeArray = (arr) => {
+    // If the array contains "all", replace it with all seasons
+    if (arr.includes("all")) {
+      return new Set(SEASONS); // Use a Set directly for efficiency
+    }
+    // Otherwise, convert the array to a Set
+    return new Set(arr);
+  };
+
+  const aSet = normalizeArray(a);
+  const bSet = normalizeArray(b);
+
+  // Find the overlap
   const overlap = [...aSet].filter(season => bSet.has(season));
-  if (overlap.length === a.length && a.length === b.length) return "match";
-  if (overlap.length > 0) return "partial";
+
+  // Determine the relationship
+  if (overlap.length === aSet.size && aSet.size === bSet.size) {
+    // Both sets are identical (e.g., ["spring"] and ["spring"], or ["all"] and ["all"])
+    return "match";
+  }
+  if (overlap.length > 0) {
+    // There is at least one common season, but not a full match
+    // (e.g., ["spring"] and ["spring", "summer"], or ["all"] and ["spring"])
+    return "partial";
+  }
+  // No common seasons
   return "mismatch";
 };
+
 
 // Lambda handler
 export const handler = async (event) => {
@@ -74,12 +98,26 @@ export const handler = async (event) => {
 
     // Compare attributes
     const result = {
-      type: guessedCrop.type === answerCrop.type ? "match" : "mismatch",
-      regrows: guessedCrop.regrows === answerCrop.regrows ? "match" : "mismatch",
-      season: compareSeasons(guessedCrop.season, answerCrop.season),
       growth_time: compareNumbers(guessedCrop.growth_time, answerCrop.growth_time),
-      base_price: compareNumbers(guessedCrop.base_price, answerCrop.base_price)
+      base_price: compareNumbers(guessedCrop.base_price, answerCrop.base_price),
+      regrows: guessedCrop.regrows === answerCrop.regrows ? "match" : "mismatch",
+      type: guessedCrop.type === answerCrop.type ? "match" : "mismatch",
+      season: compareSeasons(guessedCrop.season, answerCrop.season),
     };
+
+    const isFullyCorrect = Object.values(result).every(val => val === "match");
+
+    if (isFullyCorrect) {
+      await ddb.send(new UpdateCommand({
+        TableName: "daily_words",
+        Key: { date: today },
+        UpdateExpression: "SET correct_guesses = if_not_exists(correct_guesses, :zero) + :inc",
+        ExpressionAttributeValues: {
+          ":inc": 1,
+          ":zero": 0
+        }
+      }));
+    } 
 
     return {
       statusCode: 200,
