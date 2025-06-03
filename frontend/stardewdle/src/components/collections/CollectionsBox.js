@@ -59,72 +59,73 @@ export default function CollectionsBox() {
       />
 
       {/* Right Side */}
-      <div className="flex flex-col align-center w-full place-items-center">
+      <div className="flex flex-col align-center w-full place-items-center h-full justify-center ">
         {/* Selected Crop Display */}
-        <div className="flex flex-col items-center h-full mr-6 mt-[140px] gap-4">
-          {/* Crop image in center of frame */}
-          <div
-            className="relative bg-no-repeat bg-contain"
-            style={{
-              backgroundImage:
-                "url('/images/collections/collectionsSelected.png')",
-              width: "212px",
-              height: "212px",
-            }}
-          >
-            {selectedCrop && (
-              <img
-                src={selectedCrop.image_url}
-                alt={selectedCrop.name}
-                className="absolute top-1/2 left-1/2 object-contain -translate-x-1/2 -translate-y-1/2 h-[60%] w-[60%]"
-              />
-            )}
-          </div>
+        <div className="flex flex-col items-center mr-12 mt-[20px] gap-4">
           {selectedCrop ? (
             <>
               <p className="text-7xl text-center text-[#c9ba98]">
                 {formatName(selectedCrop.name)}
-                <hr className="w-[400px] mt-4 border-t-4 border-[#c9ba98] mx-auto" />
+                <p className="w-[500px] border-b-4 border-[#c9ba98] mx-auto text-4xl text-center text-[#c9ba98] pb-2">{selectedCrop.infodetail}</p>
               </p>
-
-              <p className="text-4xl text-center text-[#c9ba98] tracking-wide">
-                {formatName(selectedCrop.type)} <br />
-                Grows in {selectedCrop.growth_time} days <br />
-                Sells for {selectedCrop.base_price}g <br />
-                Does {selectedCrop.regrows ? "" : "not"} regrow <br />
-                <div className="flex gap-3 items-center justify-center">
-                  {"Grows during: "}{" "}
-                  {(selectedCrop.season == "all"
-                    ? ["spring", "summer", "fall", "winter"]
-                    : Array.isArray(selectedCrop.season)
-                    ? selectedCrop.season.map((s) => s.toLowerCase())
-                    : []
-                  ).map((season) => (
-                    <div
-                      key={season}
-                      className="relative group flex items-center justify-center gap-3"
-                    >
-                      <img
-                        src={`/images/${season}.png`}
-                        alt={season}
-                        className="h-8 w-12"
-                      />
-                      <div
-                        className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-medium text-[#c9ba98] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
-                        style={{
-                          backgroundImage:
-                            "url('/images/collections/collectionsLabel.png')",
-                          backgroundSize: "100% 100%",
-                          backgroundRepeat: "no-repeat",
-                          height: "28px",
-                        }}
-                      >
-                        {season.charAt(0).toUpperCase() + season.slice(1)}
-                      </div>
-                    </div>
-                  ))}
+              <div className="flex flex-row items-center h-full mr-10 gap-4">
+                {/* Crop image in center of frame */}
+                <div
+                  className="relative bg-no-repeat bg-contain"
+                  style={{
+                    backgroundImage:
+                      "url('/images/collections/collectionsSelected.png')",
+                    width: "212px",
+                    height: "212px",
+                  }}
+                >
+                  {selectedCrop && (
+                    <img
+                      src={selectedCrop.image_url}
+                      alt={selectedCrop.name}
+                      className="absolute top-1/2 left-1/2 object-contain -translate-x-1/2 -translate-y-1/2 h-[60%] w-[60%]"
+                    />
+                  )}
                 </div>
-              </p>
+                <p className="text-4xl text-center text-[#c9ba98] tracking-wide">
+                  {formatName(selectedCrop.type)} <br />
+                  Grows in {selectedCrop.growth_time} days <br />
+                  Sells for {selectedCrop.base_price}g <br />
+                  Does {selectedCrop.regrows ? "" : "not"} regrow <br />
+                  <div className="flex gap-3 items-center justify-center">
+                    {"Seasons: "}{" "}
+                    {(selectedCrop.season == "all"
+                      ? ["spring", "summer", "fall", "winter"]
+                      : Array.isArray(selectedCrop.season)
+                        ? selectedCrop.season.map((s) => s.toLowerCase())
+                        : []
+                    ).map((season) => (
+                      <div
+                        key={season}
+                        className="relative group flex items-center justify-center gap-3"
+                      >
+                        <img
+                          src={`/images/${season}.png`}
+                          alt={season}
+                          className="h-8 w-12"
+                        />
+                        <div
+                          className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-medium text-[#c9ba98] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
+                          style={{
+                            backgroundImage:
+                              "url('/images/collections/collectionsLabel.png')",
+                            backgroundSize: "100% 100%",
+                            backgroundRepeat: "no-repeat",
+                            height: "28px",
+                          }}
+                        >
+                          {season.charAt(0).toUpperCase() + season.slice(1)}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </p>
+              </div>
             </>
           ) : (
             ""

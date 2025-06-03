@@ -42,6 +42,14 @@ body {
   cursor: url('/public/images/cursor.png'), auto;
 }
 
+html, body {
+  overflow: hidden; /* This is the key property */
+  margin: 0;       /* Resets default browser margin on body */
+  padding: 0;      /* Resets default browser padding on body */
+  height: 100%;    /* Ensures html and body take full height for consistent behavior */
+  width: 100%;     /* Ensures html and body take full width */
+}
+
 .clickable {
   cursor: url('/public/images/cursor-hover.png'), pointer;
 }
