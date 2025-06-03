@@ -121,6 +121,17 @@ export default function GameBox({ scaleFactor }) {
   }, []);
 
   useEffect(() => {
+  if (
+    timeLeft.hours === 0 &&
+    timeLeft.minutes === 0 &&
+    timeLeft.seconds === 0
+  ) {
+    window.location.reload();
+  }
+}, [timeLeft]);
+
+
+  useEffect(() => {
     if (guesses.length >= 6) {
       setSelectedCrop(correctCrop);
     }
