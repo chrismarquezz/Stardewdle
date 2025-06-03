@@ -88,7 +88,7 @@ export default function GameBox() {
       )
       .join("\n");
 
-    return `${header}\n\n${grid}\n\nPlay at: https://main.d1drmb6trexkqn.amplifyapp.com/`;
+    return `${header}\n\n${grid}\n\nPlay at: https://stardewdle.com`;
   }
 
   useEffect(() => {
@@ -102,6 +102,14 @@ export default function GameBox() {
       setShareText(text);
     }
   }, [gameOver, shareText, guesses, correctCrop]);
+
+    useEffect(() => {
+      const hasSeenHelpModal = localStorage.getItem("stardewdle-hasSeenHelpModal");
+      if (!hasSeenHelpModal) {
+        setShowHelp(true);
+        localStorage.setItem("stardewdle-hasSeenHelpModal", "true");
+      }
+    }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
