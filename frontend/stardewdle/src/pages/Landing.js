@@ -41,7 +41,7 @@ export default function Landing() {
         <div
           style={{
             width: "1600px", // Design width
-            height: "900px", // Design height
+            height: `${900*scaleFactor}px`, // Design height
             transform: `scale(${scaleFactor})`,
             transformOrigin: "top center",
           }}
