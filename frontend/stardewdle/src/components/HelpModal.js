@@ -1,6 +1,6 @@
 import ReactDOM from "react-dom";
 
-export default function HelpModal({ isMuted, onClose }) {
+export default function HelpModal({ isMuted, onClose, scaleFactor }) { // Accept scaleFactor
   const playCloseSound = () => {
     if (!isMuted) {
       new Audio("/sounds/help.mp3").play();
@@ -14,13 +14,22 @@ export default function HelpModal({ isMuted, onClose }) {
       onClick={playCloseSound}
     >
       <div
-        className="w-[708px] h-[1256] max-w-[90%] rounded-2xl p-10 shadow-2xl relative bg-no-repeat bg-cover bg-center"
+        className="relative w-full h-full shadow-lg p-10" // Removed direct background styles
         style={{
-          backgroundImage: "url('/images/help-bg.png')",
-          backgroundSize: "100% 100%",
+          transform: `scale(${scaleFactor*1.2})`, // Apply scaling here
+          transformOrigin: "center", // Scale from center
         }}
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Background image for the modal, now as an inner div */}
+        <div
+          className="absolute inset-0 bg-no-repeat bg-cover bg-center -z-10" // -z-10 to place it behind content
+          style={{
+            backgroundImage: "url('/images/help-bg.png')",
+            backgroundSize: "100% 100%", // Stretch background image to fill
+          }}
+        />
+
         <button
           onClick={playCloseSound}
           className="clickable absolute top-1 left-5 text-[#BC6131] hover:text-white text-6xl"

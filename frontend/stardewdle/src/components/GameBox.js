@@ -38,7 +38,8 @@ function getTimeUntilMidnightUTC() {
   return { hours, minutes, seconds };
 }
 
-export default function GameBox() {
+// Accept scaleFactor as a prop from Game.js
+export default function GameBox({ scaleFactor }) {
   const [correctCrop, setCorrectCrop] = useState(() => {
     const saved = localStorage.getItem("stardewdle-correctCrop");
     return saved ? JSON.parse(saved) : null;
@@ -88,7 +89,7 @@ export default function GameBox() {
       )
       .join("\n");
 
-    return `${header}\n\n${grid}\n\nPlay at: https://main.d1drmb6trexkqn.amplifyapp.com/`;
+    return `${header}\n\n${grid}\n\nPlay at: https://stardewdle.com`;
   }
 
   useEffect(() => {
@@ -104,12 +105,31 @@ export default function GameBox() {
   }, [gameOver, shareText, guesses, correctCrop]);
 
   useEffect(() => {
+    const hasSeenHelpModal = localStorage.getItem("stardewdle-hasSeenHelpModal");
+    if (!hasSeenHelpModal) {
+      setShowHelp(true);
+      localStorage.setItem("stardewdle-hasSeenHelpModal", "true");
+    }
+  }, []);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       setTimeLeft(getTimeUntilMidnightUTC());
     }, 1000);
 
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+  if (
+    timeLeft.hours === 0 &&
+    timeLeft.minutes === 0 &&
+    timeLeft.seconds === 0
+  ) {
+    window.location.reload();
+  }
+}, [timeLeft]);
+
 
   useEffect(() => {
     if (guesses.length >= 6) {
@@ -162,7 +182,7 @@ export default function GameBox() {
 
       fetchInitialData();
     }
-  }, []); // <-- Empty dependencies, runs once on mount
+  }, []);
 
   useEffect(() => {
     if (!DAILY_RESET_ENABLED) return;
@@ -267,9 +287,14 @@ export default function GameBox() {
     }
   };
 
+  // Move this conditional return to the top, but *after* all hook calls
+  // The hooks should be defined before any conditional returns.
   if (!correctCrop || crops.length === 0) {
     return <CropLoader />;
   }
+
+  // Removed the local useState and useEffect for currentScaleFactor
+  // as it is now passed as a prop from Game.js
 
   return (
     <div
@@ -279,7 +304,6 @@ export default function GameBox() {
         backgroundSize: "100% 100%",
         width: "1600px",
         height: "800px",
-        transform: "scale(0.95)",
       }}
     >
       {/* Crop Grid */}
@@ -479,7 +503,11 @@ export default function GameBox() {
 
       {/* Help Modal */}
       {showHelp && (
-        <HelpModal isMuted={isMuted} onClose={() => setShowHelp(false)} />
+        <HelpModal
+          isMuted={isMuted}
+          onClose={() => setShowHelp(false)}
+          scaleFactor={scaleFactor} // Use the prop directly
+        />
       )}
       {showShareModal && (
         <ShareModal
@@ -488,6 +516,7 @@ export default function GameBox() {
           timeLeft={timeLeft}
           onClose={() => setShowShareModal(false)}
           isMuted={isMuted}
+          scaleFactor={scaleFactor} // Use the prop directly
         />
       )}
     </div>
