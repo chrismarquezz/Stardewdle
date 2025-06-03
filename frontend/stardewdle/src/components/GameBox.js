@@ -16,6 +16,12 @@ function formatName(name) {
       (w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
     );
 }
+
+function todaysDate() {
+  const today = new Date(new Date().toUTCString());
+  return `${today.getUTCMonth()+1}/${today.getUTCDate()}/${today.getUTCFullYear()}`
+}
+
 function getTimeUntilMidnightUTC() {
   const now = new Date();
   const utcNow = new Date(now.toUTCString());
@@ -89,7 +95,7 @@ export default function GameBox({ scaleFactor }) {
       )
       .join("\n");
 
-    return `${header}\n\n${grid}\n\nPlay at: https://stardewdle.com`;
+    return `${todaysDate()}\n${header}\n\n${grid}\n\nPlay at: https://stardewdle.com/`;
   }
 
   useEffect(() => {
