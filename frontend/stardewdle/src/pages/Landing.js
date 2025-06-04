@@ -187,14 +187,14 @@ export default function Landing() {
                   setShowModal(false);
                 }}
                 // Example: Smaller text on small screens, larger on medium and above
-                className="absolute top-2 left-9 text-4xl sm:text-5xl md:text-6xl text-red-500 hover:text-gray-300"
+                className="absolute top-2 left-9 text-4xl sm:text-5xl md:text-6xl 3xl:text-8xl text-red-500 hover:text-gray-300"
               >
                 x
               </button>
               <div className="p-4">
                 <h2
                   // Example: Smaller text on small screens, larger on medium and above
-                  className="text-gray-600 text-center text-4xl sm:text-5xl md:text-7xl font-semibold mb-8 3xl:text-9xl"
+                  className="text-gray-600 text-center text-4xl sm:text-5xl md:text-7xl font-semibold mb-8 3xl:text-8xl"
                 >
                   Credits
                 </h2>
