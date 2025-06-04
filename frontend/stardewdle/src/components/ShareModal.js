@@ -35,7 +35,7 @@ export default function ShareModal({
       <div
         className="relative w-full h-full shadow-lg p-10" // Removed direct background styles
         style={{
-          transform: `scale(${scaleFactor*1.2})`, // Apply scaling here
+          transform: `scale(${scaleFactor*1.})`, // Apply scaling here
           transformOrigin: "center", // Scale from center
         }}
         onClick={(e) => e.stopPropagation()}
