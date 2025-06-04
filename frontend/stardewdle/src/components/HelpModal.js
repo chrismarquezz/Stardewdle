@@ -42,14 +42,14 @@ export default function HelpModal({ isMuted, onClose, scaleFactor }) {
 
           <h2
             // Applied responsive text sizing: text-4xl sm:text-5xl md:text-7xl 4xl:text-9xl
-            className="text-[#BC6131] text-center text-4xl sm:text-5xl md:text-7xl font-semibold mb-8 3xl:text-9xl"
+            className="text-[#BC6131] text-center text-4xl sm:text-5xl md:text-7xl font-semibold mb-8"
           >
             How to Play
           </h2>
 
           <div
             // Applied responsive text sizing: text-3xl sm:text-4xl md:text-5xl 4xl:text-8xl
-            className="space-y-4 text-[#BC6131] text-left text-3xl sm:text-4xl md:text-5xl list-disc list-inside 4xl:text-8xl overflow-y-auto"
+            className="space-y-4 text-[#BC6131] text-left text-3xl sm:text-4xl md:text-5xl list-disc list-inside overflow-y-auto"
           >
             <p>- Select a crop from the grid.</p>
             <p>- Click "Submit" to guess the crop of the day.</p>
