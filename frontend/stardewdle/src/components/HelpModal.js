@@ -1,6 +1,6 @@
 import ReactDOM from "react-dom";
 
-export default function HelpModal({ isMuted, onClose, scaleFactor }) { // Accept scaleFactor
+export default function HelpModal({ isMuted, onClose, scaleFactor }) {
   const playCloseSound = () => {
     if (!isMuted) {
       new Audio("/sounds/help.mp3").play();
@@ -14,51 +14,61 @@ export default function HelpModal({ isMuted, onClose, scaleFactor }) { // Accept
       onClick={playCloseSound}
     >
       <div
-        className="relative w-full h-full shadow-lg p-10" // Removed direct background styles
+        // Keep the dimensions that match the Landing page modal
+        className="relative w-[1248px] h-[704px] max-w-[95vw] max-h-[95vh] shadow-lg flex flex-col"
         style={{
-          transform: `scale(${scaleFactor*1.2})`, // Apply scaling here
-          transformOrigin: "center", // Scale from center
+          transform: `scale(${scaleFactor})`, // Use the passed scaleFactor
+          transformOrigin: "center",
         }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Background image for the modal, now as an inner div */}
         <div
-          className="absolute inset-0 bg-no-repeat bg-cover bg-center -z-10" // -z-10 to place it behind content
+          className="absolute inset-0 bg-no-repeat bg-cover bg-center -z-10"
           style={{
             backgroundImage: "url('/images/help-bg.png')",
-            backgroundSize: "100% 100%", // Stretch background image to fill
+            backgroundSize: "100% 100%",
           }}
         />
 
-        <button
-          onClick={playCloseSound}
-          className="clickable absolute top-1 left-5 text-[#BC6131] hover:text-white text-6xl"
-        >
-          x
-        </button>
+        {/* Content wrapper with padding */}
+        <div className="relative z-10 p-6 flex flex-col h-full 3xl:pl-24 3xl:pr-243 3xl:pt-12">
+          <button
+            onClick={playCloseSound}
+            className="clickable absolute top-2 left-9 text-red-500 text-6xl hover:text-gray-300"
+          >
+            x
+          </button>
 
-        <h2 className="text-6xl font-bold text-[#BC6131] mb-6 text-center">
-          How to Play
-        </h2>
+          <h2
+            // Applied responsive text sizing: text-4xl sm:text-5xl md:text-7xl 4xl:text-9xl
+            className="text-[#BC6131] text-center text-4xl sm:text-5xl md:text-7xl font-semibold mb-8"
+          >
+            How to Play
+          </h2>
 
-        <div className="space-y-4 text-3xl text-[#BC6131] px-2">
-          <p>- Select a crop from the grid.</p>
-          <p>- Click "Submit" to guess the crop of the day.</p>
-          <p>- You get 6 tries to guess correctly.</p>
-          <div>
-            <p>- The result grid shows feedback:</p>
-            <div className="ml-10 mt-4 space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="w-6 h-6 bg-green-500 border-2 border-green-700 rounded-sm shadow-sm" />
-                <span>Exact match</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-6 h-6 bg-yellow-400 border-2 border-yellow-600 rounded-sm shadow-sm" />
-                <span>Partial match</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-6 h-6 bg-red-500 border-2 border-red-700 rounded-sm shadow-sm" />
-                <span>Incorrect</span>
+          <div
+            // Applied responsive text sizing: text-3xl sm:text-4xl md:text-5xl 4xl:text-8xl
+            className="space-y-4 text-[#BC6131] text-left text-3xl sm:text-4xl md:text-5xl list-disc list-inside overflow-y-auto"
+          >
+            <p>- Select a crop from the grid.</p>
+            <p>- Click "Submit" to guess the crop of the day.</p>
+            <p>- You get 6 tries to guess correctly.</p>
+            <div>
+              <p>- The result grid shows feedback:</p>
+              <div className="ml-10 mt-4 space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-6 h-6 bg-green-500 border-2 border-green-700 rounded-sm shadow-sm" />
+                  <span>Exact match</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-6 h-6 bg-yellow-400 border-2 border-yellow-600 rounded-sm shadow-sm" />
+                  <span>Partial match</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-6 h-6 bg-red-500 border-2 border-red-700 rounded-sm shadow-sm" />
+                  <span>Incorrect</span>
+                </div>
               </div>
             </div>
           </div>
