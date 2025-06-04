@@ -194,11 +194,11 @@ export default function Landing() {
               <div className="p-4">
                 <h2
                   // Example: Smaller text on small screens, larger on medium and above
-                  className="text-gray-600 text-center text-4xl sm:text-5xl md:text-7xl font-semibold mb-8 4xl:text-9xl"
+                  className="text-gray-600 text-center text-4xl sm:text-5xl md:text-7xl font-semibold mb-8 4xl:text-[60px]"
                 >
                   Credits
                 </h2>
-                <ul className="text-gray-600 text-left sm:text-left text-3xl sm:text-4xl md:text-5xl list-disc list-inside space-y-4 sm:space-y-12 md:space-y-24 4xl:text-8xl 4xl:space-y-36">
+                <ul className="text-gray-600 text-left text-3xl sm:text-4xl md:text-5xl list-disc list-inside space-y-4 sm:space-y-12 md:space-y-24 4xl:text-[56px] 4xl:space-y-36">
                   <p>- Built by Chris and Omar.</p>
                   <p>- Artwork and sounds by ConcernedApe.</p>
                   <p>- Inspired by Wordle and Stardew Valley.</p>

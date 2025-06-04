@@ -32,7 +32,7 @@ export default function HelpModal({ isMuted, onClose, scaleFactor }) {
         />
 
         {/* Content wrapper with padding */}
-        <div className="relative z-10 p-6 flex flex-col h-full 4xl:p-12">
+        <div className="relative z-10 p-6 flex flex-col h-full 4xl:p-24">
           <button
             onClick={playCloseSound}
             className="clickable absolute top-2 left-9 text-red-500 text-6xl hover:text-gray-300"
