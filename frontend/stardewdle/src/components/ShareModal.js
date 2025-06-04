@@ -51,7 +51,7 @@ export default function ShareModal({
         />
 
         {/* Content wrapper with padding */}
-        <div className="relative z-10 p-6 flex flex-col h-full justify-between 4xl:p-12">
+        <div className="relative z-10 p-6 flex flex-col h-full justify-between 3xl:p-12">
           {/* Close Button */}
           <button
             onClick={playCloseSound}
@@ -62,7 +62,7 @@ export default function ShareModal({
           {/* UTC Timer */}
           <h2
             // Applied responsive text sizing for heading
-            className="text-[#BC6131] text-center text-4xl sm:text-5xl md:text-7xl font-bold mb-2 3xl:text-9xl"
+            className="text-[#BC6131] text-center text-4xl sm:text-5xl md:text-7xl font-bold mb-2"
           >
             Next crop in: {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s
           </h2>
@@ -70,7 +70,7 @@ export default function ShareModal({
           {/* Wins Today */}
           <p
             // Applied responsive text sizing for paragraph
-            className="mt-2 text-center text-[#BC6131] text-3xl sm:text-4xl md:text-5xl mb-4 3xl:text-8xl"
+            className="mt-2 text-center text-[#BC6131] text-3xl sm:text-4xl md:text-5xl mb-4"
           >
             {correctGuesses ?? 0} people have solved today's puzzle!
           </p>
