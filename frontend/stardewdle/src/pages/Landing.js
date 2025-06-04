@@ -163,7 +163,7 @@ export default function Landing() {
           <div
             className="relative w-full h-full shadow-lg"
             style={{
-              transform: `scale(${scaleFactor*1.})`,
+              transform: `scale(${.6})`,
               transformOrigin: "center",
             }}
             onClick={(e) => e.stopPropagation()} // Prevents modal from closing when clicked inside

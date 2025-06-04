@@ -27,15 +27,15 @@ export default function ShareModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black bg-opacity-50"
+        className="relative inset-0 bg-black bg-opacity-50"
         onClick={playCloseSound}
       />
 
       {/* Modal Content */}
       <div
-        className="relative w-full h-full shadow-lg p-10" // Removed direct background styles
+        className="absolute w-full h-full shadow-lg p-10" // Removed direct background styles
         style={{
-          transform: `scale(${scaleFactor*1.})`, // Apply scaling here
+          transform: `scale(${.6})`, // Apply scaling here
           transformOrigin: "center", // Scale from center
         }}
         onClick={(e) => e.stopPropagation()}
@@ -57,7 +57,7 @@ export default function ShareModal({
           x
         </button>
         {/* UTC Timer */}
-        <h2 className="text-6xl font-bold text-center text-[#BC6131] mb-2">
+        <h2 className="mt-4 text-6xl font-bold text-center text-[#BC6131] mb-2">
           {" "}
           Next crop in: {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}
           s
