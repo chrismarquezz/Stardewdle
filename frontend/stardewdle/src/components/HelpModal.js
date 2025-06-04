@@ -32,7 +32,7 @@ export default function HelpModal({ isMuted, onClose, scaleFactor }) {
         />
 
         {/* Content wrapper with padding */}
-        <div className="relative z-10 p-6 flex flex-col h-full 4xl:p-24">
+        <div className="relative z-10 p-6 flex flex-col h-full 3xl:p-24">
           <button
             onClick={playCloseSound}
             className="clickable absolute top-2 left-9 text-red-500 text-6xl hover:text-gray-300"
@@ -42,7 +42,7 @@ export default function HelpModal({ isMuted, onClose, scaleFactor }) {
 
           <h2
             // Applied responsive text sizing: text-4xl sm:text-5xl md:text-7xl 4xl:text-9xl
-            className="text-[#BC6131] text-center text-4xl sm:text-5xl md:text-7xl font-semibold mb-8 4xl:text-9xl"
+            className="text-[#BC6131] text-center text-4xl sm:text-5xl md:text-7xl font-semibold mb-8 3xl:text-9xl"
           >
             How to Play
           </h2>

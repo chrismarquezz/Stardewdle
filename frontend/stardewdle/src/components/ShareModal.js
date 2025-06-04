@@ -62,7 +62,7 @@ export default function ShareModal({
           {/* UTC Timer */}
           <h2
             // Applied responsive text sizing for heading
-            className="text-[#BC6131] text-center text-4xl sm:text-5xl md:text-7xl font-bold mb-2 4xl:text-9xl"
+            className="text-[#BC6131] text-center text-4xl sm:text-5xl md:text-7xl font-bold mb-2 3xl:text-9xl"
           >
             Next crop in: {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s
           </h2>
@@ -70,13 +70,13 @@ export default function ShareModal({
           {/* Wins Today */}
           <p
             // Applied responsive text sizing for paragraph
-            className="mt-2 text-center text-[#BC6131] text-3xl sm:text-4xl md:text-5xl mb-4 4xl:text-8xl"
+            className="mt-2 text-center text-[#BC6131] text-3xl sm:text-4xl md:text-5xl mb-4 3xl:text-8xl"
           >
             {correctGuesses ?? 0} people have solved today's puzzle!
           </p>
 
           {/* Share Text Block */}
-          <p className="bg-[#FFD789] w-[80%] mx-auto bg-opacity-60 border-4 border-[#BC6131] p-4 text-[#BC6131] text-2xl sm:text-3xl md:text-4xl 4xl:text-7xl whitespace-pre text-center font-Stardew leading-none flex-grow overflow-y-auto ">
+          <p className="bg-[#FFD789] w-[80%] mx-auto bg-opacity-60 border-4 border-[#BC6131] p-4 text-[#BC6131] text-2xl sm:text-3xl md:text-4xl 3xl:text-7xl whitespace-pre text-center font-Stardew leading-none flex-grow overflow-y-auto ">
             {shareText}
           </p>
 
