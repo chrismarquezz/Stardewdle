@@ -6,7 +6,7 @@ import CropLoader from "../components/CropLoader";
 import ShareModal from "./ShareModal";
 import HelpModal from "./HelpModal";
 
-const DAILY_RESET_ENABLED = true; // Set to true to re-enable
+const DAILY_RESET_ENABLED = true;
 
 function formatName(name) {
   return name
@@ -29,7 +29,7 @@ function getTimeUntilMidnightUTC() {
     Date.UTC(
       utcNow.getUTCFullYear(),
       utcNow.getUTCMonth(),
-      utcNow.getUTCDate() + 1, // next UTC midnight
+      utcNow.getUTCDate() + 1,
       0,
       0,
       0
@@ -44,8 +44,8 @@ function getTimeUntilMidnightUTC() {
   return { hours, minutes, seconds };
 }
 
-// Accept scaleFactor as a prop from Game.js
-export default function GameBox({ scaleFactor }) {
+// isMobilePortrait is now passed as a prop from Game.js
+export default function GameBox({ isMobilePortrait }) {
   const [correctCrop, setCorrectCrop] = useState(() => {
     const saved = localStorage.getItem("stardewdle-correctCrop");
     return saved ? JSON.parse(saved) : null;
@@ -65,7 +65,7 @@ export default function GameBox({ scaleFactor }) {
 
   const [storedDate, setStoredDate] = useState(() => {
     const saved = localStorage.getItem("stardewdle-date");
-    return saved ? saved : new Date().toISOString().split("T")[0]; // Default to today's date
+    return saved ? saved : new Date().toISOString().split("T")[0];
   });
   const [crops, setCrops] = useState([]);
 
@@ -76,7 +76,7 @@ export default function GameBox({ scaleFactor }) {
   const [timeLeft, setTimeLeft] = useState(getTimeUntilMidnightUTC());
   const [correctGuesses, setCorrectGuesses] = useState(null);
 
-  const isFinalGuess = guesses.length === 5; // next guess is 6th
+  const isFinalGuess = guesses.length === 5;
 
   function generateShareText(resultGrid, win) {
     const header = win
@@ -223,14 +223,12 @@ export default function GameBox({ scaleFactor }) {
     };
 
     if (storedDate !== today || !correctCrop || crops.length === 0) {
-      // Reset only if new day
       if (storedDate !== today) {
         setGuesses([]);
         setSelectedCrop(null);
         setGameOver(false);
         setStoredDate(today);
       }
-
       fetchNewCrop();
     }
   }, [storedDate, correctCrop, crops.length]);
@@ -264,7 +262,6 @@ export default function GameBox({ scaleFactor }) {
         if (!isMuted) new Audio("/sounds/reward.mp3").play();
         setSelectedCrop(correctCrop);
 
-        // ✅ Fetch win stats now (after game over)
         try {
           const res = await fetch(
             "https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/word"
@@ -293,36 +290,35 @@ export default function GameBox({ scaleFactor }) {
     }
   };
 
-  // Move this conditional return to the top, but *after* all hook calls
-  // The hooks should be defined before any conditional returns.
   if (!correctCrop || crops.length === 0) {
     return <CropLoader />;
   }
 
-  // Removed the local useState and useEffect for currentScaleFactor
-  // as it is now passed as a prop from Game.js
-
   return (
+    // GameBox main div: Now always absolute, with conditional class for rotation
     <div
-      className="relative flex flex-row shadow-xl bg-no-repeat bg-center mt-3 justify-between w-full pl-3"
+      className={`absolute shadow-xl bg-no-repeat bg-center ${isMobilePortrait ? "gamebox-rotate-mobile" : "flex flex-row justify-between w-full pl-3 mt-3"}`}
       style={{
         backgroundImage: "url('/images/box-bg.png')",
         backgroundSize: "100% 100%",
-        width: "1600px",
-        height: "800px",
+        width: "1600px", // Maintain original design width
+        height: "800px", // Maintain original design height
       }}
     >
-      {/* Crop Grid */}
+      {/* Crop Grid - Apply counter-rotation class */}
       <CropGrid
         selectedCrop={selectedCrop}
         onSelect={!gameOver && guesses.length < 6 ? setSelectedCrop : () => {}}
         crops={crops}
         isMuted={!gameOver && guesses.length < 6 ? isMuted : true}
+        className={isMobilePortrait ? "content-counter-rotate-mobile" : ""}
       />
 
-      {/* Right Side */}
-      <div className="flex flex-col align-center w-full place-items-center">
-        {/* Selected Crop Display */}
+      {/* Right Side - Apply counter-rotation class */}
+      <div
+        className={`flex flex-col align-center w-full place-items-center ${isMobilePortrait ? "content-counter-rotate-mobile" : ""}`}
+      >
+        {/* Selected Crop Display (implicitly counter-rotated by parent) */}
         <div className="flex flex-row items-center h-full mr-24 mt-[80px] gap-4">
           {/* Crop image in center of frame */}
           <div
@@ -374,13 +370,11 @@ export default function GameBox({ scaleFactor }) {
                   className="w-[40px] h-[40px] cursor-pointer z-10"
                 >
                   <div className="clickable w-full h-full relative group">
-                    {/* Default button image */}
                     <img
                       src="/images/share-button.png"
                       alt="Share"
                       className="w-full h-full transition-opacity duration-200 group-hover:opacity-0"
                     />
-                    {/* Hover button image */}
                     <img
                       src="/images/share-button-hover.png"
                       alt="Share Hover"
@@ -405,13 +399,11 @@ export default function GameBox({ scaleFactor }) {
                     className="w-[40px] h-[40px] cursor-pointer z-10"
                   >
                     <div className="clickable w-full h-full relative group">
-                      {/* Default button image */}
                       <img
                         src="/images/share-button.png"
                         alt="Share"
                         className="w-full h-full transition-opacity duration-200 group-hover:opacity-0"
                       />
-                      {/* Hover button image */}
                       <img
                         src="/images/share-button-hover.png"
                         alt="Share Hover"
@@ -452,28 +444,29 @@ export default function GameBox({ scaleFactor }) {
           </div>
         </div>
 
-        {/* Guess Grid */}
+        {/* Guess Grid - Apply counter-rotation class */}
         <div
-          className="mr-[78px] mb-[84px] pl-9 bg-center bg-no-repeat bg-cover min-h-[440px]"
+          className={`mr-[78px] mb-[84px] pl-9 bg-center bg-no-repeat bg-cover min-h-[440px] ${isMobilePortrait ? "content-counter-rotate-mobile" : ""}`}
           style={{
             backgroundImage: "url('/images/guesses.png')",
             width: "772px",
             height: "456px",
           }}
         >
+          {/* Ensure GuessGrid accepts and applies the className prop to its root element */}
           <GuessGrid guesses={guesses} answer={correctCrop} />
         </div>
       </div>
 
-      {/* Mute/Unmute Button */}
+      {/* Mute/Unmute Button - Apply counter-rotation class */}
       <div
         onClick={() => {
           if (isMuted) {
             new Audio("/sounds/pluck.mp3").play();
           }
-          toggleMute(); // ← actually change mute state
+          toggleMute();
         }}
-        className="absolute bottom-16 -right-11 w-[30px] h-[30px] clickable z-10"
+        className={`absolute bottom-16 -right-11 w-[30px] h-[30px] clickable z-10 ${isMobilePortrait ? "content-counter-rotate-mobile" : ""}`}
       >
         <img
           src={isMuted ? "/images/muted.png" : "/images/unmuted.png"}
@@ -483,7 +476,7 @@ export default function GameBox({ scaleFactor }) {
       </div>
       {/* Mute/Unmute Button */}
 
-      {/* Help Button */}
+      {/* Help Button - Apply counter-rotation class */}
       <div
         onClick={() => {
           if (!isMuted) {
@@ -491,15 +484,13 @@ export default function GameBox({ scaleFactor }) {
           }
           setShowHelp(true);
         }}
-        className="absolute bottom-1 -right-14 w-[50px] h-[50px] group clickable z-10"
+        className={`absolute bottom-1 -right-14 w-[50px] h-[50px] group clickable z-10 ${isMobilePortrait ? "content-counter-rotate-mobile" : ""}`}
       >
-        {/* Default button image */}
         <img
           src="/images/question-mark.png"
           alt="Help"
           className="w-full h-full transition-opacity duration-200 group-hover:opacity-0"
         />
-        {/* Hover button image */}
         <img
           src="/images/question-mark-hover.png"
           alt="Help Hover"
@@ -512,7 +503,6 @@ export default function GameBox({ scaleFactor }) {
         <HelpModal
           isMuted={isMuted}
           onClose={() => setShowHelp(false)}
-          scaleFactor={scaleFactor} // Use the prop directly
         />
       )}
       {showShareModal && (
@@ -522,7 +512,6 @@ export default function GameBox({ scaleFactor }) {
           timeLeft={timeLeft}
           onClose={() => setShowShareModal(false)}
           isMuted={isMuted}
-          scaleFactor={scaleFactor} // Use the prop directly
         />
       )}
     </div>
