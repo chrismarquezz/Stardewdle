@@ -51,7 +51,7 @@ export default function ShareModal({
         />
 
         {/* Content wrapper with padding */}
-        <div className="relative z-10 p-6 flex flex-col h-full justify-between">
+        <div className="relative z-10 p-6 flex flex-col h-full justify-between 4xl:p-12">
           {/* Close Button */}
           <button
             onClick={playCloseSound}
@@ -76,7 +76,7 @@ export default function ShareModal({
           </p>
 
           {/* Share Text Block */}
-          <p className="bg-[#FFD789] w-[80%] mx-auto bg-opacity-60 border-4 border-[#BC6131] p-4 text-[#BC6131] text-2xl whitespace-pre text-center font-Stardew leading-none flex-grow overflow-y-auto">
+          <p className="bg-[#FFD789] w-[80%] mx-auto bg-opacity-60 border-4 border-[#BC6131] p-4 text-[#BC6131] text-2xl sm:text-3xl md:text-4xl 4xl:text-7xl whitespace-pre text-center font-Stardew leading-none flex-grow overflow-y-auto ">
             {shareText}
           </p>
 

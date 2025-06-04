@@ -32,7 +32,7 @@ export default function HelpModal({ isMuted, onClose, scaleFactor }) {
         />
 
         {/* Content wrapper with padding */}
-        <div className="relative z-10 p-6 flex flex-col h-full">
+        <div className="relative z-10 p-6 flex flex-col h-full 4xl:p-12">
           <button
             onClick={playCloseSound}
             className="clickable absolute top-2 left-9 text-red-500 text-6xl hover:text-gray-300"
@@ -49,7 +49,7 @@ export default function HelpModal({ isMuted, onClose, scaleFactor }) {
 
           <div
             // Applied responsive text sizing: text-3xl sm:text-4xl md:text-5xl 4xl:text-8xl
-            className="space-y-4 text-[#BC6131] text-left sm:text-left text-3xl sm:text-4xl md:text-5xl list-disc list-inside 4xl:text-8xl overflow-y-auto"
+            className="space-y-4 text-[#BC6131] text-left text-3xl sm:text-4xl md:text-5xl list-disc list-inside 4xl:text-8xl overflow-y-auto"
           >
             <p>- Select a crop from the grid.</p>
             <p>- Click "Submit" to guess the crop of the day.</p>
