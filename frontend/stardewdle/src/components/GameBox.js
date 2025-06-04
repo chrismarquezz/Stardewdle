@@ -130,7 +130,7 @@ export default function GameBox({ scaleFactor }) {
   if (
     timeLeft.hours === 0 &&
     timeLeft.minutes === 0 &&
-    timeLeft.seconds === 0
+    timeLeft.seconds <= 1
   ) {
     window.location.reload();
   }

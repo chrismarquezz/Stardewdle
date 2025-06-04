@@ -7,7 +7,7 @@ export default function ShareModal({
   timeLeft,
   onClose,
   isMuted,
-  scaleFactor, // Accept scaleFactor
+  scaleFactor,
 }) {
   const [copied, setCopied] = useState(false);
 
@@ -33,54 +33,62 @@ export default function ShareModal({
 
       {/* Modal Content */}
       <div
-        className="relative w-full h-full shadow-lg p-10" // Removed direct background styles
+        // Keep the dimensions that match the Landing page modal
+        className="relative w-[1248px] h-[704px] max-w-[95vw] max-h-[95vh] shadow-lg flex flex-col justify-between"
         style={{
-          transform: `scale(${scaleFactor*1.2})`, // Apply scaling here
-          transformOrigin: "center", // Scale from center
+          transform: `scale(${scaleFactor})`, // Use the passed scaleFactor
+          transformOrigin: "center",
         }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Background image for the modal, now as an inner div */}
         <div
-          className="absolute inset-0 bg-no-repeat bg-cover bg-center -z-10" // -z-10 to place it behind content
+          className="absolute inset-0 bg-no-repeat bg-cover bg-center -z-10"
           style={{
-            backgroundImage: "url('/images/help-bg.png')",
-            backgroundSize: "100% 100%", // Stretch background image to fill
+            backgroundImage: "url('/images/help-bg.png')", // Assuming help-bg.png is correct for share modal
+            backgroundSize: "100% 100%",
           }}
         />
 
-        {/* Close Button */}
-        <button
-          onClick={playCloseSound}
-          className="clickable absolute top-1 left-5 text-[#BC6131] hover:text-white text-6xl"
-        >
-          x
-        </button>
-        {/* UTC Timer */}
-        <h2 className="text-6xl font-bold text-center text-[#BC6131] mb-2">
-          {" "}
-          Next crop in: {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}
-          s
-        </h2>
-
-        {/* Wins Today */}
-        <p className="mt-2 text-center text-[#BC6131] text-2xl mb-4">
-          {correctGuesses ?? 0} people have solved today's puzzle!
-        </p>
-
-        {/* Share Text Block */}
-        <p className="bg-[#FFD789] w-[80%] mx-auto bg-opacity-60 border-4 border-[#BC6131] p-4 text-[#BC6131] text-2xl whitespace-pre text-center font-Stardew leading-none">
-          {shareText}
-        </p>
-
-        {/* Copy Section */}
-        <div className="mt-2 w-[50%] mx-auto flex flex-col items-center relative">
+        {/* Content wrapper with padding */}
+        <div className="relative z-10 p-6 flex flex-col h-full justify-between 3xl:p-12">
+          {/* Close Button */}
           <button
-            onClick={handleCopy} // Use the handleCopy function
-            className="mt-6 clickable w-full bg-[#BC6131] text-white text-4xl py-2 hover:bg-[#9c4f26] transition"
+            onClick={playCloseSound}
+            className="clickable absolute top-2 left-9 text-red-500 text-6xl hover:text-gray-300"
           >
-            {copied ? "Copied to Clipboard!" : "Share"}
+            x
           </button>
+          {/* UTC Timer */}
+          <h2
+            // Applied responsive text sizing for heading
+            className="text-[#BC6131] text-center text-4xl sm:text-5xl md:text-7xl font-bold mb-2"
+          >
+            Next crop in: {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s
+          </h2>
+
+          {/* Wins Today */}
+          <p
+            // Applied responsive text sizing for paragraph
+            className="mt-2 text-center text-[#BC6131] text-3xl sm:text-4xl md:text-5xl mb-4"
+          >
+            {correctGuesses ?? 0} people have solved today's puzzle!
+          </p>
+
+          {/* Share Text Block */}
+          <p className="bg-[#FFD789] w-[80%] mx-auto bg-opacity-60 border-4 border-[#BC6131] p-4 text-[#BC6131] text-2xl sm:text-3xl md:text-4xl whitespace-pre text-center font-Stardew leading-none flex-grow overflow-y-auto ">
+            {shareText}
+          </p>
+
+          {/* Copy Section */}
+          <div className="mt-2 w-[50%] mx-auto flex flex-col items-center relative">
+            <button
+              onClick={handleCopy}
+              className="mt-6 clickable w-full bg-[#BC6131] text-white text-4xl py-2 hover:bg-[#9c4f26] transition"
+            >
+              {copied ? "Copied to Clipboard!" : "Share"}
+            </button>
+          </div>
         </div>
       </div>
     </div>,

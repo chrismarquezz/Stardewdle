@@ -41,7 +41,7 @@ export default function Landing() {
         <div
           style={{
             width: "1600px", // Design width
-            height: `${900*scaleFactor}px`, // Design height
+            height: `${900 * scaleFactor}px`, // Design height
             transform: `scale(${scaleFactor})`,
             transformOrigin: "top center",
           }}
@@ -163,7 +163,7 @@ export default function Landing() {
           <div
             className="relative w-full h-full shadow-lg"
             style={{
-              transform: `scale(${scaleFactor*1.2})`,
+              transform: `scale(${0.6})`,
               transformOrigin: "center",
             }}
             onClick={(e) => e.stopPropagation()} // Prevents modal from closing when clicked inside
@@ -173,12 +173,12 @@ export default function Landing() {
               className="absolute inset-0 bg-cover bg-center bg-no-repeat"
               style={{
                 backgroundImage: "url('/images/paper-note.png')",
-                backgroundSize: '100% 100%', // Stretch background image to fill
+                backgroundSize: "100% 100%", // Stretch background image to fill
               }}
             />
 
             {/* Modal Content */}
-            <div className="relative z-10 p-6 w-full h-full"> {/* Added w-full h-full */}
+            <div className="relative z-10 p-6 w-full h-full 3xl:p-12">
               <button
                 onClick={() => {
                   if (!isMuted) {
@@ -186,15 +186,19 @@ export default function Landing() {
                   }
                   setShowModal(false);
                 }}
-                className="absolute top-2 left-9 text-red-500 text-6xl hover:text-gray-300"
+                // Example: Smaller text on small screens, larger on medium and above
+                className="absolute top-2 left-9 text-4xl sm:text-5xl md:text-6xl 3xl:text-8xl text-red-500 hover:text-gray-300"
               >
                 x
               </button>
               <div className="p-4">
-                <h2 className="text-gray-600 text-center text-7xl font-semibold mb-8">
+                <h2
+                  // Example: Smaller text on small screens, larger on medium and above
+                  className="text-gray-600 text-center text-4xl sm:text-5xl md:text-7xl font-semibold mb-8 3xl:text-8xl"
+                >
                   Credits
                 </h2>
-                <ul className="text-gray-600 text-5xl list-disc list-inside space-y-24">
+                <ul className="text-gray-600 text-left text-3xl sm:text-4xl md:text-5xl list-disc list-inside space-y-4 sm:space-y-12 md:space-y-24 3xl:text-7xl 3xl:space-y-36">
                   <p>- Built by Chris and Omar.</p>
                   <p>- Artwork and sounds by ConcernedApe.</p>
                   <p>- Inspired by Wordle and Stardew Valley.</p>
