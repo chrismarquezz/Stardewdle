@@ -178,7 +178,7 @@ export default function Landing() {
             />
 
             {/* Modal Content */}
-            <div className="relative z-10 p-6 w-full h-full">
+            <div className="relative z-10 p-6 w-full h-full 4xl:p-12">
               <button
                 onClick={() => {
                   if (!isMuted) {
@@ -198,7 +198,7 @@ export default function Landing() {
                 >
                   Credits
                 </h2>
-                <ul className="text-gray-600 text-left sm:text-left text-3xl sm:text-4xl md:text-5xl list-disc list-inside space-y-4 sm:space-y-12 md:space-y-24 4xl:text-8xl">
+                <ul className="text-gray-600 text-left sm:text-left text-3xl sm:text-4xl md:text-5xl list-disc list-inside space-y-4 sm:space-y-12 md:space-y-24 4xl:text-8xl 4xl:space-y-36">
                   <p>- Built by Chris and Omar.</p>
                   <p>- Artwork and sounds by ConcernedApe.</p>
                   <p>- Inspired by Wordle and Stardew Valley.</p>
