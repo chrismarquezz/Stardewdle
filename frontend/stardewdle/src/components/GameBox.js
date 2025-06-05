@@ -12,14 +12,15 @@ function formatName(name) {
   return name
     .replace(/_/g, " ")
     .replace(
-      /\w\S*/g,
+      /\\w\\S*/g,
       (w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
     );
 }
 
 function todaysDate() {
   const today = new Date(new Date().toUTCString());
-  return `${today.getUTCMonth()+1}/${today.getUTCDate()}/${today.getUTCFullYear()}`
+  return `${today.getUTCMonth() + 1
+    }/${today.getUTCDate()}/${today.getUTCFullYear()}`;
 }
 
 function getTimeUntilMidnightUTC() {
@@ -44,7 +45,6 @@ function getTimeUntilMidnightUTC() {
   return { hours, minutes, seconds };
 }
 
-// isMobilePortrait is now passed as a prop from Game.js
 export default function GameBox({ isMobilePortrait }) {
   const [correctCrop, setCorrectCrop] = useState(() => {
     const saved = localStorage.getItem("stardewdle-correctCrop");
@@ -93,9 +93,9 @@ export default function GameBox({ isMobilePortrait }) {
           })
           .join("")
       )
-      .join("\n");
+      .join("\\n");
 
-    return `${todaysDate()}\n${header}\n\n${grid}\n\nPlay at: https://stardewdle.com/`;
+    return `${todaysDate()}\\n${header}\\n\\n${grid}\\n\\nPlay at: https://stardewdle.com/`;
   }
 
   useEffect(() => {
@@ -127,15 +127,10 @@ export default function GameBox({ isMobilePortrait }) {
   }, []);
 
   useEffect(() => {
-  if (
-    timeLeft.hours === 0 &&
-    timeLeft.minutes === 0 &&
-    timeLeft.seconds <= 1
-  ) {
-    window.location.reload();
-  }
-}, [timeLeft]);
-
+    if (timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds <= 1) {
+      window.location.reload();
+    }
+  }, [timeLeft]);
 
   useEffect(() => {
     if (guesses.length >= 6) {
@@ -295,31 +290,42 @@ export default function GameBox({ isMobilePortrait }) {
   }
 
   return (
-    // GameBox main div: Now always absolute, with conditional class for rotation
     <div
-      className={`absolute shadow-xl bg-no-repeat bg-center ${isMobilePortrait ? "gamebox-rotate-mobile" : "flex flex-row justify-between w-full pl-3 mt-3"}`}
+      className={`relative shadow-xl bg-no-repeat bg-center ${
+        isMobilePortrait ? "gamebox-mobile-layout" : "flex flex-row justify-between w-full pl-3 mt-3"
+      }`}
       style={{
-        backgroundImage: "url('/images/box-bg.png')",
+        backgroundImage: isMobilePortrait ? "url('/images/box-bg-sm.png')" : "url('/images/box-bg.png')",
         backgroundSize: "100% 100%",
-        width: "1600px", // Maintain original design width
-        height: "800px", // Maintain original design height
+        width: isMobilePortrait ? "1500px" : "1600px",
+        height: isMobilePortrait ? "1000px" : "800px",
       }}
     >
-      {/* Crop Grid - Apply counter-rotation class */}
-      <CropGrid
-        selectedCrop={selectedCrop}
-        onSelect={!gameOver && guesses.length < 6 ? setSelectedCrop : () => {}}
-        crops={crops}
-        isMuted={!gameOver && guesses.length < 6 ? isMuted : true}
-        className={isMobilePortrait ? "content-counter-rotate-mobile" : ""}
-      />
+      {/* Crop Grid - NEW Wrapper div */}
+      <div
+        className={
+          isMobilePortrait
+            ? "mobile-crop-grid-wrapper content-counter-rotate-mobile"
+            : "flex justify-center items-center h-full w-[90%] mt-[2px]"
+        }
+      >
+        <CropGrid
+          selectedCrop={selectedCrop}
+          onSelect={!gameOver && guesses.length < 6 ? setSelectedCrop : () => {}}
+          crops={crops}
+          isMuted={!gameOver && guesses.length < 6 ? isMuted : true}
+          className={isMobilePortrait ? "content-counter-rotate-mobile" : ""}
+          isMobilePortrait={isMobilePortrait}
+        />
+      </div>
 
       {/* Right Side - Apply counter-rotation class */}
       <div
-        className={`flex flex-col align-center w-full place-items-center ${isMobilePortrait ? "content-counter-rotate-mobile" : ""}`}
+        className={`flex flex-col align-center w-full place-items-center ${isMobilePortrait ? "content-counter-rotate-mobile" : ""
+          }`}
       >
-        {/* Selected Crop Display (implicitly counter-rotated by parent) */}
-        <div className="flex flex-row items-center h-full mr-24 mt-[80px] gap-4">
+        {/* Selected Crop Display */}
+        <div className={`flex flex-row items-center h-full ${isMobilePortrait ? "mr-6" : "mr-24"} mt-[80px] gap-4`}>
           {/* Crop image in center of frame */}
           <div
             className="relative bg-no-repeat bg-contain"
@@ -354,7 +360,7 @@ export default function GameBox({ isMobilePortrait }) {
 
             {/* Submit Button */}
             {gameOver &&
-            (guesses[5] ? guesses[5].crop.name === correctCrop.name : true) ? (
+              (guesses[5] ? guesses[5].crop.name === correctCrop.name : true) ? (
               <div className="mt-4 flex items-center justify-center gap-4">
                 <p className="text-green-700 text-5xl font-bold whitespace-nowrap">
                   You guessed it!
@@ -419,11 +425,10 @@ export default function GameBox({ isMobilePortrait }) {
                   if (!selectedCrop || guesses.length >= 6 || gameOver) return;
                   handleSubmit();
                 }}
-                className={`relative mt-4 group ${
-                  !selectedCrop || guesses.length >= 6 || gameOver
-                    ? "opacity-40 pointer-events-none"
-                    : "clickable hover:scale-105 transition-transform"
-                }`}
+                className={`relative mt-4 group ${!selectedCrop || guesses.length >= 6 || gameOver
+                  ? "opacity-40 pointer-events-none"
+                  : "clickable hover:scale-105 transition-transform"
+                  }`}
                 style={{
                   width: "216px",
                   height: "80px",
@@ -444,20 +449,26 @@ export default function GameBox({ isMobilePortrait }) {
           </div>
         </div>
 
-        {/* Guess Grid - Apply counter-rotation class */}
+        {/* Guess Grid - REMOVE THE className PROP HERE */}
         <div
-          className={`mr-[78px] mb-[84px] pl-9 bg-center bg-no-repeat bg-cover min-h-[440px] ${isMobilePortrait ? "content-counter-rotate-mobile" : ""}`}
+          // This wrapper div's styling for background image, width, height remains.
+          // It is implicitly rotated by its parent 'Right Side' div.
+          // We need GuessGrid itself to counter-rotate.
+          className={`${isMobilePortrait ? "" : "mr-[78px]"} pl-9 mb-[84px] bg-center bg-no-repeat bg-cover min-h-[440px]`}
           style={{
             backgroundImage: "url('/images/guesses.png')",
             width: "772px",
             height: "456px",
           }}
         >
-          {/* Ensure GuessGrid accepts and applies the className prop to its root element */}
-          <GuessGrid guesses={guesses} answer={correctCrop} />
+          {/* REMOVE className={isMobilePortrait ? "content-counter-rotate-mobile" : ""} */}
+          <GuessGrid
+            guesses={guesses}
+            answer={correctCrop}
+            // className={isMobilePortrait ? "content-counter-rotate-mobile" : ""} // <--- REMOVE THIS LINE
+          />
         </div>
       </div>
-
       {/* Mute/Unmute Button - Apply counter-rotation class */}
       <div
         onClick={() => {
@@ -466,7 +477,8 @@ export default function GameBox({ isMobilePortrait }) {
           }
           toggleMute();
         }}
-        className={`absolute bottom-16 -right-11 w-[30px] h-[30px] clickable z-10 ${isMobilePortrait ? "content-counter-rotate-mobile" : ""}`}
+        className={`absolute bottom-16 -right-11 w-[30px] h-[30px] clickable z-10 ${isMobilePortrait ? "content-counter-rotate-mobile" : ""
+          }`}
       >
         <img
           src={isMuted ? "/images/muted.png" : "/images/unmuted.png"}
@@ -474,7 +486,6 @@ export default function GameBox({ isMobilePortrait }) {
           className="w-full h-full"
         />
       </div>
-      {/* Mute/Unmute Button */}
 
       {/* Help Button - Apply counter-rotation class */}
       <div
@@ -484,7 +495,8 @@ export default function GameBox({ isMobilePortrait }) {
           }
           setShowHelp(true);
         }}
-        className={`absolute bottom-1 -right-14 w-[50px] h-[50px] group clickable z-10 ${isMobilePortrait ? "content-counter-rotate-mobile" : ""}`}
+        className={`absolute bottom-1 -right-14 w-[50px] h-[50px] group clickable z-10 ${isMobilePortrait ? "content-counter-rotate-mobile" : ""
+          }`}
       >
         <img
           src="/images/question-mark.png"

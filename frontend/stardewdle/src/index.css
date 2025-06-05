@@ -8,8 +8,10 @@
   font-display: swap;
 }
 
-/* Base styles for HTML/Body to ensure full height */
-html, body, #root {
+/* Base styles for HTML/Body to ensure full height for proper centering */
+html,
+body,
+#root {
   height: 100%;
   margin: 0;
   padding: 0;
@@ -18,89 +20,105 @@ html, body, #root {
 /* Media query for mobile portrait devices */
 @media (max-width: 767px) and (orientation: portrait) {
 
-  /* GameBox Container Rotation and Absolute Positioning */
-  .gamebox-rotate-mobile {
-    /* Position GameBox absolutely within its parent (Game.js's scaled content div) */
+  /* GameBox Wrapper in Game.js: Handles the primary rotation for GameBox */
+  /* This container needs to be absolutely positioned within its flex-centered parent
+     in Game.js so it can be precisely rotated and re-centered. */
+  .gamebox-wrapper {
+    width: 1500px;
+    height: 1000px;
     position: absolute;
-    top: 50%; /* Center vertically within parent */
-    left: 50%; /* Center horizontally within parent */
-    
-    /* Translate it by -50% of its own width/height *after* rotation, then rotate.
-       GameBox original: 1600px wide, 800px high.
-       When rotated -90deg, its effective bounding box becomes 800px wide, 1600px high.
-       `translate(-50%, -50%)` effectively moves its top-left corner by half its *new* width and height.
+    top: 50%;
+    left: 50%;
+
+    /* The order of transforms matters: translate first, then rotate.
+       Translate by -50% of its *original* width/height to center the top-left corner
+       of the element. Then, rotate it. This ensures the element is centered *before* rotation.
+       After rotation, the dimensions swap, but since it was centered based on its original
+       dimensions, the `transform-origin: center center` helps keep it visually centered.
     */
     transform: translate(-50%, -50%) rotate(-90deg);
-    transform-origin: center center; /* Rotate around its center */
+    transform-origin: center center;
 
-    /* IMPORTANT: Override the original flex layout that was on GameBox for desktop */
-    display: block !important; /* Change from flex to block to allow absolute positioning to work predictably */
-    flex-direction: initial !important; /* Reset flex-direction */
-    justify-content: initial !important; /* Reset justify-content */
-    padding-left: 0 !important; /* Reset padding from original styles */
-    margin-top: 0 !important; /* Reset margin from original styles */
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* GameBox's own main div when in mobile portrait */
+  /* This class replaces the desktop flex rules and resets positioning */
+  .gamebox-mobile-layout {
+    display: block !important;
+    position: relative;
+    padding-left: 0 !important;
+    margin-top: 0 !important;
+    background-size: 100% 100% !important; /* Stretch background to full viewport width */
   }
 
   /* Elements inside GameBox that need to counter-rotate */
   .content-counter-rotate-mobile {
     transform: rotate(90deg);
     transform-origin: center center;
-    /* Reset any positional properties that might interfere with layout post-rotation.
-       This is critical as original margins/paddings might now apply to a rotated axis. */
     margin: 0 !important;
     padding: 0 !important;
-    /* If an element had `absolute` positioning, its `top/left/bottom/right`
-       values will now be relative to the rotated parent's coordinate system.
-       These might need to be adjusted or set explicitly here if issues arise. */
   }
 
-  /* --- Specific Adjustments for Layout within GameBox after rotations --- */
-  /* These are more complex and require fine-tuning based on visual results. */
-  /* They might need `position: absolute` and precise `top`/`left` adjustments
-     within the now rotated `GameBox`. */
-
-  /* Example: Adjusting CropGrid's position within the rotated GameBox */
-  /* Assuming CropGrid is the first major visual element */
-  .gamebox-rotate-mobile .grid.grid-cols-4.gap-2.mr-10 { /* Targeting CropGrid's root div */
-      position: absolute;
-      top: 50%; /* Center it vertically in the rotated GameBox */
-      left: 20%; /* Example: Position towards the "left" of the rotated GameBox */
-      transform: translate(-50%, -50%) rotate(90deg); /* Counter-rotate and center */
-      /* The `mr-10` on CropGrid might need to be overridden if it causes issues */
-      margin-right: 0 !important;
+  /* GameBox's own main div when in mobile portrait */
+  /* This class replaces the desktop flex rules and resets positioning */
+  .gamebox-mobile-layout {
+    display: block !important;
+    position: relative;
+    padding-left: 0 !important;
+    margin-top: 0 !important;
   }
 
-  /* Example: Adjusting the "Right Side" container's position */
-  .gamebox-rotate-mobile .flex.flex-col.align-center.w-full.place-items-center {
-      position: absolute;
-      top: 50%; /* Center it vertically in the rotated GameBox */
-      right: 15%; /* Example: Position towards the "right" of the rotated GameBox */
-      transform: translate(50%, -50%) rotate(90deg); /* Counter-rotate and center */
-      /* Override existing Tailwind margins */
-      margin-right: 0 !important;
-      margin-top: 0 !important;
-      /* You might need to set explicit width for this container if its w-full breaks */
-      width: 700px; /* Adjust as needed */
+  /* Elements inside GameBox that need to counter-rotate */
+  .content-counter-rotate-mobile {
+    transform: rotate(90deg);
+    transform-origin: center center;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
-  /* Example: Adjusting Mute/Unmute Button */
-  .gamebox-rotate-mobile .absolute.bottom-16.-right-11.w-\[30px\].h-\[30px\].clickable.z-10 {
-    /* These buttons are already absolutely positioned. Their top/left/bottom/right
-       values are now relative to the *rotated* GameBox.
-       We need to give them new values that make sense in the new orientation. */
-    top: 50px; /* Example new Y-position in rotated frame */
-    left: 50px; /* Example new X-position in rotated frame */
-    bottom: auto !important; /* Clear original bottom */
-    right: auto !important; /* Clear original right */
-    transform: rotate(90deg); /* Just counter-rotate */
+  /* CropGrid Positioning */
+  .gamebox-mobile-layout .mobile-crop-grid-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 27%;
+    transform: translate(-50%, -50%);
+    width: 900px;
+    height: 720px;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
-  /* Example: Adjusting Help Button */
-  .gamebox-rotate-mobile .absolute.bottom-1.-right-14.w-\[50px\].h-\[50px\].group.clickable.z-10 {
-    top: 50px; /* Example new Y-position */
-    right: 50px; /* Example new X-position */
+  /* Right Side Container (Selected Crop Display + Guess Grid + Submit Button) */
+  .gamebox-mobile-layout .flex.flex-col.align-center.w-full.place-items-center {
+    position: absolute;
+    top: 10%;
+    left: 40.5%;
+    width: 1000px;
+    height: 800px;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Mute Button Positioning */
+  .gamebox-mobile-layout .absolute.bottom-16.-right-11.w-\\[30px\\].h-\\[30px\\].clickable.z-10 {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    bottom: auto !important;
+    right: auto !important;
+  }
+
+  /* Help Button Positioning */
+  .gamebox-mobile-layout .absolute.bottom-1.-right-14.w-\\[50px\\].h-\\[50px\\].group.clickable.z-10 {
+    position: absolute;
+    top: 50px;
+    right: 50px;
     bottom: auto !important;
     left: auto !important;
-    transform: rotate(90deg); /* Just counter-rotate */
   }
 }
