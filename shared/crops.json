@@ -195,7 +195,7 @@
     },
     {
         "name": "cherry",
-        "growth_time": 7,
+        "growth_time": 28,
         "season": [
             "spring"
         ],
@@ -509,7 +509,7 @@
     },
     {
         "name": "pomegranate",
-        "growth_time": 7,
+        "growth_time": 28,
         "season": [
             "fall"
         ],

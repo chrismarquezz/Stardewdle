@@ -1,29 +1,45 @@
 import { useNavigate } from "react-router-dom";
 import { useSound } from "../context/SoundContext";
 import { useState, useEffect } from "react";
-import GameBox from "../components/GameBox"; // Ensure this import is present
+import GameBox from "../components/GameBox";
 
 export default function Game() {
   const { isMuted } = useSound();
   const navigate = useNavigate();
   const [scaleFactor, setScaleFactor] = useState(1);
+  const [isMobilePortrait, setIsMobilePortrait] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
-      const maxWidth = window.innerWidth * 0.95; // 95% of screen width
-      const maxHeight = window.innerHeight * 0.95; // 95% of screen height
+      const maxWidth = window.innerWidth * 0.95;
+      const maxHeight = window.innerHeight * 0.95;
 
-      const designWidth = 1600; // Your design width (adjust as needed)
-      const designHeight = 900; // Your design height (adjust as needed)
+      const designWidth = 1600;
+      const designHeight = 900;
 
-      const scaleW = maxWidth / designWidth;
-      const scaleH = maxHeight / designHeight;
+      // Determine if current orientation is mobile portrait
+      const currentlyIsMobilePortrait =
+        window.innerWidth < 768 && window.innerHeight > window.innerWidth;
+      setIsMobilePortrait(currentlyIsMobilePortrait);
+
+      // Scaling factor calculation:
+      // If mobile portrait, we're effectively fitting a 900x1600 content into screen.
+      // So, swap design dimensions for scale calculation to ensure it fits.
+      let effectiveDesignWidth = designWidth;
+      let effectiveDesignHeight = designHeight;
+      if (currentlyIsMobilePortrait) {
+        effectiveDesignWidth = designHeight; // 900
+        effectiveDesignHeight = designWidth; // 1600
+      }
+
+      const scaleW = maxWidth / effectiveDesignWidth;
+      const scaleH = maxHeight / effectiveDesignHeight;
 
       setScaleFactor(Math.min(scaleW, scaleH));
     };
 
-    handleResize();
-    window.addEventListener("resize", handleResize);
+    handleResize(); // Call on mount
+    window.addEventListener("resize", handleResize); // Re-evaluate on resize
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
@@ -44,18 +60,22 @@ export default function Game() {
         }}
       />
 
-      {/* Scaled Content */}
-      <div className="relative z-10 w-full h-full flex justify-center items-center">
+      {/* Outer game container: Scales the entire UI to fit screen */}
+      {/* This div acts as the positioning context for the contained elements */}
+      <div className={`absolute z-10 w-full h-full flex justify-center items-center ${isMobilePortrait ? "top-2" : "-top-2"}`}>
         <div
+          // This div acts as the main content frame, scaling the overall game.
+          // It's a flex-column to stack the logo and gamebox wrapper.
+          className="flex flex-col items-center"
           style={{
-            width: "1600px", // Design width
-            height: `${900*scaleFactor}px`, // Design height
-            transform: `scale(${scaleFactor})`,
-            transformOrigin: "top center",
+            width: "1600px", // Fixed design width
+            height: isMobilePortrait ? "800px" : "900px", // Fixed design height
+            transform: `scale(${scaleFactor})`, // Apply overall scaling
+            transformOrigin: "center center",
           }}
         >
-          {/* Logo + Game Content */}
-          <div className="w-full flex justify-center pt-2">
+          {/* Logo Button - Remains static at the top, not rotated */}
+          <div className={`relative ${isMobilePortrait ? "top-[-470px]" : ""}`}>
             <div
               onClick={() => {
                 if (!isMuted) {
@@ -78,8 +98,10 @@ export default function Game() {
             </div>
           </div>
 
-          {/* Pass scaleFactor to GameBox */}
-          <GameBox scaleFactor={scaleFactor} />
+          {/* New wrapper for GameBox: Handles its own rotation and positioning for mobile */}
+          <div className="gamebox-wrapper">
+            <GameBox isMobilePortrait={isMobilePortrait} />
+          </div>
         </div>
       </div>
     </div>
