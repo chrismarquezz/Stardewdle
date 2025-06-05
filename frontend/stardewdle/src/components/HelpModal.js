@@ -21,29 +21,25 @@ export default function HelpModal({ isMuted, onClose, scaleFactor }) {
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Background image for the modal */}
-        <div
-          className="absolute inset-0 bg-no-repeat bg-cover bg-center -z-10"
-          style={{
-            backgroundImage: "url('/images/help-bg.png')",
-            backgroundSize: "100% 100%",
-          }}
-        />
 
         {/* Content */}
-        <div className="relative z-10 p-6 flex flex-col h-full 3xl:pl-24 3xl:pr-24 3xl:pt-12">
+        <div className="justify-center align-middle relative z-10 flex flex-col top-[10%] left-[10%] h-[80%] w-[80%] md:w-[60%] md:left-[15%] overflow-y-auto p-4"
+        style={{
+            backgroundImage: "url('/images/help-bg.png')",
+            backgroundSize: "100% 100%",
+          }}>
           <button
             onClick={playCloseSound}
-            className="clickable absolute top-2 left-9 text-red-500 text-6xl hover:text-gray-300"
+            className="clickable absolute top-[2%] left-[3%] text-red-500 text-6xl hover:text-gray-300"
           >
             x
           </button>
 
-          <h2 className="text-[#BC6131] text-center text-4xl sm:text-5xl md:text-7xl font-semibold mb-8">
+          <h2 className="text-[#BC6131] text-center text-2xl md:text-5xl font-semibold mb-2">
             How to Play
           </h2>
 
-          <div className="space-y-4 text-[#BC6131] text-left text-3xl sm:text-4xl md:text-5xl list-disc list-inside overflow-y-auto">
+          <div className="space-y-4 text-[#BC6131] text-left text-xl sm:text-2xl md:text-3xl leading-none overflow-y-auto">
             <p>- Select a crop from the grid</p>
             <p>- Click "Submit" to guess the crop of the day</p>
             <p>- You get 6 tries to guess correctly</p>
