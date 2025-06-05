@@ -10,8 +10,8 @@ export default function Landing() {
 
   useEffect(() => {
     const handleResize = () => {
-      const maxWidth = window.innerWidth * 1; // 95% of screen width
-      const maxHeight = window.innerHeight * 1; // 95% of screen height
+      const maxWidth = window.innerWidth * 0.95; // 95% of screen width
+      const maxHeight = window.innerHeight * 0.95; // 95% of screen height
 
       const designWidth = 1080; // Your design width (adjust as needed)
       const designHeight = 720; // Your design height (adjust as needed)
@@ -28,7 +28,7 @@ export default function Landing() {
   }, []);
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden">
+    <div className="relative min-h-screen w-full overflow-y-auto">
       {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -51,11 +51,11 @@ export default function Landing() {
           <img
             src="/images/stardewdleTitle.png"
             alt="Stardewdle Title"
-            className="mt-20"
+            className="mt-10"
           />
 
           {/* Button group centered vertically in remaining space */}
-          <div className="flex flex-col items-center gap-4 mt-[220px] object-contain">
+          <div className="flex flex-col items-center gap-4 mt-[100px]">
             {/* Play Button */}
             <div
               onClick={() => {
