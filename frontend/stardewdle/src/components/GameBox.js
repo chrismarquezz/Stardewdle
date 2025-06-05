@@ -12,7 +12,7 @@ function formatName(name) {
   return name
     .replace(/_/g, " ")
     .replace(
-      /\\w\\S*/g,
+      /\w\S*/g, // Changed from \\w\\S* to \w\S*
       (w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
     );
 }
@@ -78,25 +78,25 @@ export default function GameBox({ isMobilePortrait }) {
 
   const isFinalGuess = guesses.length === 5;
 
-  function generateShareText(resultGrid, win) {
-    const header = win
-      ? "I solved today's Stardewdle!"
-      : "I couldn't solve today's Stardewdle.";
+function generateShareText(resultGrid, win) {
+  const header = win
+    ? "I solved today's Stardewdle!"
+    : "I couldn't solve today's Stardewdle.";
 
-    const grid = resultGrid
-      .map((row) =>
-        Object.values(row.result)
-          .map((val) => {
-            if (val === "match") return "🟩";
-            if (val === "partial") return "🟨";
-            return "🟥";
-          })
-          .join("")
-      )
-      .join("\\n");
+  const grid = resultGrid
+    .map((row) =>
+      Object.values(row.result)
+        .map((val) => {
+          if (val === "match") return "🟩";
+          if (val === "partial") return "🟨";
+          return "🟥";
+        })
+        .join("")
+    )
+    .join("\n"); // Changed from \\n to \n
 
-    return `${todaysDate()}\\n${header}\\n\\n${grid}\\n\\nPlay at: https://stardewdle.com/`;
-  }
+  return `${todaysDate()}\n${header}\n${grid}\nPlay at: https://stardewdle.com/`; // Changed from \\n to \n
+}
 
   useEffect(() => {
     if (gameOver && !shareText && guesses.length > 0) {
