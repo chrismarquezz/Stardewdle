@@ -11,24 +11,25 @@ export default function Game() {
 
   useEffect(() => {
     const handleResize = () => {
-      const maxWidth = window.innerWidth * 0.95; // 95% of screen width
-      const maxHeight = window.innerHeight * 0.95; // 95% of screen height
+      const maxWidth = window.innerWidth * 0.95;
+      const maxHeight = window.innerHeight * 0.95;
 
-      const baseDesignWidth = 1600; // Original design width
-      const baseDesignHeight = 900; // Original design height
+      const designWidth = 1600;
+      const designHeight = 900;
 
-      // Check if it's considered mobile and in portrait mode
-      const currentlyIsMobilePortrait = window.innerWidth < 768 && window.innerHeight > window.innerWidth;
+      // Determine if current orientation is mobile portrait
+      const currentlyIsMobilePortrait =
+        window.innerWidth < 768 && window.innerHeight > window.innerWidth;
       setIsMobilePortrait(currentlyIsMobilePortrait);
 
-      let effectiveDesignWidth = baseDesignWidth;
-      let effectiveDesignHeight = baseDesignHeight;
-
-      // If in mobile portrait, calculate scale factor based on swapped dimensions
-      // This is for determining how much to shrink the (effectively) rotated game.
+      // Scaling factor calculation:
+      // If mobile portrait, we're effectively fitting a 900x1600 content into screen.
+      // So, swap design dimensions for scale calculation to ensure it fits.
+      let effectiveDesignWidth = designWidth;
+      let effectiveDesignHeight = designHeight;
       if (currentlyIsMobilePortrait) {
-        effectiveDesignWidth = baseDesignHeight; // New effective width is original height
-        effectiveDesignHeight = baseDesignWidth; // New effective height is original width
+        effectiveDesignWidth = designHeight; // 900
+        effectiveDesignHeight = designWidth; // 1600
       }
 
       const scaleW = maxWidth / effectiveDesignWidth;
@@ -37,8 +38,8 @@ export default function Game() {
       setScaleFactor(Math.min(scaleW, scaleH));
     };
 
-    handleResize();
-    window.addEventListener("resize", handleResize);
+    handleResize(); // Call on mount
+    window.addEventListener("resize", handleResize); // Re-evaluate on resize
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
@@ -59,28 +60,22 @@ export default function Game() {
         }}
       />
 
-      {/* Scaled Content - This is the main game container */}
-      <div className="relative z-10 w-full h-full flex justify-center items-center">
+      {/* Outer game container: Scales the entire UI to fit screen */}
+      {/* This div acts as the positioning context for the contained elements */}
+      <div className={`absolute z-10 w-full h-full flex justify-center items-center ${isMobilePortrait ? "top-2" : "-top-2"}`}>
         <div
+          // This div acts as the main content frame, scaling the overall game.
+          // It's a flex-column to stack the logo and gamebox wrapper.
+          className="flex flex-col items-center"
           style={{
-            // Set the width/height of this div to reflect the *logical* dimensions
-            // it will occupy after rotation. This helps the parent flexbox center it.
-            width: isMobilePortrait ? "900px" : "1600px", // Swap width/height here for layout
-            height: isMobilePortrait ? "1600px" : "900px", // Swap width/height here for layout
-            // Apply scale and rotation directly
-            transform: `scale(${scaleFactor}) ${isMobilePortrait ? 'rotate(-90deg)' : ''}`,
-            transformOrigin: "center center", // Crucial for correct rotation and scaling
-            // For fine-tuning positioning after rotation on *some* browsers/setups,
-            // you might sometimes need an additional translate, but the dynamic
-            // width/height with flex centering should largely handle it.
-            // Example: `translate(${isMobilePortrait ? (900-1600)/2 : 0}px, ${isMobilePortrait ? (1600-900)/2 : 0}px)`
-            // However, starting without it is best, as it often causes issues.
+            width: "1600px", // Fixed design width
+            height: isMobilePortrait ? "800px" : "900px", // Fixed design height
+            transform: `scale(${scaleFactor})`, // Apply overall scaling
+            transformOrigin: "center center",
           }}
-          // The class name 'game-container-mobile-portrait' is not strictly needed here if you apply styles inline
-          // But if you had complex CSS rules specific to the outer container, you'd use it.
         >
-          {/* Logo + Game Content */}
-          <div className="w-full flex justify-center pt-2">
+          {/* Logo Button - Remains static at the top, not rotated */}
+          <div className={`relative ${isMobilePortrait ? "top-[-470px]" : ""}`}>
             <div
               onClick={() => {
                 if (!isMuted) {
@@ -103,8 +98,10 @@ export default function Game() {
             </div>
           </div>
 
-          {/* Pass isMobilePortrait to GameBox so its children can counter-rotate */}
-          <GameBox isMobilePortrait={isMobilePortrait} />
+          {/* New wrapper for GameBox: Handles its own rotation and positioning for mobile */}
+          <div className="gamebox-wrapper">
+            <GameBox isMobilePortrait={isMobilePortrait} />
+          </div>
         </div>
       </div>
     </div>
