@@ -24,10 +24,10 @@ export default function ShareModal({
   };
 
   return ReactDOM.createPortal(
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-20 flex items-center justify-center">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black bg-opacity-50"
+        className="absolute inset-0 bg-black bg-opacity-50 z-0"
         onClick={playCloseSound}
       />
 
@@ -43,7 +43,7 @@ export default function ShareModal({
       >
         {/* Background image for the modal, now as an inner div */}
         <div
-          className="absolute inset-0 bg-no-repeat bg-cover bg-center -z-10"
+          className="absolute inset-0 bg-no-repeat bg-cover bg-center z-10"
           style={{
             backgroundImage: "url('/images/help-bg.png')", // Assuming help-bg.png is correct for share modal
             backgroundSize: "100% 100%",
