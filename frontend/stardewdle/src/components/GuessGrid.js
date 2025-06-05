@@ -106,7 +106,8 @@ function getArrow(key, guessValue, correctValue) {
   return null;
 }
 
-export default function GuessGrid({ guesses, answer }) {
+// Add 'className' to the destructuring of props
+export default function GuessGrid({ guesses, answer, className }) { // Keep className prop
   const rows = Array.from({ length: 6 }).map((_, i) => {
     const guessEntry = guesses[i];
     const crop = guessEntry?.crop;
@@ -119,6 +120,7 @@ export default function GuessGrid({ guesses, answer }) {
 
     return (
       <div
+        key={i} // Add a key to the row div for better React performance
         className="grid gap-1 items-center w-full"
         style={{ gridTemplateColumns: COL_DIST }}
       >
@@ -134,7 +136,7 @@ export default function GuessGrid({ guesses, answer }) {
         >
           {/* Color overlay */}
           <div
-            className={`w-[75%] h-[75%] absolute inset-0 m-auto z-0 rounded-sm opacity-50 mix-blend-multiply ${
+            className={`w-[75%] h-[75%] absolute inset-0 m-auto z-0 rounded-sm opacity-80 mix-blend-multiply ${
               cropColor === "green"
                 ? "bg-green-500"
                 : cropColor === "red"
@@ -164,7 +166,7 @@ export default function GuessGrid({ guesses, answer }) {
                 {crop.name
                   .replace(/_/g, " ")
                   .replace(
-                    /\w\S*/g,
+                    /\\w\\S*/g,
                     (w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
                   )}
               </div>
@@ -200,7 +202,7 @@ export default function GuessGrid({ guesses, answer }) {
               <div
                 className={`w-[${
                   W_STRETCH_MAP[key]
-                }%] h-[75%] absolute inset-0 m-auto z-0 rounded-sm opacity-50 mix-blend-multiply ${
+                }%] h-[75%] absolute inset-0 m-auto z-0 rounded-sm opacity-80 mix-blend-multiply ${
                   color === "green"
                     ? "bg-green-500"
                     : color === "yellow"
@@ -295,8 +297,12 @@ export default function GuessGrid({ guesses, answer }) {
     );
   });
 
-  return (
-    <div className="space-y-[2px] mt-4 h-full w-full items-center justify-center">
+  // GuessGrid.js (within the return statement)
+return (
+  // This outermost div remains without the passed className
+  <div className={`space-y-[2px] h-full w-full items-center justify-center`}>
+    {/* Apply the passed 'className' here to the div containing the actual grid content */}
+    <div className={`h-full w-full flex flex-col justify-center ${className}`}>
       {/* Headers */}
       <div className="grid gap-1" style={{ gridTemplateColumns: COL_DIST }}>
         <div className="text-center text-3xl text-[#BC6131] leading-none">
@@ -311,7 +317,9 @@ export default function GuessGrid({ guesses, answer }) {
           </div>
         ))}
       </div>
+      {/* Rows */}
       {rows}
     </div>
-  );
+  </div>
+);
 }

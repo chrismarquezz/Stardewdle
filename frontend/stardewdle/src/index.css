@@ -7,3 +7,118 @@
   src: url('../public/fonts/StardewValley.ttf') format('truetype');
   font-display: swap;
 }
+
+/* Base styles for HTML/Body to ensure full height for proper centering */
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Media query for mobile portrait devices */
+@media (max-width: 767px) and (orientation: portrait) {
+
+  /* GameBox Wrapper in Game.js: Handles the primary rotation for GameBox */
+  /* This container needs to be absolutely positioned within its flex-centered parent
+     in Game.js so it can be precisely rotated and re-centered. */
+  .gamebox-wrapper {
+    width: 1500px;
+    height: 1000px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    /* The order of transforms matters: translate first, then rotate.
+       Translate by -50% of its *original* width/height to center the top-left corner
+       of the element. Then, rotate it. This ensures the element is centered *before* rotation.
+       After rotation, the dimensions swap, but since it was centered based on its original
+       dimensions, the `transform-origin: center center` helps keep it visually centered.
+    */
+    transform: translate(-50%, -50%) rotate(-90deg);
+    transform-origin: center center;
+
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* GameBox's own main div when in mobile portrait */
+  /* This class replaces the desktop flex rules and resets positioning */
+  .gamebox-mobile-layout {
+    display: block !important;
+    position: relative;
+    padding-left: 0 !important;
+    margin-top: 0 !important;
+    background-size: 100% 100% !important; /* Stretch background to full viewport width */
+  }
+
+  /* Elements inside GameBox that need to counter-rotate */
+  .content-counter-rotate-mobile {
+    transform: rotate(90deg);
+    transform-origin: center center;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* GameBox's own main div when in mobile portrait */
+  /* This class replaces the desktop flex rules and resets positioning */
+  .gamebox-mobile-layout {
+    display: block !important;
+    position: relative;
+    padding-left: 0 !important;
+    margin-top: 0 !important;
+  }
+
+  /* Elements inside GameBox that need to counter-rotate */
+  .content-counter-rotate-mobile {
+    transform: rotate(90deg);
+    transform-origin: center center;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* CropGrid Positioning */
+  .gamebox-mobile-layout .mobile-crop-grid-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 27%;
+    transform: translate(-50%, -50%);
+    width: 900px;
+    height: 720px;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Right Side Container (Selected Crop Display + Guess Grid + Submit Button) */
+  .gamebox-mobile-layout .flex.flex-col.align-center.w-full.place-items-center {
+    position: absolute;
+    top: 10%;
+    left: 40.5%;
+    width: 1000px;
+    height: 800px;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Mute Button Positioning */
+  .gamebox-mobile-layout .absolute.bottom-16.-right-11.w-\\[30px\\].h-\\[30px\\].clickable.z-10 {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    bottom: auto !important;
+    right: auto !important;
+  }
+
+  /* Help Button Positioning */
+  .gamebox-mobile-layout .absolute.bottom-1.-right-14.w-\\[50px\\].h-\\[50px\\].group.clickable.z-10 {
+    position: absolute;
+    top: 50px;
+    right: 50px;
+    bottom: auto !important;
+    left: auto !important;
+  }
+}

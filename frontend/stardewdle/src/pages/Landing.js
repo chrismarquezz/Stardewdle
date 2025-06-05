@@ -13,8 +13,8 @@ export default function Landing() {
       const maxWidth = window.innerWidth * 0.95; // 95% of screen width
       const maxHeight = window.innerHeight * 0.95; // 95% of screen height
 
-      const designWidth = 1600; // Your design width (adjust as needed)
-      const designHeight = 900; // Your design height (adjust as needed)
+      const designWidth = 1080; // Your design width (adjust as needed)
+      const designHeight = 720; // Your design height (adjust as needed)
 
       const scaleW = maxWidth / designWidth;
       const scaleH = maxHeight / designHeight;
@@ -28,7 +28,7 @@ export default function Landing() {
   }, []);
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden">
+    <div className="relative min-h-screen w-full overflow-y-auto">
       {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -40,8 +40,8 @@ export default function Landing() {
       <div className="relative z-10 w-full h-full flex justify-center items-center">
         <div
           style={{
-            width: "1600px", // Design width
-            height: `${900 * scaleFactor}px`, // Design height
+            width: "1080px", // Design width
+            height: `${720 * scaleFactor}px`, // Design height
             transform: `scale(${scaleFactor})`,
             transformOrigin: "top center",
           }}
@@ -51,11 +51,11 @@ export default function Landing() {
           <img
             src="/images/stardewdleTitle.png"
             alt="Stardewdle Title"
-            className="mt-20"
+            className="mt-10"
           />
 
           {/* Button group centered vertically in remaining space */}
-          <div className="flex flex-col items-center gap-4 mt-[220px]">
+          <div className="flex flex-col items-center gap-4 mt-[100px]">
             {/* Play Button */}
             <div
               onClick={() => {
@@ -151,7 +151,7 @@ export default function Landing() {
 
       {showModal && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40"
           onClick={() => {
             if (!isMuted) {
               new Audio("/sounds/mouseClick.mp3").play();
@@ -159,26 +159,22 @@ export default function Landing() {
             setShowModal(false);
           }}
         >
-          {/* Scaled modal container */}
           <div
-            className="relative w-full h-full shadow-lg"
+            className="relative w-[1248px] h-[704px] max-w-[95vw] max-h-[95vh] flex flex-col"
             style={{
-              transform: `scale(${0.6})`,
+              transform: `scale(${scaleFactor})`,
               transformOrigin: "center",
             }}
-            onClick={(e) => e.stopPropagation()} // Prevents modal from closing when clicked inside
+            onClick={(e) => e.stopPropagation()}
           >
-            {/* Background image for the modal */}
+            {/* Content */}
             <div
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              className="relative z-10 flex flex-col top-[10%] left-[10%] h-[80%] w-[80%] md:w-[60%] md:left-[15%] overflow-y-auto p-4"
               style={{
                 backgroundImage: "url('/images/paper-note.png')",
-                backgroundSize: "100% 100%", // Stretch background image to fill
+                backgroundSize: "100% 100%",
               }}
-            />
-
-            {/* Modal Content */}
-            <div className="relative z-10 p-6 w-full h-full 3xl:p-12">
+            >
               <button
                 onClick={() => {
                   if (!isMuted) {
@@ -186,23 +182,19 @@ export default function Landing() {
                   }
                   setShowModal(false);
                 }}
-                // Example: Smaller text on small screens, larger on medium and above
-                className="absolute top-2 left-9 text-4xl sm:text-5xl md:text-6xl 3xl:text-8xl text-red-500 hover:text-gray-300"
+                className="clickable absolute top-[2%] left-[3%] text-red-500 text-6xl hover:text-gray-300"
               >
                 x
               </button>
-              <div className="p-4">
-                <h2
-                  // Example: Smaller text on small screens, larger on medium and above
-                  className="text-gray-600 text-center text-4xl sm:text-5xl md:text-7xl font-semibold mb-8 3xl:text-8xl"
-                >
-                  Credits
-                </h2>
-                <ul className="text-gray-600 text-left text-3xl sm:text-4xl md:text-5xl list-disc list-inside space-y-4 sm:space-y-12 md:space-y-24 3xl:text-7xl 3xl:space-y-36">
-                  <p>- Built by Chris and Omar.</p>
-                  <p>- Artwork and sounds by ConcernedApe.</p>
-                  <p>- Inspired by Wordle and Stardew Valley.</p>
-                </ul>
+
+              <h2 className="text-gray-600 text-center text-4xl md:text-6xl font-semibold mb-2">
+                Credits
+              </h2>
+
+              <div className="mt-6 space-y-10 text-gray-600 text-left text-3xl md:text-4xl leading-none overflow-y-auto">
+                <p>- Built by Chris and Omar.</p>
+                <p>- Artwork and sounds by ConcernedApe.</p>
+                <p>- Inspired by Wordle and Stardew Valley.</p>
               </div>
             </div>
           </div>
