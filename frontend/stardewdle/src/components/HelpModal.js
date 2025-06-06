@@ -14,7 +14,7 @@ export default function HelpModal({ isMuted, onClose, scaleFactor }) {
       onClick={playCloseSound}
     >
       <div
-        className="relative w-[1248px] h-[704px] max-w-[95vw] max-h-[95vh] flex flex-col"
+        className="relative max-w-[95vw] max-h-[95vh] flex flex-col"
         style={{
           transform: `scale(${scaleFactor})`,
           transformOrigin: "center",
@@ -23,14 +23,14 @@ export default function HelpModal({ isMuted, onClose, scaleFactor }) {
       >
 
         {/* Content */}
-        <div className="justify-center align-middle relative z-10 flex flex-col top-[10%] left-[10%] h-[80%] w-[80%] md:w-[60%] md:left-[20%] overflow-y-auto p-4"
+        <div className="justify-center align-middle relative z-10 flex flex-col overflow-y-auto p-4 md:pl-8 md:pr-8"
           style={{
             backgroundImage: "url('/images/help-bg.png')",
             backgroundSize: "100% 100%",
           }}>
           <button
             onClick={playCloseSound}
-            className="clickable absolute top-[2%] left-[3%] text-red-500 text-6xl hover:text-gray-300"
+            className="clickable absolute top-0 text-red-500 text-4xl md:text-6xl hover:text-gray-300"
           >
             x
           </button>
@@ -39,7 +39,7 @@ export default function HelpModal({ isMuted, onClose, scaleFactor }) {
             How to Play
           </h2>
 
-          <div className="space-y-2 md:space-y-4 text-[#BC6131] text-left text-md sm:text-2xl md:text-3xl leading-none overflow-y-auto md:ml-4">
+          <div className="space-y-2 md:space-y-4 text-[#BC6131] text-left text-md sm:text-2xl md:text-3xl leading-none overflow-y-auto">
             <p>- Select a crop from the grid</p>
             <p>- Click "Submit" to guess the crop of the day</p>
             <p>- You get 6 tries to guess correctly</p>

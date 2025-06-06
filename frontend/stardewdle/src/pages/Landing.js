@@ -160,7 +160,7 @@ export default function Landing() {
           }}
         >
           <div
-            className="relative w-[1248px] h-[704px] max-w-[95vw] max-h-[95vh] flex flex-col"
+            className="relative max-w-[95vw] max-h-[95vh] flex flex-col"
             style={{
               transform: `scale(${scaleFactor})`,
               transformOrigin: "center",
@@ -169,7 +169,7 @@ export default function Landing() {
           >
             {/* Content */}
             <div
-              className="relative z-10 flex flex-col top-[10%] left-[10%] h-[80%] w-[80%] md:w-[60%] md:left-[20%] overflow-y-auto p-4"
+              className="relative z-10 flex flex-col overflow-y-auto p-4"
               style={{
                 backgroundImage: "url('/images/paper-note.png')",
                 backgroundSize: "100% 100%",
