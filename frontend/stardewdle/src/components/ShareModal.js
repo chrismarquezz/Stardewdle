@@ -34,7 +34,7 @@ export default function ShareModal({
       {/* Modal Content */}
       <div
         // Keep the dimensions that match the Landing page modal
-        className="relative w-[1248px] h-[704px] max-w-[95vw] max-h-[95vh] flex flex-col justify-between"
+        className="relative max-w-[95vw] max-h-[95vh] flex flex-col justify-between"
         style={{
           transform: `scale(${scaleFactor})`, // Use the passed scaleFactor
           transformOrigin: "center",
@@ -43,7 +43,7 @@ export default function ShareModal({
       >
 
         {/* Content wrapper with padding */}
-        <div className="justify-center align-middle relative z-10 flex flex-col top-[10%] left-[10%] h-[80%] w-[80%] md:w-[60%] md:left-[20%] overflow-y-auto"
+        <div className="justify-center align-middle relative z-10 flex flex-col overflow-y-auto p-4 "
         style={{
             backgroundImage: "url('/images/help-bg.png')",
             backgroundSize: "100% 100%",
@@ -51,17 +51,16 @@ export default function ShareModal({
           {/* Close Button */}
           <button
             onClick={playCloseSound}
-            className="clickable absolute top-[2%] left-[3%] text-red-500 text-6xl hover:text-gray-300"
+            className="clickable absolute left-[10px] top-[4px] md:top-0 text-red-500 text-4xl md:text-6xl hover:text-gray-300"
           >
             x
           </button>
           {/* UTC Timer */}
-          <h2
-            // Applied responsive text sizing for heading
-            className="text-[#BC6131] text-center text-lg md:text-4xl font-bold md:mb-1"
+          <p
+            className="text-[#BC6131] text-center text-lg md:text-5xl font-bold md:mb-1 md:min-w-[520px]"
           >
             Next crop in: {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s
-          </h2>
+          </p>
 
           {/* Wins Today */}
           <p
@@ -72,7 +71,7 @@ export default function ShareModal({
           </p>
 
           {/* Share Text Block */}
-          <p className="min-h-40 min-w-30 bg-[#FFD789] w-[80%] md:w-[60%] mx-auto bg-opacity-60 border-2 border-[#BC6131] pt-4 pb-4 text-[#BC6131] text-sm md:text-xl whitespace-pre text-center flex-wrap overflow-y-auto ">
+          <p className="flex min-h-40 min-w-30 bg-[#FFD789] mx-auto bg-opacity-60 border-2 border-[#BC6131] p-4 text-[#BC6131] text-sm md:text-xl whitespace-pre text-center flex-wrap overflow-y-auto ">
             {shareText}
           </p>
 
