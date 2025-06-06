@@ -92,8 +92,6 @@ function getColor(key, guessValue, correctValue) {
   return guessValue === correctValue ? "green" : "red";
 }
 
-
-
 function getArrow(key, guessValue, correctValue) {
   if (key === "base_price" || key === "growth_time") {
     return guessValue > correctValue
