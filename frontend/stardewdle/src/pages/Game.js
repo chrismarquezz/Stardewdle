@@ -62,7 +62,7 @@ export default function Game() {
 
       {/* Outer game container: Scales the entire UI to fit screen */}
       {/* This div acts as the positioning context for the contained elements */}
-      <div className={`absolute z-10 w-full h-full flex justify-center items-center ${isMobilePortrait ? "top-2" : "-top-2"}`}>
+      <div className={`absolute z-10 w-full h-full flex justify-center items-center ${isMobilePortrait ? "top-2" : "-top-4"}`}>
         <div
           // This div acts as the main content frame, scaling the overall game.
           // It's a flex-column to stack the logo and gamebox wrapper.

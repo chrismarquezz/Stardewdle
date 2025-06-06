@@ -43,7 +43,7 @@ export default function ShareModal({
       >
 
         {/* Content wrapper with padding */}
-        <div className="justify-center align-middle relative z-10 flex flex-col top-[10%] left-[10%] h-[80%] w-[80%] md:w-[60%] md:left-[15%] overflow-y-auto"
+        <div className="justify-center align-middle relative z-10 flex flex-col top-[10%] left-[10%] h-[80%] w-[80%] md:w-[60%] md:left-[20%] overflow-y-auto"
         style={{
             backgroundImage: "url('/images/help-bg.png')",
             backgroundSize: "100% 100%",
