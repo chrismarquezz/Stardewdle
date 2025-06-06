@@ -298,7 +298,7 @@ function generateShareText(resultGrid, win) {
         backgroundImage: isMobilePortrait ? "url('/images/box-bg-sm.png')" : "url('/images/box-bg.png')",
         backgroundSize: "100% 100%",
         width: isMobilePortrait ? "1500px" : "1600px",
-        height: isMobilePortrait ? "1000px" : "800px",
+        height: isMobilePortrait ? "940px" : "800px",
       }}
     >
       {/* Crop Grid - NEW Wrapper div */}
