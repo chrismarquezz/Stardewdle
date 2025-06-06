@@ -51,11 +51,11 @@ export default function Landing() {
           <img
             src="/images/stardewdleTitle.png"
             alt="Stardewdle Title"
-            className="mt-10"
+            className="mt-10 max-w-[800px]"
           />
 
           {/* Button group centered vertically in remaining space */}
-          <div className="flex flex-col items-center gap-4 mt-[100px]">
+          <div className="flex flex-col items-center gap-4 mt-[140px]">
             {/* Play Button */}
             <div
               onClick={() => {
@@ -64,7 +64,7 @@ export default function Landing() {
                 }
                 navigate("/game");
               }}
-              className="buttonMain w-[370px] h-[75px] clickable "
+              className="buttonMain w-[370px] h-[75px] clickable"
             >
               <img
                 src="/images/play-button.png"
@@ -169,7 +169,7 @@ export default function Landing() {
           >
             {/* Content */}
             <div
-              className="relative z-10 flex flex-col top-[10%] left-[10%] h-[80%] w-[80%] md:w-[60%] md:left-[15%] overflow-y-auto p-4"
+              className="relative z-10 flex flex-col top-[10%] left-[10%] h-[80%] w-[80%] md:w-[60%] md:left-[20%] overflow-y-auto p-4"
               style={{
                 backgroundImage: "url('/images/paper-note.png')",
                 backgroundSize: "100% 100%",

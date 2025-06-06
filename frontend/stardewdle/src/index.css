@@ -68,6 +68,7 @@ body,
     position: relative;
     padding-left: 0 !important;
     margin-top: 0 !important;
+    top: 3%;
   }
 
   /* Elements inside GameBox that need to counter-rotate */
@@ -96,7 +97,7 @@ body,
   /* Right Side Container (Selected Crop Display + Guess Grid + Submit Button) */
   .gamebox-mobile-layout .flex.flex-col.align-center.w-full.place-items-center {
     position: absolute;
-    top: 10%;
+    top: 7%;
     left: 40.5%;
     width: 1000px;
     height: 800px;
