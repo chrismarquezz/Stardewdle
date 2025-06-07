@@ -5,7 +5,6 @@ const SoundContext = createContext();
 export const SoundProvider = ({ children }) => {
   const [isMuted, setIsMuted] = useState(false);
 
-  // Load from localStorage on first render
   useEffect(() => {
     const saved = localStorage.getItem("isMuted");
     if (saved !== null) {
@@ -13,7 +12,6 @@ export const SoundProvider = ({ children }) => {
     }
   }, []);
 
-  // Save to localStorage when it changes
   useEffect(() => {
     localStorage.setItem("isMuted", JSON.stringify(isMuted));
   }, [isMuted]);

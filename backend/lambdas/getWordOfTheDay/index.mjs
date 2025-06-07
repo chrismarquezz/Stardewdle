@@ -6,7 +6,6 @@ const docClient = DynamoDBDocumentClient.from(client);
 
 export const handler = async (event) => {
   const today = new Date().toISOString().split("T")[0];
-  console.log("Today's date:", today);
 
   const command = new GetCommand({
     TableName: "daily_words",
@@ -15,7 +14,6 @@ export const handler = async (event) => {
 
   try {
     const data = await docClient.send(command);
-    console.log("DynamoDB response:", data);
 
     if (!data.Item) {
       return {
@@ -27,7 +25,11 @@ export const handler = async (event) => {
     return {
       statusCode: 200,
       headers: { "Access-Control-Allow-Origin": "*" },
-      body: JSON.stringify({ word: data.Item.word }),
+      body: JSON.stringify({
+        word: data.Item.word,
+        correct_guesses: data.Item.correct_guesses ?? 0,
+        total_guesses: data.Item.totalAttempts ?? 0
+      }),
     };
   } catch (err) {
     console.error("Error fetching word:", err);

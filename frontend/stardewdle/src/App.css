@@ -43,11 +43,11 @@ body {
 }
 
 html, body {
-  overflow: hidden; /* This is the key property */
-  margin: 0;       /* Resets default browser margin on body */
-  padding: 0;      /* Resets default browser padding on body */
-  height: 100%;    /* Ensures html and body take full height for consistent behavior */
-  width: 100%;     /* Ensures html and body take full width */
+  overflow: hidden; 
+  margin: 0;      
+  padding: 0;      
+  height: 100%;   
+  width: 100%;     
 }
 
 .clickable {
@@ -63,7 +63,6 @@ html, body {
   transform: scale(1.125);
 }
 
-/* Keep base and hover image styles the same */
 .buttonBase,
 .buttonHover {
   position: absolute;
