@@ -33,7 +33,7 @@ export default function CollectionsBox() {
 
       fetchInitialData();
     }
-  }, []); // <-- Empty dependencies, runs once on mount
+  }, []);
 
   if (crops.length === 0) {
     return <CropLoader />;
@@ -139,7 +139,7 @@ export default function CollectionsBox() {
           if (isMuted) {
             new Audio("/sounds/pluck.mp3").play();
           }
-          toggleMute(); // ← actually change mute state
+          toggleMute();
         }}
         className="absolute bottom-2 -right-10 w-[30px] h-[30px] clickable z-10"
       >
@@ -149,7 +149,6 @@ export default function CollectionsBox() {
           className="w-full h-full"
         />
       </div>
-      {/* Mute/Unmute Button */}
     </div>
   );
 }

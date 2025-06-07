@@ -7,7 +7,7 @@ import {
 import { SoundProvider } from "./context/SoundContext";
 
 
-import './App.css'; // or App.css
+import './App.css';
 
 import Landing from "./pages/Landing";
 import Game from "./pages/Game";

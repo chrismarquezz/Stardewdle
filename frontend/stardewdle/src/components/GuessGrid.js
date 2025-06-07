@@ -49,26 +49,23 @@ function capitalize(value) {
 
 function getColor(key, guessValue, correctValue) {
   if (key === "season") {
-    const SEASONS = new Set(["spring", "summer", "fall", "winter"]); // Use a Set for SEASONS for efficient lookups
+    const SEASONS = new Set(["spring", "summer", "fall", "winter"]);
 
     const normalizeToSet = (val) => {
-      if (val === "all") return SEASONS; // Return the full SEASONS set
+      if (val === "all") return SEASONS;
       if (Array.isArray(val)) {
-        // If an array contains "all", normalize it to all seasons
         if (val.includes("all")) {
           return SEASONS;
         }
-        return new Set(val); // Convert the input array to a Set
+        return new Set(val);
       }
-      // If it's a single string (e.g., "spring"), return a Set with that string
       if (typeof val === 'string') return new Set([val]);
-      return new Set(); // Fallback for unexpected types
+      return new Set(); 
     };
 
     const guessedSet = normalizeToSet(guessValue);
     const correctSet = normalizeToSet(correctValue);
 
-    // Check for "match" (both sets are identical in terms of elements and size)
     const allMatch =
       guessedSet.size === correctSet.size &&
       [...guessedSet].every(season => correctSet.has(season));
@@ -77,18 +74,15 @@ function getColor(key, guessValue, correctValue) {
       return "green";
     }
 
-    // Check for "partial" (at least one common element)
     const partialMatch = [...guessedSet].some(season => correctSet.has(season));
 
     if (partialMatch) {
       return "yellow";
     }
 
-    // No common elements
     return "red";
   }
 
-  // Original logic for non-season keys (assumes direct equality check)
   return guessValue === correctValue ? "green" : "red";
 }
 
@@ -104,7 +98,6 @@ function getArrow(key, guessValue, correctValue) {
   return null;
 }
 
-// Add 'className' to the destructuring of props
 export default function GuessGrid({ guesses, answer, className }) { // Keep className prop
   const rows = Array.from({ length: 6 }).map((_, i) => {
     const guessEntry = guesses[i];
@@ -118,7 +111,7 @@ export default function GuessGrid({ guesses, answer, className }) { // Keep clas
 
     return (
       <div
-        key={i} // Add a key to the row div for better React performance
+        key={i} 
         className="grid gap-1 items-center w-full"
         style={{ gridTemplateColumns: COL_DIST }}
       >
@@ -295,11 +288,8 @@ export default function GuessGrid({ guesses, answer, className }) { // Keep clas
     );
   });
 
-  // GuessGrid.js (within the return statement)
 return (
-  // This outermost div remains without the passed className
   <div className={`space-y-[2px] h-full w-full items-center justify-center`}>
-    {/* Apply the passed 'className' here to the div containing the actual grid content */}
     <div className={`h-full w-full flex flex-col justify-center ${className}`}>
       {/* Headers */}
       <div className="grid gap-1" style={{ gridTemplateColumns: COL_DIST }}>
