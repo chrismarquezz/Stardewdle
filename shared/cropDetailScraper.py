@@ -13,7 +13,6 @@ def scrape_stardew_valley_crop_info(json_file_path="crops.json"):
     base_url = "https://stardewvalleywiki.com/"
 
     try:
-        # Load existing crop data from the JSON file
         with open(json_file_path, 'r', encoding='utf-8') as f:
             crops_data = json.load(f)
         print(f"Successfully loaded data from {json_file_path}")
@@ -34,31 +33,25 @@ def scrape_stardew_valley_crop_info(json_file_path="crops.json"):
             print(f"Skipping entry {index}: 'name' key missing.")
             continue
 
-        # Format the crop name for the URL: replace spaces with underscores and capitalize each word
-        # For example, "ancient fruit" becomes "Ancient_Fruit"
         page_url = f"{base_url}{crop_name.replace(' ', '_').title()}"
 
         #print(f"[{index + 1}/{total_crops}] Scraping: {crop_name} from {page_url}")
 
         try:
-            # Send a GET request to the crop's wiki page
             response = requests.get(page_url, timeout=10)
-            response.raise_for_status() # Raise an HTTPError for bad responses (4xx or 5xx)
+            response.raise_for_status() 
 
-            # Parse the HTML content using BeautifulSoup
             soup = BeautifulSoup(response.text, 'html.parser')
 
-            # Find the 'infoboxdetail' element
-            # The image shows it's a <td> with id="infoboxdetail"
             infobox_detail_element = soup.find('td', id='infoboxdetail')
 
             if infobox_detail_element:
                 infodetail_text = infobox_detail_element.get_text(strip=True)
                 crop['infodetail'] = infodetail_text
-                #print(f"  - Found infodetail: '{infodetail_text[:50]}...'") # Print first 50 chars
+                #print(f"  - Found infodetail: '{infodetail_text[:50]}...'")
                 updated_crops_count += 1
             else:
-                crop['infodetail'] = "N/A" # Set to N/A if not found
+                crop['infodetail'] = "N/A"
                 print(f"  - Infodetail not found for {crop_name}.")
 
         except requests.exceptions.RequestException as e:
@@ -68,10 +61,8 @@ def scrape_stardew_valley_crop_info(json_file_path="crops.json"):
             crop['infodetail'] = f"Error: {e}"
             print(f"  - An unexpected error occurred for {crop_name}: {e}")
 
-        # Be polite and add a small delay between requests to avoid overwhelming the server
         time.sleep(0.5)
 
-    # Save the updated crop data back to the JSON file
     try:
         with open(json_file_path, 'w', encoding='utf-8') as f:
             json.dump(crops_data, f, indent=4, ensure_ascii=False)
@@ -80,8 +71,5 @@ def scrape_stardew_valley_crop_info(json_file_path="crops.json"):
     except Exception as e:
         print(f"Error saving updated data to {json_file_path}: {e}")
 
-# Example usage:
 if __name__ == "__main__":
-    # This script now assumes crops.json already exists and will not create a dummy one.
-    # Ensure your crops.json file is present in the same directory before running.
     scrape_stardew_valley_crop_info("shared/crops.json")

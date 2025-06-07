@@ -10,11 +10,11 @@ export default function Game() {
 
   useEffect(() => {
     const handleResize = () => {
-      const maxWidth = window.innerWidth * 0.95; // 95% of screen width
-      const maxHeight = window.innerHeight * 0.95; // 95% of screen height
+      const maxWidth = window.innerWidth * 0.95;
+      const maxHeight = window.innerHeight * 0.95;
 
-      const designWidth = 1600; // Your design width (adjust as needed)
-      const designHeight = 900; // Your design height (adjust as needed)
+      const designWidth = 1600;
+      const designHeight = 900;
 
       const scaleW = maxWidth / designWidth;
       const scaleH = maxHeight / designHeight;
@@ -48,8 +48,8 @@ export default function Game() {
       <div className="relative z-10 w-full h-full flex justify-center items-center">
         <div
           style={{
-            width: "1600px", // Design width
-            height: `${900*scaleFactor}px`, // Design height
+            width: "1600px", 
+            height: `${900*scaleFactor}px`,
             transform: `scale(${scaleFactor})`,
             transformOrigin: "top center",
           }}

@@ -7,7 +7,6 @@ import time
 HEADERS = {"User-Agent": "Mozilla/5.0"}
 BASE_URL = "https://stardewvalleywiki.com/"
 
-# Paste your manually cleaned list of crop names here:
 crop_names = [
     "Blue_Jazz", "Carrot", "Cauliflower", "Coffee_Bean", "Garlic", "Green_Bean",
     "Kale", "Parsnip", "Potato", "Rhubarb", "Strawberry", "Tulip", "Unmilled_Rice",
@@ -24,14 +23,14 @@ def parse_crop_page(crop_name):
     print(f"Fetching {crop_name}...")
     res = requests.get(url, headers=HEADERS)
     if res.status_code != 200:
-        print(f"❌ Failed to fetch {crop_name}: {res.status_code}")
+        print(f"Failed to fetch {crop_name}: {res.status_code}")
         return None
 
     soup = BeautifulSoup(res.text, "html.parser")
     infobox = soup.find("table", id="infoboxtable")
 
     if not infobox:
-        print(f"⚠️ No infobox for {crop_name}")
+        print(f"No infobox for {crop_name}")
         return None
 
     crop = {
@@ -39,12 +38,11 @@ def parse_crop_page(crop_name):
         "growth_time": None,
         "season": [],
         "base_price": None,
-        "regrows": False, # Will update if a regrow field is discovered
+        "regrows": False,
         "image_url": "",
         "type":"",
     }
 
-    # Extract type from <a> tags inside first few <p> tags
     paragraphs = soup.find_all("p", limit=3)
     for p in paragraphs:
         for a in p.find_all("a"):
@@ -61,16 +59,12 @@ def parse_crop_page(crop_name):
         if crop.get("type"):
             break
 
-
-    # Search for "Regrowth: X Days" anywhere on the page
     regrowth_match = re.search(r"regrowth:\s*(\d+)\s*days", soup.get_text().lower())
     if regrowth_match and int(regrowth_match.group(1)) > 0:
         crop["regrows"] = True
 
-
     rows = infobox.find_all("tr")
 
-    # Get crop image from the infobox
     infobox_img = infobox.find("img")
     if infobox_img and "src" in infobox_img.attrs:
         crop["image_url"] = "https://stardewvalleywiki.com" + infobox_img["src"]
@@ -83,19 +77,15 @@ def parse_crop_page(crop_name):
 
         key = header.get_text(strip=True).lower()
 
-        # Growth Time
         if "growth time" in key:
             match = re.search(r"(\d+)\s*days?", value.get_text(strip=True))
             if match:
                 crop["growth_time"] = int(match.group(1))
 
-        # Season(s)
         elif "season" in key:
             season_links = value.find_all("a")
             crop["season"] = [a.get_text(strip=True).lower() for a in season_links if a.get_text(strip=True)]
 
-    # Base price is in the table below (60g, etc.)
-    # Loop through all no-wrap tables to find the first price that looks valid
     price_tables = soup.find_all("table", class_="no-wrap")
     for table in price_tables:
         tds = table.find_all("td")
@@ -108,11 +98,10 @@ def parse_crop_page(crop_name):
         if crop["base_price"] is not None:
             break
 
-
     if crop["growth_time"] and crop["base_price"]:
         return crop
     else:
-        print(f"⚠️ Missing data for {crop_name}: "
+        print(f"Missing data for {crop_name}: "
             f"growth_time={crop['growth_time']} base_price={crop['base_price']}")
     return None
 
@@ -122,9 +111,9 @@ if __name__ == "__main__":
         crop = parse_crop_page(name)
         if crop:
             results.append(crop)
-        time.sleep(0.5)  # Be polite to the server
+        time.sleep(0.5)
 
     with open("crops.json", "w") as f:
         json.dump(results, f, indent=2)
 
-    print(f"✅ Scraped {len(results)} crops and saved to crops.json")
+    print(f"Scraped {len(results)} crops and saved to crops.json")
