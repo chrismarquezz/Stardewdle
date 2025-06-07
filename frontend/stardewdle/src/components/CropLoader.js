@@ -1,4 +1,3 @@
-// src/components/CropLoader.js
 import { useState, useEffect } from "react";
 
 const cropImages = [

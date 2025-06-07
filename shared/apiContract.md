@@ -1,12 +1,14 @@
 ### GET `/word`
 
-Returns the current word of the day.
+Returns the current word of the day, correct guesses, and total guesses.
 
 ### Response
 
 ```json
 {
-  "word": "potato"
+  "word": "potato",
+  "correct_guesses": 43,
+  "total_guesses": 102
 }
 
 ### POST `get`
@@ -19,5 +21,5 @@ Validates a user-submitted guess against the word of the day.
 }
 ```json
 {
-  "result":{"type":"mismatch","regrows":"mismatch","season":"match","growth_time":"higher","base_price":"higher"}
+  "result":{"growth_time":"higher","base_price":"higher","regrows":"mismatch","type":"mismatch","season":"match"}
 }

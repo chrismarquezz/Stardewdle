@@ -4,6 +4,7 @@ import React, { useState } from "react";
 export default function ShareModal({
   shareText,
   correctGuesses,
+  totalGuesses,
   timeLeft,
   onClose,
   isMuted,
@@ -20,7 +21,7 @@ export default function ShareModal({
   const handleCopy = () => {
     navigator.clipboard.writeText(shareText);
     setCopied(true);
-    setTimeout(() => setCopied(false), 2000); // hide after 2 seconds
+    setTimeout(() => setCopied(false), 2000); 
   };
 
   return ReactDOM.createPortal(
@@ -33,10 +34,9 @@ export default function ShareModal({
 
       {/* Modal Content */}
       <div
-        // Keep the dimensions that match the Landing page modal
         className="relative max-w-[95vw] max-h-[95vh] flex flex-col justify-between"
         style={{
-          transform: `scale(${scaleFactor})`, // Use the passed scaleFactor
+          transform: `scale(${scaleFactor})`,
           transformOrigin: "center",
         }}
         onClick={(e) => e.stopPropagation()}
@@ -64,10 +64,9 @@ export default function ShareModal({
 
           {/* Wins Today */}
           <p
-            // Applied responsive text sizing for paragraph
             className="text-center text-[#BC6131] text-md sm:text-3xl md:text-3xl mb-1"
           >
-            {correctGuesses ?? 0} people have solved today's puzzle!
+            {correctGuesses ?? 0} out of {totalGuesses ?? 0} people have solved today's puzzle!
           </p>
 
           {/* Share Text Block */}

@@ -19,14 +19,13 @@ export default function CropGrid({ selectedCrop, onSelect, isMuted, className, i
     fetchCrops();
   }, []);
 
-  // Define grid styles based on orientation
   const gridStyles = isMobilePortrait
     ? {
-        gridTemplateColumns: "repeat(9, 60px)", // Invert columns (e.g., from 8 to 4)
-        gridAutoRows: "60px", // Keep row height the same
+        gridTemplateColumns: "repeat(9, 60px)", 
+        gridAutoRows: "60px", 
       }
     : {
-        gridTemplateColumns: "repeat(8, 60px)", // Original desktop columns
+        gridTemplateColumns: "repeat(8, 60px)", 
         gridAutoRows: "60px",
       };
 
@@ -42,7 +41,7 @@ export default function CropGrid({ selectedCrop, onSelect, isMuted, className, i
     >
       <div
         className="grid gap-[6px] place-items-center"
-        style={gridStyles} // Apply dynamic grid styles
+        style={gridStyles} 
       >
         {crops.map((crop) => (
           <CropCard
