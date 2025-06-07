@@ -12,7 +12,7 @@ function formatName(name) {
   return name
     .replace(/_/g, " ")
     .replace(
-      /\w\S*/g, // Changed from \\w\\S* to \w\S*
+      /\w\S*/g,
       (w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
     );
 }
@@ -75,6 +75,8 @@ export default function GameBox({ isMobilePortrait }) {
   const [shareText, setShareText] = useState("");
   const [timeLeft, setTimeLeft] = useState(getTimeUntilMidnightUTC());
   const [correctGuesses, setCorrectGuesses] = useState(null);
+  const [totalGuesses, setTotalGuesses] = useState(null);
+
 
   const isFinalGuess = guesses.length === 5;
 
@@ -93,9 +95,9 @@ function generateShareText(resultGrid, win) {
         })
         .join("")
     )
-    .join("\n"); // Changed from \\n to \n
+    .join("\n");
 
-  return `${todaysDate()}\n${header}\n${grid}\nPlay at: https://stardewdle.com/`; // Changed from \\n to \n
+  return `${todaysDate()}\n${header}\n${grid}\nPlay at: https://stardewdle.com/`;
 }
 
   useEffect(() => {
@@ -166,7 +168,8 @@ function generateShareText(resultGrid, win) {
           const data = await response.json();
           const word = data.word;
           setCorrectGuesses(data.correct_guesses);
-
+          setTotalGuesses(data.total_guesses);
+          
           const cropData = cropList.find(
             (crop) => crop.name.toLowerCase() === word.toLowerCase()
           );
@@ -237,7 +240,7 @@ function generateShareText(resultGrid, win) {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ guess: selectedCrop.name }),
+          body: JSON.stringify({ guess: selectedCrop.name, guessNum: guesses.length + 1 }),
         }
       );
 
@@ -263,6 +266,7 @@ function generateShareText(resultGrid, win) {
           );
           const data = await res.json();
           setCorrectGuesses(data.correct_guesses);
+          setTotalGuesses(data.total_guesses);
         } catch (err) {
           console.error("Failed to fetch win stats:", err);
         }
@@ -521,6 +525,7 @@ function generateShareText(resultGrid, win) {
         <ShareModal
           shareText={shareText}
           correctGuesses={correctGuesses}
+          totalGuesses={totalGuesses}
           timeLeft={timeLeft}
           onClose={() => setShowShareModal(false)}
           isMuted={isMuted}

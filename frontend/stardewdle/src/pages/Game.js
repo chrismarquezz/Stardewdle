@@ -17,19 +17,16 @@ export default function Game() {
       const designWidth = 1600;
       const designHeight = 900;
 
-      // Determine if current orientation is mobile portrait
       const currentlyIsMobilePortrait =
         window.innerWidth < 768 && window.innerHeight > window.innerWidth;
       setIsMobilePortrait(currentlyIsMobilePortrait);
 
-      // Scaling factor calculation:
-      // If mobile portrait, we're effectively fitting a 900x1600 content into screen.
-      // So, swap design dimensions for scale calculation to ensure it fits.
+      
       let effectiveDesignWidth = designWidth;
       let effectiveDesignHeight = designHeight;
       if (currentlyIsMobilePortrait) {
-        effectiveDesignWidth = designHeight; // 900
-        effectiveDesignHeight = designWidth; // 1600
+        effectiveDesignWidth = designHeight; 
+        effectiveDesignHeight = designWidth; 
       }
 
       const scaleW = maxWidth / effectiveDesignWidth;
@@ -38,8 +35,8 @@ export default function Game() {
       setScaleFactor(Math.min(scaleW, scaleH));
     };
 
-    handleResize(); // Call on mount
-    window.addEventListener("resize", handleResize); // Re-evaluate on resize
+    handleResize(); 
+    window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
@@ -60,21 +57,17 @@ export default function Game() {
         }}
       />
 
-      {/* Outer game container: Scales the entire UI to fit screen */}
-      {/* This div acts as the positioning context for the contained elements */}
       <div className={`absolute z-10 w-full h-full flex justify-center items-center ${isMobilePortrait ? "top-2" : "-top-4"}`}>
         <div
-          // This div acts as the main content frame, scaling the overall game.
-          // It's a flex-column to stack the logo and gamebox wrapper.
           className="flex flex-col items-center"
           style={{
-            width: "1600px", // Fixed design width
-            height: isMobilePortrait ? "800px" : "900px", // Fixed design height
-            transform: `scale(${scaleFactor})`, // Apply overall scaling
+            width: "1600px", 
+            height: isMobilePortrait ? "800px" : "900px",
+            transform: `scale(${scaleFactor})`,
             transformOrigin: "center center",
           }}
         >
-          {/* Logo Button - Remains static at the top, not rotated */}
+          {/* Logo Button */}
           <div className={`relative ${isMobilePortrait ? "top-[-470px]" : ""}`}>
             <div
               onClick={() => {
@@ -98,7 +91,6 @@ export default function Game() {
             </div>
           </div>
 
-          {/* New wrapper for GameBox: Handles its own rotation and positioning for mobile */}
           <div className="gamebox-wrapper">
             <GameBox isMobilePortrait={isMobilePortrait} />
           </div>
