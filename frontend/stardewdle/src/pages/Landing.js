@@ -10,11 +10,11 @@ export default function Landing() {
 
   useEffect(() => {
     const handleResize = () => {
-      const maxWidth = window.innerWidth * 0.95; // 95% of screen width
-      const maxHeight = window.innerHeight * 0.95; // 95% of screen height
+      const maxWidth = window.innerWidth * 0.95; 
+      const maxHeight = window.innerHeight * 0.95;
 
-      const designWidth = 1080; // Your design width (adjust as needed)
-      const designHeight = 720; // Your design height (adjust as needed)
+      const designWidth = 1080;
+      const designHeight = 720; 
 
       const scaleW = maxWidth / designWidth;
       const scaleH = maxHeight / designHeight;
@@ -40,8 +40,8 @@ export default function Landing() {
       <div className="relative z-10 w-full h-full flex justify-center items-center">
         <div
           style={{
-            width: "1080px", // Design width
-            height: `${720 * scaleFactor}px`, // Design height
+            width: "1080px", 
+            height: `${720 * scaleFactor}px`, 
             transform: `scale(${scaleFactor})`,
             transformOrigin: "top center",
           }}
@@ -54,7 +54,7 @@ export default function Landing() {
             className="mt-10 max-w-[800px]"
           />
 
-          {/* Button group centered vertically in remaining space */}
+          {/* Button group */}
           <div className="flex flex-col items-center gap-4 mt-[140px]">
             {/* Play Button */}
             <div

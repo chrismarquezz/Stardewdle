@@ -18,7 +18,6 @@ def extract_crop_names_from_toc():
     for link in crop_links:
         name = link.get_text(strip=True)
         if name:
-            # Normalize and remove known edge cases
             name = name.replace(" ", "_").replace("_(Crop)", "").strip()
             toc_raw.append(name)
 

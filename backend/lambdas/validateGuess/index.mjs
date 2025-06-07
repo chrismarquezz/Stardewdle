@@ -4,19 +4,15 @@ import fetch from "node-fetch";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, GetCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 
-// Setup __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Load crop data from JSON file
 const cropURL = "https://stardewdle-data.s3.amazonaws.com/crops.json";
 const response = await fetch(cropURL);
 const crops = await response.json();
 
-// Setup DynamoDB
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 
-// Helper functions
 const compareNumbers = (a, b) => {
   if (a === b) return "match";
   return a > b ? "higher" : "lower";
@@ -26,39 +22,30 @@ const compareSeasons = (a, b) => {
   const SEASONS = ["spring", "summer", "fall", "winter"];
 
   const normalizeArray = (arr) => {
-    // If the array contains "all", replace it with all seasons
     if (arr.includes("all")) {
-      return new Set(SEASONS); // Use a Set directly for efficiency
+      return new Set(SEASONS);
     }
-    // Otherwise, convert the array to a Set
     return new Set(arr);
   };
 
   const aSet = normalizeArray(a);
   const bSet = normalizeArray(b);
 
-  // Find the overlap
   const overlap = [...aSet].filter(season => bSet.has(season));
 
-  // Determine the relationship
   if (overlap.length === aSet.size && aSet.size === bSet.size) {
-    // Both sets are identical (e.g., ["spring"] and ["spring"], or ["all"] and ["all"])
     return "match";
   }
   if (overlap.length > 0) {
-    // There is at least one common season, but not a full match
-    // (e.g., ["spring"] and ["spring", "summer"], or ["all"] and ["spring"])
     return "partial";
   }
-  // No common seasons
   return "mismatch";
 };
 
-
-// Lambda handler
 export const handler = async (event) => {
   try {
-    const guess = JSON.parse(event.body).guess?.toLowerCase();
+    const { guess, guessNum } = JSON.parse(event.body);
+
     if (!guess) {
       return {
         statusCode: 400,
@@ -66,7 +53,14 @@ export const handler = async (event) => {
       };
     }
 
-    const guessedCrop = crops.find(c => c.name === guess);
+    if (guessNum !== undefined && (typeof guessNum !== 'number' || guessNum < 1)) {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({ error: "Invalid 'guessNum'. Must be a positive number." }),
+        };
+    }
+
+    const guessedCrop = crops.find(c => c.name === guess.toLowerCase());
     if (!guessedCrop) {
       return {
         statusCode: 400,
@@ -74,7 +68,6 @@ export const handler = async (event) => {
       };
     }
 
-    // Get today's word from DynamoDB
     const today = new Date().toISOString().split("T")[0];
     const { Item } = await ddb.send(new GetCommand({
       TableName: "daily_words",
@@ -96,7 +89,6 @@ export const handler = async (event) => {
       };
     }
 
-    // Compare attributes
     const result = {
       growth_time: compareNumbers(guessedCrop.growth_time, answerCrop.growth_time),
       base_price: compareNumbers(guessedCrop.base_price, answerCrop.base_price),
@@ -107,17 +99,32 @@ export const handler = async (event) => {
 
     const isFullyCorrect = Object.values(result).every(val => val === "match");
 
+    let UpdateExpression = "SET ";
+    const ExpressionAttributeValues = {};
+    const ExpressionAttributeNames = {};
+    const UpdateExpressions = [];
+
     if (isFullyCorrect) {
-      await ddb.send(new UpdateCommand({
-        TableName: "daily_words",
-        Key: { date: today },
-        UpdateExpression: "SET correct_guesses = if_not_exists(correct_guesses, :zero) + :inc",
-        ExpressionAttributeValues: {
-          ":inc": 1,
-          ":zero": 0
-        }
-      }));
-    } 
+      UpdateExpressions.push("correct_guesses = if_not_exists(correct_guesses, :zero) + :inc");
+      ExpressionAttributeValues[":inc"] = 1;
+      ExpressionAttributeValues[":zero"] = 0;
+    }
+
+    if (isFullyCorrect || guessNum === 6) {
+        UpdateExpressions.push("totalAttempts = if_not_exists(totalAttempts, :zeroTotal) + :incTotal");
+        ExpressionAttributeValues[":incTotal"] = 1;
+        ExpressionAttributeValues[":zeroTotal"] = 0;
+    }
+
+    if (UpdateExpressions.length > 0) {
+        await ddb.send(new UpdateCommand({
+            TableName: "daily_words",
+            Key: { date: today },
+            UpdateExpression: UpdateExpression + UpdateExpressions.join(", "),
+            ExpressionAttributeValues: ExpressionAttributeValues,
+            ExpressionAttributeNames: Object.keys(ExpressionAttributeNames).length > 0 ? ExpressionAttributeNames : undefined,
+        }));
+    }
 
     return {
       statusCode: 200,
