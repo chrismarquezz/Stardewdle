@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import CollectionsCard from "./CollectionsCard";
 
-export default function CollectionsGrid({ selectedCrop, onSelect, isMuted }) {
+export default function CollectionsGrid({ selectedCrop, onSelect, isMuted, className, isMobilePortrait }) {
   const [crops, setCrops] = useState([]);
 
   useEffect(() => {
@@ -19,22 +19,24 @@ export default function CollectionsGrid({ selectedCrop, onSelect, isMuted }) {
     fetchCrops();
   }, []);
 
+  const gridStyles = isMobilePortrait
+    ? {
+      gridTemplateColumns: "repeat(9, 60px)",
+      gridAutoRows: "60px",
+    }
+    : {
+      gridTemplateColumns: "repeat(8, 60px)",
+      gridAutoRows: "60px",
+    };
+
   return (
     <div
-      className="flex justify-center items-center w-full h-full w-[90%] mt-[2px]"
-      /*style={{
-        backgroundImage: "url('/images/collections/collections.png')",
-        backgroundSize: "80% 80%",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}*/
+      className={`flex justify-center items-center h-full w-[90%] mt-[2px] ${className}`}
     >
       <div
         className="grid gap-[6px] place-items-center"
-        style={{
-          gridTemplateColumns: "repeat(8, 60px)",
-          gridAutoRows: "60px",
-        }}
+        style={gridStyles}
+
       >
         {crops.map((crop) => (
           <CollectionsCard
