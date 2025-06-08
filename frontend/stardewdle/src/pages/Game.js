@@ -42,13 +42,11 @@ export default function Game() {
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
-      {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url('/images/background.jpg')" }}
       />
 
-      {/* Vignette + Blur Overlay */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -67,7 +65,6 @@ export default function Game() {
             transformOrigin: "center center",
           }}
         >
-          {/* Logo Button */}
           <div className={`relative ${isMobilePortrait ? "top-[-470px]" : ""}`}>
             <div
               onClick={() => {
