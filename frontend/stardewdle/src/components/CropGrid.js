@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import CropCard from "./CropCard";
 
-export default function CropGrid({ selectedCrop, onSelect, isMuted, className, isMobilePortrait }) { // Add isMobilePortrait to props
+export default function CropGrid({ selectedCrop, onSelect, isMuted, className, isMobilePortrait }) {
   const [crops, setCrops] = useState([]);
 
   useEffect(() => {
