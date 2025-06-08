@@ -290,7 +290,7 @@ function generateShareText(resultGrid, win) {
   };
 
   if (!correctCrop || crops.length === 0) {
-    return <CropLoader />;
+    return <CropLoader className={isMobilePortrait ? "content-counter-rotate-mobile" : ""}/>;
   }
 
   return (
@@ -305,7 +305,6 @@ function generateShareText(resultGrid, win) {
         height: isMobilePortrait ? "940px" : "800px",
       }}
     >
-      {/* Crop Grid - NEW Wrapper div */}
       <div
         className={
           isMobilePortrait
@@ -323,14 +322,11 @@ function generateShareText(resultGrid, win) {
         />
       </div>
 
-      {/* Right Side - Apply counter-rotation class */}
       <div
         className={`flex flex-col align-center w-full place-items-center ${isMobilePortrait ? "content-counter-rotate-mobile" : ""
           }`}
       >
-        {/* Selected Crop Display */}
         <div className={`flex flex-row items-center h-full ${isMobilePortrait ? "mr-6" : "mr-24"} mt-[80px] gap-4`}>
-          {/* Crop image in center of frame */}
           <div
             className="relative bg-no-repeat bg-contain"
             style={{
@@ -348,7 +344,6 @@ function generateShareText(resultGrid, win) {
             )}
           </div>
           <div className="flex flex-col items-center">
-            {/* Name on banner */}
             <div
               className="flex items-center justify-center bg-center bg-no-repeat bg-contain"
               style={{
@@ -362,7 +357,6 @@ function generateShareText(resultGrid, win) {
               </p>
             </div>
 
-            {/* Submit Button */}
             {gameOver &&
               (guesses[5] ? guesses[5].crop.name === correctCrop.name : true) ? (
               <div className="mt-4 flex items-center justify-center gap-4">
@@ -452,12 +446,7 @@ function generateShareText(resultGrid, win) {
             )}
           </div>
         </div>
-
-        {/* Guess Grid - REMOVE THE className PROP HERE */}
         <div
-          // This wrapper div's styling for background image, width, height remains.
-          // It is implicitly rotated by its parent 'Right Side' div.
-          // We need GuessGrid itself to counter-rotate.
           className={`${isMobilePortrait ? "" : "mr-[78px]"} pl-9 mb-[84px] bg-center bg-no-repeat bg-cover min-h-[440px]`}
           style={{
             backgroundImage: "url('/images/guesses.png')",
@@ -465,15 +454,12 @@ function generateShareText(resultGrid, win) {
             height: "456px",
           }}
         >
-          {/* REMOVE className={isMobilePortrait ? "content-counter-rotate-mobile" : ""} */}
           <GuessGrid
             guesses={guesses}
             answer={correctCrop}
-            // className={isMobilePortrait ? "content-counter-rotate-mobile" : ""} // <--- REMOVE THIS LINE
           />
         </div>
       </div>
-      {/* Mute/Unmute Button - Apply counter-rotation class */}
       <div
         onClick={() => {
           if (isMuted) {
@@ -490,8 +476,6 @@ function generateShareText(resultGrid, win) {
           className="w-full h-full"
         />
       </div>
-
-      {/* Help Button - Apply counter-rotation class */}
       <div
         onClick={() => {
           if (!isMuted) {
@@ -513,8 +497,6 @@ function generateShareText(resultGrid, win) {
           className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
         />
       </div>
-
-      {/* Help Modal */}
       {showHelp && (
         <HelpModal
           isMuted={isMuted}

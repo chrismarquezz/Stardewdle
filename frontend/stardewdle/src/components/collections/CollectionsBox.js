@@ -12,7 +12,7 @@ function formatName(name) {
     );
 }
 
-export default function CollectionsBox() {
+export default function CollectionsBox({ isMobilePortrait }) { // Receive isMobilePortrait prop
   const [selectedCrop, setSelectedCrop] = useState(null);
 
   const [crops, setCrops] = useState([]);
@@ -36,32 +36,39 @@ export default function CollectionsBox() {
   }, []);
 
   if (crops.length === 0) {
-    return <CropLoader />;
+    return <CropLoader className={isMobilePortrait ? "content-counter-rotate-mobile" : ""}/>;
   }
 
   return (
     <div
-      className="relative flex flex-row shadow-xl bg-no-repeat bg-center mt-3 justify-between w-full pl-3"
+      className={`relative shadow-xl bg-no-repeat bg-center ${
+        isMobilePortrait ? "collections-box-mobile-layout" : "relative flex flex-row mt-3 justify-between w-full pl-3"
+      }`}
       style={{
         backgroundImage: "url('/images/collections/collectionsBG.png')",
         backgroundSize: "100% 100%",
-        width: "1600px",
-        height: "800px",
-        transform: "scale(0.95)",
+        width: isMobilePortrait ? "1500px" : "1600px", 
+        height: isMobilePortrait ? "940px" : "800px",
       }}
     >
-      {/* Crop Grid */}
-      <CollectionsGrid
-        selectedCrop={selectedCrop}
-        onSelect={setSelectedCrop}
-        crops={crops}
-        isMuted={isMuted}
-      />
-
-      {/* Right Side */}
-      <div className="flex flex-col align-center w-full place-items-center h-full justify-center ">
-        {/* Selected Crop Display */}
-        <div className="flex flex-col items-center mr-12 mt-[20px] gap-4">
+      <div
+        className={
+          isMobilePortrait
+            ? "mobile-collections-grid-wrapper content-counter-rotate-mobile"
+            : "relative flex flex-row bg-no-repeat mt-3 justify-center w-full pl-3"
+        }
+      >
+        <CollectionsGrid
+          selectedCrop={selectedCrop}
+          onSelect={setSelectedCrop}
+          crops={crops}
+          isMuted={isMuted}
+          className={isMobilePortrait ? "content-counter-rotate-mobile" : ""}
+          isMobilePortrait={isMobilePortrait}
+        />
+      </div>
+      <div className={`flex flex-col align-center w-full place-items-center h-full justify-center ${isMobilePortrait ? "content-counter-rotate-mobile" : ""}`}>
+        <div className={`flex flex-col items-center ${isMobilePortrait ? "" : "mr-12 mt-[20px]"} gap-4`}>
           {selectedCrop ? (
             <>
               <p className="text-7xl text-center text-[#c9ba98]">
@@ -69,7 +76,6 @@ export default function CollectionsBox() {
                 <p className="w-[500px] border-b-4 border-[#c9ba98] mx-auto text-4xl text-center text-[#c9ba98] pb-2">{selectedCrop.infodetail}</p>
               </p>
               <div className="flex flex-row items-center h-full mr-10 gap-4">
-                {/* Crop image in center of frame */}
                 <div
                   className="relative bg-no-repeat bg-contain"
                   style={{
@@ -133,7 +139,6 @@ export default function CollectionsBox() {
         </div>
       </div>
 
-      {/* Mute/Unmute Button */}
       <div
         onClick={() => {
           if (isMuted) {
@@ -141,7 +146,7 @@ export default function CollectionsBox() {
           }
           toggleMute();
         }}
-        className="absolute bottom-2 -right-10 w-[30px] h-[30px] clickable z-10"
+        className={`absolute bottom-2 -right-10 w-[30px] h-[30px] clickable z-10 ${isMobilePortrait ? "content-counter-rotate-mobile" : ""}`}
       >
         <img
           src={isMuted ? "/images/muted.png" : "/images/unmuted.png"}
