@@ -106,4 +106,67 @@ body,
     bottom: auto !important;
     left: auto !important;
   }
+
+   .collections-mobile-wrapper {
+    width: 1500px;
+    height: 1000px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-48%, -50%) rotate(-90deg); 
+    transform-origin: center center;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .collections-content-container {
+    display: block !important; 
+    position: relative;
+    padding-left: 0 !important;
+    margin-top: 0 !important;
+    top: 3%;
+  }
+
+  .collections-box-mobile-layout {
+    display: block !important;
+    position: relative;
+    padding-left: 0 !important;
+    margin-top: 0 !important;
+    background-size: 100% 100% !important;
+  }
+
+
+  .collections-box-mobile-layout .mobile-collections-grid-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 27%; 
+    transform: translate(-52%, -50%);
+    width: 900px;
+    height: 720px;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Right Side Container for Collections Page */
+  .collections-box-mobile-layout .flex.flex-col.align-center.w-full.place-items-center {
+    position: absolute;
+    top: 7%;
+    left: 40.5%;
+    width: 1000px;
+    height: 800px; 
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Mute Button for Collections Page */
+  .collections-box-mobile-layout .absolute.bottom-2.-right-10.w-\\[30px\\].h-\\[30px\\].clickable.z-10 {
+    position: absolute;
+    top: 50px;
+    left: 50px; 
+    bottom: auto !important;
+    right: auto !important;
+  }
 }
