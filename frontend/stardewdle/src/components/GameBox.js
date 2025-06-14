@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSound } from "../context/SoundContext";
 import CropGrid from "./CropGrid";
 import GuessGrid from "./GuessGrid";
 import CropLoader from "../components/CropLoader";
 import ShareModal from "./ShareModal";
 import HelpModal from "./HelpModal";
+import usePageVisibility from "../hooks/UsePageVisibility";
 
 const DAILY_RESET_ENABLED = true;
 
@@ -77,28 +78,30 @@ export default function GameBox({ isMobilePortrait }) {
   const [correctGuesses, setCorrectGuesses] = useState(null);
   const [totalGuesses, setTotalGuesses] = useState(null);
 
+  const isTabVisible = usePageVisibility();
+  const isInitialMount = useRef(true);
 
   const isFinalGuess = guesses.length === 5;
 
-function generateShareText(resultGrid, win) {
-  const header = win
-    ? "I solved today's Stardewdle!"
-    : "I couldn't solve today's Stardewdle.";
+  function generateShareText(resultGrid, win) {
+    const header = win
+      ? "I solved today's Stardewdle!"
+      : "I couldn't solve today's Stardewdle.";
 
-  const grid = resultGrid
-    .map((row) =>
-      Object.values(row.result)
-        .map((val) => {
-          if (val === "match") return "🟩";
-          if (val === "partial") return "🟨";
-          return "🟥";
-        })
-        .join("")
-    )
-    .join("\n");
+    const grid = resultGrid
+      .map((row) =>
+        Object.values(row.result)
+          .map((val) => {
+            if (val === "match") return "🟩";
+            if (val === "partial") return "🟨";
+            return "🟥";
+          })
+          .join("")
+      )
+      .join("\n");
 
-  return `${todaysDate()}\n${header}\n${grid}\nPlay at: https://stardewdle.com/`;
-}
+    return `${todaysDate()}\n${header}\n${grid}\nPlay at: https://stardewdle.com/`;
+  }
 
   useEffect(() => {
     if (gameOver && !shareText && guesses.length > 0) {
@@ -127,12 +130,6 @@ function generateShareText(resultGrid, win) {
 
     return () => clearInterval(interval);
   }, []);
-
-  useEffect(() => {
-    if (timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds <= 1) {
-      window.location.reload();
-    }
-  }, [timeLeft]);
 
   useEffect(() => {
     if (guesses.length >= 6) {
@@ -169,7 +166,7 @@ function generateShareText(resultGrid, win) {
           const word = data.word;
           setCorrectGuesses(data.correct_guesses);
           setTotalGuesses(data.total_guesses);
-          
+
           const cropData = cropList.find(
             (crop) => crop.name.toLowerCase() === word.toLowerCase()
           );
@@ -231,6 +228,15 @@ function generateShareText(resultGrid, win) {
     }
   }, [storedDate, correctCrop, crops.length]);
 
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+    } else if (isTabVisible) {
+      console.log('Tab became visible, performing full page reload...');
+      window.location.reload();
+    }
+  }, [isTabVisible]);
+
   const handleSubmit = async () => {
     if (!selectedCrop || guesses.length >= 6 || gameOver) return;
 
@@ -290,14 +296,13 @@ function generateShareText(resultGrid, win) {
   };
 
   if (!correctCrop || crops.length === 0) {
-    return <CropLoader className={isMobilePortrait ? "content-counter-rotate-mobile" : ""}/>;
+    return <CropLoader className={isMobilePortrait ? "content-counter-rotate-mobile" : ""} />;
   }
 
   return (
     <div
-      className={`relative shadow-xl bg-no-repeat bg-center ${
-        isMobilePortrait ? "gamebox-mobile-layout" : "flex flex-row justify-between w-full pl-3 mt-3"
-      }`}
+      className={`relative shadow-xl bg-no-repeat bg-center ${isMobilePortrait ? "gamebox-mobile-layout" : "flex flex-row justify-between w-full pl-3 mt-3"
+        }`}
       style={{
         backgroundImage: isMobilePortrait ? "url('/images/box-bg-sm.png')" : "url('/images/box-bg.png')",
         backgroundSize: "100% 100%",
@@ -314,7 +319,7 @@ function generateShareText(resultGrid, win) {
       >
         <CropGrid
           selectedCrop={selectedCrop}
-          onSelect={!gameOver && guesses.length < 6 ? setSelectedCrop : () => {}}
+          onSelect={!gameOver && guesses.length < 6 ? setSelectedCrop : () => { }}
           crops={crops}
           isMuted={!gameOver && guesses.length < 6 ? isMuted : true}
           className={isMobilePortrait ? "content-counter-rotate-mobile" : ""}
