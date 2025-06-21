@@ -98,7 +98,7 @@ function getArrow(key, guessValue, correctValue) {
   return null;
 }
 
-export default function GuessGrid({ guesses, answer, className }) { // Keep className prop
+export default function GuessGrid({ guesses, answer, className }) {
   const rows = Array.from({ length: 6 }).map((_, i) => {
     const guessEntry = guesses[i];
     const crop = guessEntry?.crop;
@@ -157,7 +157,7 @@ export default function GuessGrid({ guesses, answer, className }) { // Keep clas
                 {crop.name
                   .replace(/_/g, " ")
                   .replace(
-                    /\\w\\S*/g,
+                    /\w\S*/g,
                     (w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
                   )}
               </div>
