@@ -7,9 +7,11 @@ import { DynamoDBDocumentClient, GetCommand, UpdateCommand } from "@aws-sdk/lib-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const cropURL = "https://stardewdle-data.s3.amazonaws.com/crops.json";
-const response = await fetch(cropURL);
-const crops = await response.json();
+const cropsResponse = await fetch("https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/crops");
+if (!cropsResponse.ok) {
+    throw new Error(`Failed to fetch crops from Lambda: ${cropsResponse.statusText}`);
+}
+const crops = await cropsResponse.json();
 
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 
