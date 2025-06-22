@@ -12,7 +12,7 @@ function formatName(name) {
     );
 }
 
-export default function CollectionsBox({ isMobilePortrait }) { // Receive isMobilePortrait prop
+export default function CollectionsBox({ isMobilePortrait }) {
   const [selectedCrop, setSelectedCrop] = useState(null);
 
   const [crops, setCrops] = useState([]);
@@ -21,16 +21,20 @@ export default function CollectionsBox({ isMobilePortrait }) { // Receive isMobi
   useEffect(() => {
     if (crops.length === 0) {
       const fetchInitialData = async () => {
-        try {
-          const cropURL = "https://stardewdle-data.s3.amazonaws.com/crops.json";
-          const cropResponse = await fetch(cropURL);
+        try {  
+          const cropResponse = await fetch("https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/crops");
+  
+          if (!cropResponse.ok) {
+            throw new Error(`HTTP error! status: ${cropResponse.status}`);
+          }
+  
           const cropList = await cropResponse.json();
           setCrops(cropList);
         } catch (error) {
-          console.error("Failed to fetch crop data or word:", error);
+          console.error("Failed to fetch crop data from Lambda:", error);
         }
       };
-
+  
       fetchInitialData();
     }
   }, []);

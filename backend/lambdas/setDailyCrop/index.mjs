@@ -5,30 +5,34 @@ import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import {
   DynamoDBDocumentClient,
   PutCommand,
-  QueryCommand,
+  ScanCommand,
 } from "@aws-sdk/lib-dynamodb";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const cropURL = "https://stardewdle-data.s3.amazonaws.com/crops.json";
-const response = await fetch(cropURL);
-const crops = await response.json();
-
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 
 export const handler = async () => {
+  let crops = [];
+
   try {
+    const cropsResponse = await fetch("https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/crops");
+    if (!cropsResponse.ok) {
+      throw new Error(`Failed to fetch crops from Lambda: ${cropsResponse.statusText}`);
+    }
+    crops = await cropsResponse.json();
+    
     const today = new Date();
-    today.setHours(0, 0, 0, 0); 
+    today.setHours(0, 0, 0, 0);
 
     const sevenDaysAgo = new Date(today);
     sevenDaysAgo.setDate(today.getDate() - 7);
     const sevenDaysAgoISO = sevenDaysAgo.toISOString().split("T")[0];
 
-    const queryCommand = new QueryCommand({
+    const scanCommand = new ScanCommand({
       TableName: "daily_words",
-      KeyConditionExpression: "#date >= :sevenDaysAgo",
+      FilterExpression: "#date >= :sevenDaysAgo", 
       ExpressionAttributeNames: {
         "#date": "date",
       },
@@ -38,7 +42,7 @@ export const handler = async () => {
       ProjectionExpression: "word",
     });
 
-    const { Items } = await ddb.send(queryCommand);
+    const { Items } = await ddb.send(scanCommand);
     const recentWords = new Set(Items.map((item) => item.word));
 
     const availableCrops = crops.filter(
@@ -55,8 +59,7 @@ export const handler = async () => {
       };
     }
 
-    const randomCrop =
-      availableCrops[Math.floor(Math.random() * availableCrops.length)];
+    const randomCrop = availableCrops[Math.floor(Math.random() * availableCrops.length)];
     const todayISO = today.toISOString().split("T")[0];
 
     const putCommand = new PutCommand({

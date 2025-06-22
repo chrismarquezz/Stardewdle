@@ -343,7 +343,7 @@
         "name": "grape",
         "growth_time": 10,
         "season": [
-            "summer"
+            "fall"
         ],
         "base_price": 80,
         "regrows": true,
