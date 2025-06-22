@@ -154,8 +154,10 @@ export default function GameBox({ isMobilePortrait }) {
     if (!correctCrop || crops.length === 0) {
       const fetchInitialData = async () => {
         try {
-          const cropURL = "https://stardewdle-data.s3.amazonaws.com/crops.json";
-          const cropResponse = await fetch(cropURL);
+          const cropResponse = await fetch("https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/crops");
+          if (!cropResponse.ok) {
+            throw new Error(`HTTP error! status: ${cropResponse.status}`);
+          }
           const cropList = await cropResponse.json();
           setCrops(cropList);
 
@@ -192,8 +194,10 @@ export default function GameBox({ isMobilePortrait }) {
 
     const fetchNewCrop = async () => {
       try {
-        const cropURL = "https://stardewdle-data.s3.amazonaws.com/crops.json";
-        const cropResponse = await fetch(cropURL);
+        const cropResponse = await fetch("https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/crops");
+        if (!cropResponse.ok) {
+          throw new Error(`HTTP error! status: ${cropResponse.status}`);
+        }
         const cropList = await cropResponse.json();
         setCrops(cropList);
 
