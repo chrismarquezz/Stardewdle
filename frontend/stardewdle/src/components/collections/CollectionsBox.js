@@ -43,7 +43,7 @@ export default function CollectionsBox() {
     <div
       className="relative flex flex-row shadow-xl bg-no-repeat bg-center mt-3 justify-between w-full pl-3"
       style={{
-        backgroundImage: "url('/images/collections/collectionsBG.png')",
+        backgroundImage: "url('/images/collections/collectionsBG.webp')",
         backgroundSize: "100% 100%",
         width: "1600px",
         height: "800px",
@@ -74,7 +74,7 @@ export default function CollectionsBox() {
                   className="relative bg-no-repeat bg-contain"
                   style={{
                     backgroundImage:
-                      "url('/images/collections/collectionsSelected.png')",
+                      "url('/images/collections/collectionsSelected.webp')",
                     width: "212px",
                     height: "212px",
                   }}
@@ -105,7 +105,7 @@ export default function CollectionsBox() {
                         className="relative group flex items-center justify-center gap-3"
                       >
                         <img
-                          src={`/images/${season}.png`}
+                          src={`/images/${season}.webp`}
                           alt={season}
                           className="h-8 w-12"
                         />
@@ -113,7 +113,7 @@ export default function CollectionsBox() {
                           className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-medium text-[#c9ba98] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
                           style={{
                             backgroundImage:
-                              "url('/images/collections/collectionsLabel.png')",
+                              "url('/images/collections/collectionsLabel.webp')",
                             backgroundSize: "100% 100%",
                             backgroundRepeat: "no-repeat",
                             height: "28px",
@@ -144,7 +144,7 @@ export default function CollectionsBox() {
         className="absolute bottom-2 -right-10 w-[30px] h-[30px] clickable z-10"
       >
         <img
-          src={isMuted ? "/images/muted.png" : "/images/unmuted.png"}
+          src={isMuted ? "/images/muted.webp" : "/images/unmuted.webp"}
           alt="Toggle Sound"
           className="w-full h-full"
         />

@@ -25,7 +25,7 @@ export default function HelpModal({ isMuted, onClose, scaleFactor }) {
         {/* Content */}
         <div className="justify-center align-middle relative z-10 flex flex-col overflow-y-auto p-4 md:pl-8 md:pr-8"
           style={{
-            backgroundImage: "url('/images/help-bg.png')",
+            backgroundImage: "url('/images/help-bg.webp')",
             backgroundSize: "100% 100%",
           }}>
           <button
@@ -63,7 +63,7 @@ export default function HelpModal({ isMuted, onClose, scaleFactor }) {
                 <div className="space-y-2 md:space-y-4">
                   <div className="flex items-center gap-1 md:gap-3">
                     <img
-                      src="/images/arrow4U.png"
+                      src="/images/arrow4U.webp"
                       alt="Up Arrow"
                       className="w-3 h-3 md:w-6 md:h-6"
                     />
@@ -73,7 +73,7 @@ export default function HelpModal({ isMuted, onClose, scaleFactor }) {
                   </div>
                   <div className="flex items-center gap-1 md:gap-3">
                     <img
-                      src="/images/arrow4D.png"
+                      src="/images/arrow4D.webp"
                       alt="Down Arrow"
                       className="w-3 h-3 md:w-6 md:h-6"
                     />
