@@ -30,9 +30,6 @@ const WIKI_URL = "https://stardewvalleywiki.com/Crops";
                   name,
                   image: `https://stardewvalleywiki.com${imgSrc}`,
                 });
-
-                // Optional: Debug log
-                // console.log(`✅ Found: ${name} → ${imgSrc}`);
               }
             }
           });
@@ -40,8 +37,8 @@ const WIKI_URL = "https://stardewvalleywiki.com/Crops";
     });
 
     fs.writeFileSync("src/data/crops.json", JSON.stringify(crops, null, 2));
-    console.log(`✅ Scraped and saved ${crops.length} crops to src/data/crops.json`);
+    console.log(`Scraped and saved ${crops.length} crops to src/data/crops.json`);
   } catch (err) {
-    console.error("❌ Error scraping crops:", err.message);
+    console.error("Error scraping crops:", err.message);
   }
 })();
