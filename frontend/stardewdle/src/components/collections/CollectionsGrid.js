@@ -23,7 +23,7 @@ export default function CollectionsGrid({ selectedCrop, onSelect, isMuted }) {
     <div
       className="flex justify-center items-center w-full h-full w-[90%] mt-[2px]"
       /*style={{
-        backgroundImage: "url('/images/collections/collections.png')",
+        backgroundImage: "url('/images/collections/collections.webp')",
         backgroundSize: "80% 80%",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",

@@ -45,7 +45,7 @@ export default function Game() {
       {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/images/background.jpg')" }}
+        style={{ backgroundImage: "url('/images/background.webp')" }}
       />
 
       {/* Vignette + Blur Overlay */}
@@ -79,12 +79,12 @@ export default function Game() {
               className="buttonMain w-[624px] h-[114px] clickable"
             >
               <img
-                src="/images/stardewdleLogo.png"
+                src="/images/stardewdleLogo.webp"
                 alt="Stardewdle Home"
                 className="buttonBase"
               />
               <img
-                src="/images/stardewdleLogo.png"
+                src="/images/stardewdleLogo.webp"
                 alt="Stardewdle Home Hover"
                 className="buttonHover"
               />
