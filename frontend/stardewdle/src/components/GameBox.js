@@ -308,7 +308,7 @@ export default function GameBox({ isMobilePortrait }) {
       className={`relative shadow-xl bg-no-repeat bg-center ${isMobilePortrait ? "gamebox-mobile-layout" : "flex flex-row justify-between w-full pl-3 mt-3"
         }`}
       style={{
-        backgroundImage: isMobilePortrait ? "url('/images/box-bg-sm.webp')" : "url('/images/box-bg.webp')",
+        backgroundImage: isMobilePortrait ? "url('/images/box-bg-sm.png')" : "url('/images/box-bg.png')",
         backgroundSize: "100% 100%",
         width: isMobilePortrait ? "1500px" : "1600px",
         height: isMobilePortrait ? "940px" : "800px",
@@ -339,7 +339,7 @@ export default function GameBox({ isMobilePortrait }) {
           <div
             className="relative bg-no-repeat bg-contain"
             style={{
-              backgroundImage: "url('/images/selected-frame.webp')",
+              backgroundImage: "url('/images/selected-frame.png')",
               width: "240px",
               height: "164px",
             }}
@@ -356,7 +356,7 @@ export default function GameBox({ isMobilePortrait }) {
             <div
               className="flex items-center justify-center bg-center bg-no-repeat bg-contain"
               style={{
-                backgroundImage: "url('/images/name-banner.webp')",
+                backgroundImage: "url('/images/name-banner.png')",
                 width: "416px",
                 height: "76px",
               }}
@@ -384,12 +384,12 @@ export default function GameBox({ isMobilePortrait }) {
                 >
                   <div className="clickable w-full h-full relative group">
                     <img
-                      src="/images/share-button.webp"
+                      src="/images/share-button.png"
                       alt="Share"
                       className="w-full h-full transition-opacity duration-200 group-hover:opacity-0"
                     />
                     <img
-                      src="/images/share-button-hover.webp"
+                      src="/images/share-button-hover.png"
                       alt="Share Hover"
                       className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                     />
@@ -413,12 +413,12 @@ export default function GameBox({ isMobilePortrait }) {
                   >
                     <div className="clickable w-full h-full relative group">
                       <img
-                        src="/images/share-button.webp"
+                        src="/images/share-button.png"
                         alt="Share"
                         className="w-full h-full transition-opacity duration-200 group-hover:opacity-0"
                       />
                       <img
-                        src="/images/share-button-hover.webp"
+                        src="/images/share-button-hover.png"
                         alt="Share Hover"
                         className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                       />
@@ -442,12 +442,12 @@ export default function GameBox({ isMobilePortrait }) {
                 }}
               >
                 <img
-                  src="/images/submit-button.webp"
+                  src="/images/submit-button.png"
                   alt="Submit"
                   className="w-full h-full transition-opacity duration-200 group-hover:opacity-0"
                 />
                 <img
-                  src="/images/submit-button-hover.webp"
+                  src="/images/submit-button-hover.png"
                   alt="Submit Hover"
                   className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                 />
@@ -458,7 +458,7 @@ export default function GameBox({ isMobilePortrait }) {
         <div
           className={`${isMobilePortrait ? "" : "mr-[78px]"} pl-9 mb-[84px] bg-center bg-no-repeat bg-cover min-h-[440px]`}
           style={{
-            backgroundImage: "url('/images/guesses.webp')",
+            backgroundImage: "url('/images/guesses.png')",
             width: "772px",
             height: "456px",
           }}
@@ -480,7 +480,7 @@ export default function GameBox({ isMobilePortrait }) {
           }`}
       >
         <img
-          src={isMuted ? "/images/muted.webp" : "/images/unmuted.webp"}
+          src={isMuted ? "/images/muted.png" : "/images/unmuted.png"}
           alt="Toggle Sound"
           className="w-full h-full"
         />
@@ -496,12 +496,12 @@ export default function GameBox({ isMobilePortrait }) {
           }`}
       >
         <img
-          src="/images/question-mark.webp"
+          src="/images/question-mark.png"
           alt="Help"
           className="w-full h-full transition-opacity duration-200 group-hover:opacity-0"
         />
         <img
-          src="/images/question-mark-hover.webp"
+          src="/images/question-mark-hover.png"
           alt="Help Hover"
           className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
         />
