@@ -39,7 +39,7 @@
 
 body {
   font-family: 'Stardew', sans-serif;
-  cursor: url('/public/images/cursor.webp'), auto;
+  cursor: url('/public/images/cursor.png'), auto;
 }
 
 html, body {
@@ -53,7 +53,7 @@ html, body {
 }
 
 .clickable {
-  cursor: url('/public/images/cursor-hover.webp'), pointer;
+  cursor: url('/public/images/cursor-hover.png'), pointer;
 }
 
 .buttonMain {

@@ -39,7 +39,7 @@ export default function CropGrid({ selectedCrop, onSelect, isMuted, className, i
     <div
       className={`flex justify-center items-center h-full w-[90%] mt-[2px] ${className}`}
       style={{
-        backgroundImage: "url('/images/cropgrid-bg.webp')",
+        backgroundImage: "url('/images/cropgrid-bg.png')",
         backgroundSize: isMobilePortrait ? "80% 80%" : "90% 80%",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
