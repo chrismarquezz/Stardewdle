@@ -43,7 +43,7 @@ export default function Game() {
     <div className="relative min-h-screen w-full overflow-hidden">
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/images/background.jpg')" }}
+        style={{ backgroundImage: "url('/images/background.webp')" }}
       />
 
       <div
@@ -75,12 +75,12 @@ export default function Game() {
               className="buttonMain w-[624px] h-[114px] clickable"
             >
               <img
-                src="/images/stardewdleLogo.png"
+                src="/images/stardewdleLogo.webp"
                 alt="Stardewdle Home"
                 className="buttonBase"
               />
               <img
-                src="/images/stardewdleLogo.png"
+                src="/images/stardewdleLogo.webp"
                 alt="Stardewdle Home Hover"
                 className="buttonHover"
               />
