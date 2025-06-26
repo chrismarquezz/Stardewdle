@@ -47,7 +47,9 @@ html, body {
   margin: 0;      
   padding: 0;      
   height: 100%;   
-  width: 100%;     
+  width: 100%;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;   
 }
 
 .clickable {
@@ -88,5 +90,6 @@ html, body {
 }
 
 img {
+  image-rendering: crisp-edges;
   image-rendering: pixelated;
 }
