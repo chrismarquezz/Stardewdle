@@ -7,6 +7,7 @@ export default function Game() {
   const { isMuted } = useSound();
   const navigate = useNavigate();
   const [scaleFactor, setScaleFactor] = useState(1);
+  const [isMobilePortrait, setIsMobilePortrait] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -16,8 +17,19 @@ export default function Game() {
       const designWidth = 1600;
       const designHeight = 900;
 
-      const scaleW = maxWidth / designWidth;
-      const scaleH = maxHeight / designHeight;
+      const currentlyIsMobilePortrait =
+        window.innerWidth < 768 && window.innerHeight > window.innerWidth;
+      setIsMobilePortrait(currentlyIsMobilePortrait);
+
+      let effectiveDesignWidth = designWidth;
+      let effectiveDesignHeight = designHeight;
+      if (currentlyIsMobilePortrait) {
+        effectiveDesignWidth = designHeight; 
+        effectiveDesignHeight = designWidth;
+      }
+
+      const scaleW = maxWidth / effectiveDesignWidth;
+      const scaleH = maxHeight / effectiveDesignHeight;
 
       setScaleFactor(Math.min(scaleW, scaleH));
     };
@@ -29,13 +41,11 @@ export default function Game() {
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
-      {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url('/images/background.webp')" }}
       />
 
-      {/* Vignette + Blur Overlay */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -44,18 +54,17 @@ export default function Game() {
         }}
       />
 
-      {/* Scaled Content */}
-      <div className="relative z-10 w-full h-full flex justify-center items-center">
+      <div className={`absolute z-10 w-full h-full flex justify-center items-center ${isMobilePortrait ? "top-2" : "-top-4"}`}>
         <div
+          className="flex flex-col items-center"
           style={{
-            width: "1600px", 
-            height: `${900*scaleFactor}px`,
+            width: "1600px",
+            height: isMobilePortrait ? "800px" : "900px",
             transform: `scale(${scaleFactor})`,
-            transformOrigin: "top center",
+            transformOrigin: "center center",
           }}
         >
-          {/* Logo + Game Content */}
-          <div className="w-full flex justify-center pt-2">
+          <div className={`relative ${isMobilePortrait ? "top-[-470px]" : ""}`}>
             <div
               onClick={() => {
                 if (!isMuted) {
@@ -77,8 +86,9 @@ export default function Game() {
               />
             </div>
           </div>
-
-          <CollectionsBox />
+          <div className="collections-mobile-wrapper">
+            <CollectionsBox isMobilePortrait={isMobilePortrait} />
+          </div>
         </div>
       </div>
     </div>
