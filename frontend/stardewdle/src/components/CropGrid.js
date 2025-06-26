@@ -1,22 +1,28 @@
 import { useEffect, useState } from "react";
 import CropCard from "./CropCard";
 
-export default function CropGrid({ selectedCrop, onSelect, isMuted, className, isMobilePortrait }) { // Add isMobilePortrait to props
+export default function CropGrid({ selectedCrop, onSelect, isMuted, className, isMobilePortrait }) {
   const [crops, setCrops] = useState([]);
 
   useEffect(() => {
-    const fetchCrops = async () => {
-      try {
-        const cropURL = "https://stardewdle-data.s3.amazonaws.com/crops.json";
-        const response = await fetch(cropURL);
-        const data = await response.json();
-        setCrops(data);
-      } catch (error) {
-        console.error("Failed to fetch crops:", error);
-      }
-    };
-
-    fetchCrops();
+    if (crops.length === 0) {
+      const fetchInitialData = async () => {
+        try {  
+          const cropResponse = await fetch("https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/crops");
+  
+          if (!cropResponse.ok) {
+            throw new Error(`HTTP error! status: ${cropResponse.status}`);
+          }
+  
+          const cropList = await cropResponse.json();
+          setCrops(cropList);
+        } catch (error) {
+          console.error("Failed to fetch crop data from Lambda:", error);
+        }
+      };
+  
+      fetchInitialData();
+    }
   }, []);
 
   const gridStyles = isMobilePortrait

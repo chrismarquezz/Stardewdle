@@ -37,7 +37,7 @@ export default function Landing() {
       <audio src="/sounds/landing-music.mp3" autoPlay loop hidden />
 
       {/* Scaled Content */}
-      <div className="relative z-10 w-full h-full flex justify-center items-center">
+      <div className="relative z-10 w-full h-full flex justify-center items-center overflow-hidden">
         <div
           style={{
             width: "1080px", 

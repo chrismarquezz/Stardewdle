@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSound } from "../context/SoundContext";
 import CropGrid from "./CropGrid";
 import GuessGrid from "./GuessGrid";
 import CropLoader from "../components/CropLoader";
 import ShareModal from "./ShareModal";
 import HelpModal from "./HelpModal";
+import usePageVisibility from "../hooks/UsePageVisibility";
 
 const DAILY_RESET_ENABLED = true;
 
@@ -77,28 +78,30 @@ export default function GameBox({ isMobilePortrait }) {
   const [correctGuesses, setCorrectGuesses] = useState(null);
   const [totalGuesses, setTotalGuesses] = useState(null);
 
+  const isTabVisible = usePageVisibility();
+  const isInitialMount = useRef(true);
 
   const isFinalGuess = guesses.length === 5;
 
-function generateShareText(resultGrid, win) {
-  const header = win
-    ? "I solved today's Stardewdle!"
-    : "I couldn't solve today's Stardewdle.";
+  function generateShareText(resultGrid, win) {
+    const header = win
+      ? "I solved today's Stardewdle!"
+      : "I couldn't solve today's Stardewdle.";
 
-  const grid = resultGrid
-    .map((row) =>
-      Object.values(row.result)
-        .map((val) => {
-          if (val === "match") return "🟩";
-          if (val === "partial") return "🟨";
-          return "🟥";
-        })
-        .join("")
-    )
-    .join("\n");
+    const grid = resultGrid
+      .map((row) =>
+        Object.values(row.result)
+          .map((val) => {
+            if (val === "match") return "🟩";
+            if (val === "partial") return "🟨";
+            return "🟥";
+          })
+          .join("")
+      )
+      .join("\n");
 
-  return `${todaysDate()}\n${header}\n${grid}\nPlay at: https://stardewdle.com/`;
-}
+    return `${todaysDate()}\n${header}\n${grid}\nPlay at: https://stardewdle.com/`;
+  }
 
   useEffect(() => {
     if (gameOver && !shareText && guesses.length > 0) {
@@ -129,12 +132,6 @@ function generateShareText(resultGrid, win) {
   }, []);
 
   useEffect(() => {
-    if (timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds <= 1) {
-      window.location.reload();
-    }
-  }, [timeLeft]);
-
-  useEffect(() => {
     if (guesses.length >= 6) {
       setSelectedCrop(correctCrop);
     }
@@ -157,8 +154,10 @@ function generateShareText(resultGrid, win) {
     if (!correctCrop || crops.length === 0) {
       const fetchInitialData = async () => {
         try {
-          const cropURL = "https://stardewdle-data.s3.amazonaws.com/crops.json";
-          const cropResponse = await fetch(cropURL);
+          const cropResponse = await fetch("https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/crops");
+          if (!cropResponse.ok) {
+            throw new Error(`HTTP error! status: ${cropResponse.status}`);
+          }
           const cropList = await cropResponse.json();
           setCrops(cropList);
 
@@ -169,7 +168,7 @@ function generateShareText(resultGrid, win) {
           const word = data.word;
           setCorrectGuesses(data.correct_guesses);
           setTotalGuesses(data.total_guesses);
-          
+
           const cropData = cropList.find(
             (crop) => crop.name.toLowerCase() === word.toLowerCase()
           );
@@ -195,8 +194,10 @@ function generateShareText(resultGrid, win) {
 
     const fetchNewCrop = async () => {
       try {
-        const cropURL = "https://stardewdle-data.s3.amazonaws.com/crops.json";
-        const cropResponse = await fetch(cropURL);
+        const cropResponse = await fetch("https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/crops");
+        if (!cropResponse.ok) {
+          throw new Error(`HTTP error! status: ${cropResponse.status}`);
+        }
         const cropList = await cropResponse.json();
         setCrops(cropList);
 
@@ -230,6 +231,15 @@ function generateShareText(resultGrid, win) {
       fetchNewCrop();
     }
   }, [storedDate, correctCrop, crops.length]);
+
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+    } else if (isTabVisible) {
+      console.log('Tab became visible, performing full page reload...');
+      window.location.reload();
+    }
+  }, [isTabVisible]);
 
   const handleSubmit = async () => {
     if (!selectedCrop || guesses.length >= 6 || gameOver) return;
@@ -290,14 +300,13 @@ function generateShareText(resultGrid, win) {
   };
 
   if (!correctCrop || crops.length === 0) {
-    return <CropLoader />;
+    return <CropLoader className={isMobilePortrait ? "content-counter-rotate-mobile" : ""} />;
   }
 
   return (
     <div
-      className={`relative shadow-xl bg-no-repeat bg-center ${
-        isMobilePortrait ? "gamebox-mobile-layout" : "flex flex-row justify-between w-full pl-3 mt-3"
-      }`}
+      className={`relative shadow-xl bg-no-repeat bg-center ${isMobilePortrait ? "gamebox-mobile-layout" : "flex flex-row justify-between w-full pl-3 mt-3"
+        }`}
       style={{
         backgroundImage: isMobilePortrait ? "url('/images/box-bg-sm.webp')" : "url('/images/box-bg.webp')",
         backgroundSize: "100% 100%",
@@ -305,7 +314,6 @@ function generateShareText(resultGrid, win) {
         height: isMobilePortrait ? "940px" : "800px",
       }}
     >
-      {/* Crop Grid - NEW Wrapper div */}
       <div
         className={
           isMobilePortrait
@@ -315,7 +323,7 @@ function generateShareText(resultGrid, win) {
       >
         <CropGrid
           selectedCrop={selectedCrop}
-          onSelect={!gameOver && guesses.length < 6 ? setSelectedCrop : () => {}}
+          onSelect={!gameOver && guesses.length < 6 ? setSelectedCrop : () => { }}
           crops={crops}
           isMuted={!gameOver && guesses.length < 6 ? isMuted : true}
           className={isMobilePortrait ? "content-counter-rotate-mobile" : ""}
@@ -323,14 +331,11 @@ function generateShareText(resultGrid, win) {
         />
       </div>
 
-      {/* Right Side - Apply counter-rotation class */}
       <div
         className={`flex flex-col align-center w-full place-items-center ${isMobilePortrait ? "content-counter-rotate-mobile" : ""
           }`}
       >
-        {/* Selected Crop Display */}
         <div className={`flex flex-row items-center h-full ${isMobilePortrait ? "mr-6" : "mr-24"} mt-[80px] gap-4`}>
-          {/* Crop image in center of frame */}
           <div
             className="relative bg-no-repeat bg-contain"
             style={{
@@ -348,7 +353,6 @@ function generateShareText(resultGrid, win) {
             )}
           </div>
           <div className="flex flex-col items-center">
-            {/* Name on banner */}
             <div
               className="flex items-center justify-center bg-center bg-no-repeat bg-contain"
               style={{
@@ -362,7 +366,6 @@ function generateShareText(resultGrid, win) {
               </p>
             </div>
 
-            {/* Submit Button */}
             {gameOver &&
               (guesses[5] ? guesses[5].crop.name === correctCrop.name : true) ? (
               <div className="mt-4 flex items-center justify-center gap-4">
@@ -452,12 +455,7 @@ function generateShareText(resultGrid, win) {
             )}
           </div>
         </div>
-
-        {/* Guess Grid - REMOVE THE className PROP HERE */}
         <div
-          // This wrapper div's styling for background image, width, height remains.
-          // It is implicitly rotated by its parent 'Right Side' div.
-          // We need GuessGrid itself to counter-rotate.
           className={`${isMobilePortrait ? "" : "mr-[78px]"} pl-9 mb-[84px] bg-center bg-no-repeat bg-cover min-h-[440px]`}
           style={{
             backgroundImage: "url('/images/guesses.webp')",
@@ -465,15 +463,12 @@ function generateShareText(resultGrid, win) {
             height: "456px",
           }}
         >
-          {/* REMOVE className={isMobilePortrait ? "content-counter-rotate-mobile" : ""} */}
           <GuessGrid
             guesses={guesses}
             answer={correctCrop}
-            // className={isMobilePortrait ? "content-counter-rotate-mobile" : ""} // <--- REMOVE THIS LINE
           />
         </div>
       </div>
-      {/* Mute/Unmute Button - Apply counter-rotation class */}
       <div
         onClick={() => {
           if (isMuted) {
@@ -490,8 +485,6 @@ function generateShareText(resultGrid, win) {
           className="w-full h-full"
         />
       </div>
-
-      {/* Help Button - Apply counter-rotation class */}
       <div
         onClick={() => {
           if (!isMuted) {
@@ -513,8 +506,6 @@ function generateShareText(resultGrid, win) {
           className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
         />
       </div>
-
-      {/* Help Modal */}
       {showHelp && (
         <HelpModal
           isMuted={isMuted}

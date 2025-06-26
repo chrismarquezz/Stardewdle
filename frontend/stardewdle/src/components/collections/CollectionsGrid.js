@@ -1,40 +1,48 @@
 import { useEffect, useState } from "react";
 import CollectionsCard from "./CollectionsCard";
 
-export default function CollectionsGrid({ selectedCrop, onSelect, isMuted }) {
+export default function CollectionsGrid({ selectedCrop, onSelect, isMuted, className, isMobilePortrait }) {
   const [crops, setCrops] = useState([]);
 
   useEffect(() => {
-    const fetchCrops = async () => {
-      try {
-        const cropURL = "https://stardewdle-data.s3.amazonaws.com/crops.json";
-        const response = await fetch(cropURL);
-        const data = await response.json();
-        setCrops(data);
-      } catch (error) {
-        console.error("Failed to fetch crops:", error);
-      }
-    };
-
-    fetchCrops();
+    if (crops.length === 0) {
+      const fetchInitialData = async () => {
+        try {  
+          const cropResponse = await fetch("https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/crops");
+  
+          if (!cropResponse.ok) {
+            throw new Error(`HTTP error! status: ${cropResponse.status}`);
+          }
+  
+          const cropList = await cropResponse.json();
+          setCrops(cropList);
+        } catch (error) {
+          console.error("Failed to fetch crop data from Lambda:", error);
+        }
+      };
+  
+      fetchInitialData();
+    }
   }, []);
+
+  const gridStyles = isMobilePortrait
+    ? {
+      gridTemplateColumns: "repeat(9, 60px)",
+      gridAutoRows: "60px",
+    }
+    : {
+      gridTemplateColumns: "repeat(8, 60px)",
+      gridAutoRows: "60px",
+    };
 
   return (
     <div
-      className="flex justify-center items-center w-full h-full w-[90%] mt-[2px]"
-      /*style={{
-        backgroundImage: "url('/images/collections/collections.webp')",
-        backgroundSize: "80% 80%",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}*/
+      className={`flex justify-center items-center h-full w-[90%] mt-[2px] ${className}`}
     >
       <div
         className="grid gap-[6px] place-items-center"
-        style={{
-          gridTemplateColumns: "repeat(8, 60px)",
-          gridAutoRows: "60px",
-        }}
+        style={gridStyles}
+
       >
         {crops.map((crop) => (
           <CollectionsCard
