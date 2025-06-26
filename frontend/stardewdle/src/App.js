@@ -6,7 +6,6 @@ import {
 
 import { SoundProvider } from "./context/SoundContext";
 
-
 import './App.css';
 
 import Landing from "./pages/Landing";
