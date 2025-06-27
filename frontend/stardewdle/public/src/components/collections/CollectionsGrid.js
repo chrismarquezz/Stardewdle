@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import CropCard from "./CropCard";
+import CollectionsCard from "./CollectionsCard";
 
-export default function CropGrid({ selectedCrop, onSelect, isMuted, className, isMobilePortrait }) {
+export default function CollectionsGrid({ selectedCrop, onSelect, isMuted, className, isMobilePortrait }) {
   const [crops, setCrops] = useState([]);
 
   useEffect(() => {
@@ -27,30 +27,25 @@ export default function CropGrid({ selectedCrop, onSelect, isMuted, className, i
 
   const gridStyles = isMobilePortrait
     ? {
-        gridTemplateColumns: "repeat(9, 60px)", 
-        gridAutoRows: "60px", 
-      }
+      gridTemplateColumns: "repeat(9, 60px)",
+      gridAutoRows: "60px",
+    }
     : {
-        gridTemplateColumns: "repeat(8, 60px)", 
-        gridAutoRows: "60px",
-      };
+      gridTemplateColumns: "repeat(8, 60px)",
+      gridAutoRows: "60px",
+    };
 
   return (
     <div
       className={`flex justify-center items-center h-full w-[90%] mt-[2px] ${className}`}
-      style={{
-        backgroundImage: "url('/images/cropgrid-bg.webp')",
-        backgroundSize: isMobilePortrait ? "80% 80%" : "90% 80%",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
     >
       <div
         className="grid gap-[6px] place-items-center"
-        style={gridStyles} 
+        style={gridStyles}
+
       >
         {crops.map((crop) => (
-          <CropCard
+          <CollectionsCard
             key={crop.name}
             crop={crop}
             isSelected={selectedCrop?.name === crop.name}

@@ -34,7 +34,7 @@ export default function Landing() {
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url('/images/background.webp')" }}
       />
-      <audio src="/sounds/landing-music.mp3" autoPlay loop hidden />
+      {/*<audio src="/sounds/landing-music.mp3" autoPlay loop hidden />*/}
 
       {/* Scaled Content */}
       <div className="relative z-10 w-full h-full flex justify-center items-center overflow-hidden">
