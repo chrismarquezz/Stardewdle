@@ -53,7 +53,9 @@ export default function Landing() {
             alt="Stardewdle Title"
             className="mt-10 max-w-[800px]"
           />
-          <div className="text-white"> Site likely to go down for a bit on Sunday 6/29</div>
+          
+          {/*<div className="text-white"> ANNOUNCEMENT TEXT </div>*/}
+
           {/* Button group */}
           <div className="flex flex-col items-center gap-4 mt-[140px]">
             {/* Play Button */}
