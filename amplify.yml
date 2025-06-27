@@ -12,11 +12,11 @@ applications:
         baseDirectory: build
         files:
           - '**/*'
-        customHeaders: # Add this section
-          - pattern: '**/*.webp' # This pattern targets all files ending with .webp
+        customHeaders:
+          - pattern: '**/*.webp'
             headers:
               - key: 'Content-Type'
-                value: 'image/webp' # This sets the Content-Type header to image/webp
+                value: 'image/webp'
       cache:
         paths:
           - .npm/**/*

@@ -8,11 +8,11 @@ const ATTRIBUTE_KEYS = [
 const ATTRIBUTE_LABELS = ["Growth", "Price", "Regrow", "Type", "Season"];
 
 const BOX_IMAGE_MAP = {
-  growth_time: "boxSmall.webp", //106px
-  season: "boxLarge.webp", //192px
-  base_price: "boxSmall.webp", //106px
-  regrows: "boxSquare.webp", //64px
-  type: "boxSmall.webp", //150px
+  growth_time: "boxSmall.png", //106px
+  season: "boxLarge.png", //192px
+  base_price: "boxSmall.png", //106px
+  regrows: "boxSquare.png", //64px
+  type: "boxSmall.png", //150px
 };
 
 const W_STRETCH_MAP = {
@@ -119,7 +119,7 @@ export default function GuessGrid({ guesses, answer, className }) {
         <div
           className="relative h-[60px] flex items-center justify-center"
           style={{
-            backgroundImage: "url('/images/boxSquare.webp')",
+            backgroundImage: "url('/images/boxSquare.png')",
             backgroundSize: "100% 100%",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
@@ -148,7 +148,7 @@ export default function GuessGrid({ guesses, answer, className }) {
               <div
                 className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-medium text-[#BC6131] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
                 style={{
-                  backgroundImage: "url('/images/label.webp')",
+                  backgroundImage: "url('/images/label.png')",
                   backgroundSize: "100% 100%",
                   backgroundRepeat: "no-repeat",
                   height: "28px",
@@ -182,7 +182,7 @@ export default function GuessGrid({ guesses, answer, className }) {
               className="relative h-full flex items-center justify-center text-2xl leading-none"
               style={{
                 backgroundImage: `url('/images/${
-                  BOX_IMAGE_MAP[key] || "boxLarge.webp"
+                  BOX_IMAGE_MAP[key] || "boxLarge.png"
                 }')`,
                 backgroundSize: "100% 100%",
                 backgroundPosition: "center",
@@ -224,14 +224,14 @@ export default function GuessGrid({ guesses, answer, className }) {
                           className="relative group flex items-center justify-center"
                         >
                           <img
-                            src={`/images/${season}.webp`}
+                            src={`/images/${season}.png`}
                             alt={season}
                             className="h-6 w-9"
                           />
                           <div
                             className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-medium text-[#BC6131] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
                             style={{
-                              backgroundImage: "url('/images/label.webp')",
+                              backgroundImage: "url('/images/label.png')",
                               backgroundSize: "100% 100%",
                               backgroundRepeat: "no-repeat",
                               height: "28px",
@@ -253,7 +253,7 @@ export default function GuessGrid({ guesses, answer, className }) {
                       {value}g{" "}
                       {arrow ? (
                         <img
-                          src={`/images/${arrow}.webp`}
+                          src={`/images/${arrow}.png`}
                           alt={arrow}
                           className="h-[6px] w-[10px] ml-1"
                         />
@@ -266,7 +266,7 @@ export default function GuessGrid({ guesses, answer, className }) {
                       {value} days{" "}
                       {arrow ? (
                         <img
-                          src={`/images/${arrow}.webp`}
+                          src={`/images/${arrow}.png`}
                           alt={arrow}
                           className="h-[6px] w-[10px] ml-1"
                         />
