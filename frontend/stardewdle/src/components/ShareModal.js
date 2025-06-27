@@ -45,7 +45,7 @@ export default function ShareModal({
         {/* Content wrapper with padding */}
         <div className="justify-center align-middle relative z-10 flex flex-col overflow-y-auto p-4 "
         style={{
-            backgroundImage: "url('/images/help-bg.webp')",
+            backgroundImage: "url('/images/help-bg.png')",
             backgroundSize: "100% 100%",
           }}>
           {/* Close Button */}
