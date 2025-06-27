@@ -53,7 +53,7 @@ export default function Landing() {
             alt="Stardewdle Title"
             className="mt-10 max-w-[800px]"
           />
-
+          <>Technical Difficulties, we apologize for the inconvenience</>
           {/* Button group */}
           <div className="flex flex-col items-center gap-4 mt-[140px]">
             {/* Play Button */}
