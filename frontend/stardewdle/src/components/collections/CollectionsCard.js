@@ -26,7 +26,7 @@ export default function CollectionsCard({
         isSelected ? "border-4 border-green-400" : "border-0 border-transparent"
       }`}
       style={{
-        backgroundImage: "url('/images/collections/collectionsItemBoxAlt.png')",
+        backgroundImage: "url('/images/collections/collectionsItemBoxAlt.webp')",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
@@ -42,7 +42,7 @@ export default function CollectionsCard({
       <div
         className="absolute -top-5 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-medium text-[#D5C9AC] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
         style={{
-          backgroundImage: "url('/images/collections/collectionsLabel.png')",
+          backgroundImage: "url('/images/collections/collectionsLabel.webp')",
           backgroundSize: "100% 100%",
           backgroundRepeat: "no-repeat",
           height: "28px",
