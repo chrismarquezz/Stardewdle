@@ -7,6 +7,8 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "aws-amplify": "^6.15.1",
+    "aws-rum-web": "^1.24.0",
     "axios": "^1.9.0",
     "cheerio": "^1.0.0",
     "fs": "^0.0.1-security",
