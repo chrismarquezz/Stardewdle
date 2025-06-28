@@ -27,7 +27,7 @@ export default function Test() {
       {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/images/background.jpg')" }}
+        style={{ backgroundImage: "url('/images/background.webp')" }}
       />
 
       {/* Scaled Content */}

@@ -32,7 +32,7 @@ export default function Landing() {
       {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/images/background.jpg')" }}
+        style={{ backgroundImage: "url('/images/background.webp')" }}
       />
       {/*<audio src="/sounds/landing-music.mp3" autoPlay loop hidden />*/}
 
@@ -49,7 +49,7 @@ export default function Landing() {
         >
           {/* Title near top */}
           <img
-            src="/images/stardewdleTitle.png"
+            src="/images/stardewdleTitle.webp"
             alt="Stardewdle Title"
             className="mt-10 max-w-[800px]"
           />
@@ -69,12 +69,12 @@ export default function Landing() {
               className="buttonMain w-[370px] h-[75px] clickable"
             >
               <img
-                src="/images/play-button.png"
+                src="/images/play-button.webp"
                 alt="Play"
                 className="buttonBase"
               />
               <img
-                src="/images/play-button-hover.png"
+                src="/images/play-button-hover.webp"
                 alt="Play Hover"
                 className="buttonHover"
               />
@@ -91,12 +91,12 @@ export default function Landing() {
               className="buttonMain w-[370px] h-[75px] clickable"
             >
               <img
-                src="/images/collections-button.png"
+                src="/images/collections-button.webp"
                 alt="Collections"
                 className="buttonBase"
               />
               <img
-                src="/images/collections-button-hover.png"
+                src="/images/collections-button-hover.webp"
                 alt="Collections Hover"
                 className="buttonHover"
               />
@@ -115,12 +115,12 @@ export default function Landing() {
                 className="buttonMain w-[75px] h-[75px] clickable"
               >
                 <img
-                  src="/images/github.png"
+                  src="/images/github.webp"
                   alt="GitHub"
                   className="buttonBase"
                 />
                 <img
-                  src="/images/github-hover.png"
+                  src="/images/github-hover.webp"
                   alt="GitHub Hover"
                   className="buttonHover"
                 />
@@ -136,12 +136,12 @@ export default function Landing() {
                 className="buttonMain w-[75px] h-[75px] clickable"
               >
                 <img
-                  src="/images/credits.png"
+                  src="/images/credits.webp"
                   alt="Info"
                   className="buttonBase"
                 />
                 <img
-                  src="/images/credits-hover.png"
+                  src="/images/credits-hover.webp"
                   alt="Info Hover"
                   className="buttonHover"
                 />
@@ -173,7 +173,7 @@ export default function Landing() {
             <div
               className="relative z-10 flex flex-col overflow-y-auto p-4"
               style={{
-                backgroundImage: "url('/images/paper-note.png')",
+                backgroundImage: "url('/images/paper-note.webp')",
                 backgroundSize: "100% 100%",
               }}
             >
