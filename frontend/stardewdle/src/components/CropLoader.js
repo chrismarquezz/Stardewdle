@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 
 const cropImages = [
-  "row-1-column-1.png",
-  "row-1-column-2.png",
-  "row-1-column-3.png",
-  "row-1-column-4.png",
-  "row-1-column-5.png",
-  "row-1-column-6.png",
-  "row-1-column-7.png",
-  "row-1-column-8.png",
+  "row-1-column-1.webp",
+  "row-1-column-2.webp",
+  "row-1-column-3.webp",
+  "row-1-column-4.webp",
+  "row-1-column-5.webp",
+  "row-1-column-6.webp",
+  "row-1-column-7.webp",
+  "row-1-column-8.webp",
 ];
 
 export default function CropLoader({className}) {
