@@ -152,6 +152,23 @@ export default function GameBox({ isMobilePortrait }) {
   }, [guesses, correctCrop, gameOver, selectedCrop, storedDate, crops]);
 
   useEffect(() => {
+    const updateGuessStats = async () => {
+      try {
+        const res = await fetch(
+          "https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/word"
+        );
+        const data = await res.json();
+        setCorrectGuesses(data.correct_guesses);
+        setTotalGuesses(data.total_guesses);
+      } catch (err) {
+        console.error("Failed to fetch win stats:", err);
+      }
+    }
+
+    updateGuessStats();
+  }, []);
+
+  useEffect(() => {
     if (!DAILY_RESET_ENABLED) return;
 
     const today = new Date().toISOString().split("T")[0];
