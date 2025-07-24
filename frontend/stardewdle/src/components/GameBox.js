@@ -68,7 +68,10 @@ export default function GameBox({ isMobilePortrait }) {
     const saved = localStorage.getItem("stardewdle-date");
     return saved ? saved : new Date().toISOString().split("T")[0];
   });
-  const [crops, setCrops] = useState([]);
+  const [crops, setCrops] = useState(() => {
+    const saved = localStorage.getItem("stardewdle-crops");
+    return saved ? JSON.parse(saved) : [];
+  });
 
   const [showHelp, setShowHelp] = useState(false);
   const { isMuted, toggleMute } = useSound();
@@ -143,49 +146,10 @@ export default function GameBox({ isMobilePortrait }) {
     localStorage.setItem("stardewdle-guesses", JSON.stringify(guesses));
     localStorage.setItem("stardewdle-correctCrop", JSON.stringify(correctCrop));
     localStorage.setItem("stardewdle-gameOver", JSON.stringify(gameOver));
-    localStorage.setItem(
-      "stardewdle-selectedCrop",
-      JSON.stringify(selectedCrop)
-    );
+    localStorage.setItem("stardewdle-selectedCrop", JSON.stringify(selectedCrop));
     localStorage.setItem("stardewdle-date", storedDate);
-  }, [guesses, correctCrop, gameOver, selectedCrop, storedDate]);
-
-  useEffect(() => {
-    if (!correctCrop || crops.length === 0) {
-      const fetchInitialData = async () => {
-        try {
-          const cropResponse = await fetch("https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/crops");
-          if (!cropResponse.ok) {
-            throw new Error(`HTTP error! status: ${cropResponse.status}`);
-          }
-          const cropList = await cropResponse.json();
-          setCrops(cropList);
-
-          const response = await fetch(
-            "https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/word"
-          );
-          const data = await response.json();
-          const word = data.word;
-          setCorrectGuesses(data.correct_guesses);
-          setTotalGuesses(data.total_guesses);
-
-          const cropData = cropList.find(
-            (crop) => crop.name.toLowerCase() === word.toLowerCase()
-          );
-
-          if (cropData) {
-            setCorrectCrop(cropData);
-          } else {
-            console.warn("Crop not found for word:", word);
-          }
-        } catch (error) {
-          console.error("Failed to fetch crop data or word:", error);
-        }
-      };
-
-      fetchInitialData();
-    }
-  }, []);
+    localStorage.setItem("stardewdle-crops", JSON.stringify(crops));
+  }, [guesses, correctCrop, gameOver, selectedCrop, storedDate, crops]);
 
   useEffect(() => {
     if (!DAILY_RESET_ENABLED) return;
@@ -201,9 +165,8 @@ export default function GameBox({ isMobilePortrait }) {
         const cropList = await cropResponse.json();
         setCrops(cropList);
 
-        const response = await fetch(
-          "https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/word"
-        );
+        if (cropList.length === 0) return;
+        const response = await fetch("https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/word");
         const data = await response.json();
         const word = data.word;
 
@@ -230,7 +193,7 @@ export default function GameBox({ isMobilePortrait }) {
       }
       fetchNewCrop();
     }
-  }, [storedDate, correctCrop, crops.length]);
+  }, [storedDate, correctCrop]);
 
   useEffect(() => {
     if (isInitialMount.current) {
