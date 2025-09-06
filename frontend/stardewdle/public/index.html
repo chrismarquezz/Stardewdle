@@ -2,31 +2,22 @@
 <html lang="en">
   <head>
     <script>
-      import { AwsRum } from "aws-rum-web";
-
-      try {
-        const config = {
-          sessionSampleRate: 1,
-          endpoint: "https://dataplane.rum.us-east-1.amazonaws.com",
-          telemetries: ["performance", "errors", "http"],
-          allowCookies: true,
-          enableXRay: false,
-          signing: false,
-        };
-
-        const APPLICATION_ID = "eb5cd8d7-3048-45eb-b574-8cb8eb1dd412";
-        const APPLICATION_VERSION = "1.0.0";
-        const APPLICATION_REGION = "us-east-1";
-
-        const awsRum = new AwsRum(
-          APPLICATION_ID,
-          APPLICATION_VERSION,
-          APPLICATION_REGION,
-          config
-        );
-      } catch (error) {
-      }
-    </script>
+  (function(n,i,v,r,s,c,x,z){x=window.AwsRumClient={q:[],n:n,i:i,v:v,r:r,c:c};window[n]=function(c,p){x.q.push({c:c,p:p});};z=document.createElement('script');z.async=true;z.src=s;document.head.insertBefore(z,document.head.getElementsByTagName('script')[0]);})(
+    'cwr',
+    'eb5cd8d7-3048-45eb-b574-8cb8eb1dd412',
+    '1.0.0',
+    'us-east-1',
+    'https://client.rum.us-east-1.amazonaws.com/1.19.0/cwr.js',
+    {
+      sessionSampleRate: 1 ,
+      endpoint: "https://dataplane.rum.us-east-1.amazonaws.com" ,
+      telemetries: ["performance","errors","http"] ,
+      allowCookies: true ,
+      enableXRay: false ,
+      signing: false
+    }
+  );
+</script>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
