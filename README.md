@@ -1,6 +1,6 @@
 ![stardewdleTitle](https://github.com/user-attachments/assets/e5f6d8b5-4d5d-4983-bd61-f13012272ed9)
 
-# 🌾 Stardewdle
+# Stardewdle
 
 Stardewdle is a Wordle-style guessing game based on crops from the popular game Stardew Valley.  
 Players have 6 attempts to guess the correct crop based on feedback about 5 key attributes:  
@@ -10,7 +10,7 @@ Built with **React** on the frontend and an **AWS-supported** backend, the game 
 
 <br />
 
-## 🧠 Gameplay Overview
+## Gameplay Overview
 
 - 🔍 Guess a crop from Stardew Valley in 6 tries or less.
 - 📊 After each guess, see feedback:
@@ -26,7 +26,7 @@ Built with **React** on the frontend and an **AWS-supported** backend, the game 
 
 <br />
 
-## 🔧 Tech Stack
+## Tech Stack
 
 - **Frontend**: React, JavaScript, TailwindCSS  
 - **Backend**: AWS Lambda (Node.js), API Gateway, DynamoDB  
@@ -35,13 +35,13 @@ Built with **React** on the frontend and an **AWS-supported** backend, the game 
 
 <br />
 
-## 🚀 Live Demo
+## Live Demo
 
 👉 [Play Stardewdle Here](https://stardewdle.com/)
 
 <br />
 
-## 🖼️ Screenshots
+## Screenshots
 
 ![Game Screenshot 1](https://github.com/user-attachments/assets/b2aaffd4-cb23-4fb7-b491-64afa6862eee)
 
@@ -53,7 +53,7 @@ Built with **React** on the frontend and an **AWS-supported** backend, the game 
 
 <br />
 
-## 🛠️ Running Locally
+## Running Locally
 
 ```bash
 # Clone the repo
@@ -69,20 +69,20 @@ npm start
 
 <br />
 
-## 👥 Authors
+## Authors
 
 - [Chris Marquez](https://github.com/chrismarquezz)
 - [Omar Siddiqui](https://github.com/osid54)
   
 <br />
 
-## 📌 Features To Come
+## Features To Come
 
 - Nothing new for now
 
 <br />
 
-## 📄 Credits
+## Credits
 
 All images and sound assets used in this game are created by **ConcernedApe** for *Stardew Valley*.  
 This project is a fan-made game and is not affiliated with or endorsed by **ConcernedApe**.
