@@ -12,12 +12,12 @@ Built with **React** on the frontend and an **AWS-supported** backend, the game 
 
 ## Gameplay Overview
 
-- 🔍 Guess a crop from Stardew Valley in 6 tries or less.
-- 📊 After each guess, see feedback:
-  - ✅ Green: exact match
-  - 🟡 Yellow: partial match
-  - ❌ Red: incorrect
-- 🌱 Attributes compared include:
+- Guess a crop from Stardew Valley in 6 tries or less.
+- After each guess, see feedback:
+  - Green: exact match
+  - Yellow: partial match
+  - Red: incorrect
+- Attributes compared include:
   - Growth Time (days)
   - Sell Price (at Normal quality)
   - Regrows (Yes/No)
@@ -37,7 +37,7 @@ Built with **React** on the frontend and an **AWS-supported** backend, the game 
 
 ## Live Demo
 
-👉 [Play Stardewdle Here](https://stardewdle.com/)
+[Play Stardewdle Here](https://stardewdle.com/)
 
 <br />
 
