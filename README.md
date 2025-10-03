@@ -35,7 +35,7 @@ Built with **React** on the frontend and an **AWS-supported** backend, the game 
 
 <br />
 
-## Live Demo
+## Play Game
 
 [Play Stardewdle Here](https://stardewdle.com/)
 
