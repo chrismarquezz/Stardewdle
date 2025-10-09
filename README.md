@@ -49,23 +49,13 @@ Built with **React** on the frontend and an **AWS-supported** backend, the game 
 
 ![Game Screenshot 3](https://github.com/user-attachments/assets/ebf53c50-5e0e-4f04-834e-05a972501bde)
 
-
-
 <br />
-
-
 
 ## Authors
 
 - [Chris Marquez](https://github.com/chrismarquezz)
 - [Omar Siddiqui](https://github.com/osid54)
   
-<br />
-
-## Features To Come
-
-- Nothing new for now
-
 <br />
 
 ## Credits
