@@ -20,8 +20,9 @@ function formatName(name) {
 
 function todaysDate() {
   const today = new Date(new Date().toUTCString());
-  return `${today.getUTCMonth() + 1
-    }/${today.getUTCDate()}/${today.getUTCFullYear()}`;
+  return `${
+    today.getUTCMonth() + 1
+  }/${today.getUTCDate()}/${today.getUTCFullYear()}`;
 }
 
 function getTimeUntilMidnightUTC() {
@@ -119,7 +120,9 @@ export default function GameBox({ isMobilePortrait }) {
   }, [gameOver, shareText, guesses, correctCrop]);
 
   useEffect(() => {
-    const hasSeenHelpModal = localStorage.getItem("stardewdle-hasSeenHelpModal");
+    const hasSeenHelpModal = localStorage.getItem(
+      "stardewdle-hasSeenHelpModal"
+    );
     if (!hasSeenHelpModal) {
       setShowHelp(true);
       localStorage.setItem("stardewdle-hasSeenHelpModal", "true");
@@ -146,7 +149,10 @@ export default function GameBox({ isMobilePortrait }) {
     localStorage.setItem("stardewdle-guesses", JSON.stringify(guesses));
     localStorage.setItem("stardewdle-correctCrop", JSON.stringify(correctCrop));
     localStorage.setItem("stardewdle-gameOver", JSON.stringify(gameOver));
-    localStorage.setItem("stardewdle-selectedCrop", JSON.stringify(selectedCrop));
+    localStorage.setItem(
+      "stardewdle-selectedCrop",
+      JSON.stringify(selectedCrop)
+    );
     localStorage.setItem("stardewdle-date", storedDate);
     localStorage.setItem("stardewdle-crops", JSON.stringify(crops));
   }, [guesses, correctCrop, gameOver, selectedCrop, storedDate, crops]);
@@ -154,16 +160,14 @@ export default function GameBox({ isMobilePortrait }) {
   useEffect(() => {
     const updateGuessStats = async () => {
       try {
-        const res = await fetch(
-          "https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/word"
-        );
+        const res = await fetch(process.env.REACT_APP_WORD_API);
         const data = await res.json();
         setCorrectGuesses(data.correct_guesses);
         setTotalGuesses(data.total_guesses);
       } catch (err) {
         console.error("Failed to fetch win stats:", err);
       }
-    }
+    };
 
     updateGuessStats();
   }, []);
@@ -175,7 +179,7 @@ export default function GameBox({ isMobilePortrait }) {
 
     const fetchNewCrop = async () => {
       try {
-        const cropResponse = await fetch("https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/crops");
+        const cropResponse = await fetch(process.env.REACT_APP_CROPS_API);
         if (!cropResponse.ok) {
           throw new Error(`HTTP error! status: ${cropResponse.status}`);
         }
@@ -183,7 +187,8 @@ export default function GameBox({ isMobilePortrait }) {
         setCrops(cropList);
 
         if (cropList.length === 0) return;
-        const response = await fetch("https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/word");
+
+        const response = await fetch(process.env.REACT_APP_WORD_API);
         const data = await response.json();
         const word = data.word;
 
@@ -216,7 +221,7 @@ export default function GameBox({ isMobilePortrait }) {
     if (isInitialMount.current) {
       isInitialMount.current = false;
     } else if (isTabVisible) {
-      console.log('Tab became visible, performing full page reload...');
+      console.log("Tab became visible, performing full page reload...");
       window.location.reload();
     }
   }, [isTabVisible]);
@@ -225,12 +230,14 @@ export default function GameBox({ isMobilePortrait }) {
     if (!selectedCrop || guesses.length >= 6 || gameOver) return;
 
     try {
-      const response = await fetch(
-        "https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/guess",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ guess: selectedCrop.name, guessNum: guesses.length + 1 }),
+    const response = await fetch(process.env.REACT_APP_GUESS_API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        guess: selectedCrop.name,
+        guessNum: guesses.length + 1,
+
+          }),
         }
       );
 
@@ -252,7 +259,7 @@ export default function GameBox({ isMobilePortrait }) {
 
         try {
           const res = await fetch(
-            "https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/word"
+            process.env.REACT_APP_WORD_API
           );
           const data = await res.json();
           setCorrectGuesses(data.correct_guesses);
@@ -280,15 +287,24 @@ export default function GameBox({ isMobilePortrait }) {
   };
 
   if (!correctCrop || crops.length === 0) {
-    return <CropLoader className={isMobilePortrait ? "content-counter-rotate-mobile" : ""} />;
+    return (
+      <CropLoader
+        className={isMobilePortrait ? "content-counter-rotate-mobile" : ""}
+      />
+    );
   }
 
   return (
     <div
-      className={`relative shadow-xl bg-no-repeat bg-center ${isMobilePortrait ? "gamebox-mobile-layout" : "flex flex-row justify-between w-full pl-3 mt-3"
-        }`}
+      className={`relative shadow-xl bg-no-repeat bg-center ${
+        isMobilePortrait
+          ? "gamebox-mobile-layout"
+          : "flex flex-row justify-between w-full pl-3 mt-3"
+      }`}
       style={{
-        backgroundImage: isMobilePortrait ? "url('/images/box-bg-sm.webp')" : "url('/images/box-bg.webp')",
+        backgroundImage: isMobilePortrait
+          ? "url('/images/box-bg-sm.webp')"
+          : "url('/images/box-bg.webp')",
         backgroundSize: "100% 100%",
         width: isMobilePortrait ? "1500px" : "1600px",
         height: isMobilePortrait ? "940px" : "800px",
@@ -303,7 +319,9 @@ export default function GameBox({ isMobilePortrait }) {
       >
         <CropGrid
           selectedCrop={selectedCrop}
-          onSelect={!gameOver && guesses.length < 6 ? setSelectedCrop : () => { }}
+          onSelect={
+            !gameOver && guesses.length < 6 ? setSelectedCrop : () => {}
+          }
           crops={crops}
           isMuted={!gameOver && guesses.length < 6 ? isMuted : true}
           className={isMobilePortrait ? "content-counter-rotate-mobile" : ""}
@@ -312,10 +330,15 @@ export default function GameBox({ isMobilePortrait }) {
       </div>
 
       <div
-        className={`flex flex-col align-center w-full place-items-center ${isMobilePortrait ? "content-counter-rotate-mobile" : ""
-          }`}
+        className={`flex flex-col align-center w-full place-items-center ${
+          isMobilePortrait ? "content-counter-rotate-mobile" : ""
+        }`}
       >
-        <div className={`flex flex-row items-center h-full ${isMobilePortrait ? "mr-6" : "mr-24"} mt-[80px] gap-4`}>
+        <div
+          className={`flex flex-row items-center h-full ${
+            isMobilePortrait ? "mr-6" : "mr-24"
+          } mt-[80px] gap-4`}
+        >
           <div
             className="relative bg-no-repeat bg-contain"
             style={{
@@ -347,7 +370,7 @@ export default function GameBox({ isMobilePortrait }) {
             </div>
 
             {gameOver &&
-              (guesses[5] ? guesses[5].crop.name === correctCrop.name : true) ? (
+            (guesses[5] ? guesses[5].crop.name === correctCrop.name : true) ? (
               <div className="mt-4 flex items-center justify-center gap-4">
                 <p className="text-green-700 text-5xl font-bold whitespace-nowrap">
                   You guessed it!
@@ -412,10 +435,11 @@ export default function GameBox({ isMobilePortrait }) {
                   if (!selectedCrop || guesses.length >= 6 || gameOver) return;
                   handleSubmit();
                 }}
-                className={`relative mt-4 group ${!selectedCrop || guesses.length >= 6 || gameOver
-                  ? "opacity-40 pointer-events-none"
-                  : "clickable hover:scale-105 transition-transform"
-                  }`}
+                className={`relative mt-4 group ${
+                  !selectedCrop || guesses.length >= 6 || gameOver
+                    ? "opacity-40 pointer-events-none"
+                    : "clickable hover:scale-105 transition-transform"
+                }`}
                 style={{
                   width: "216px",
                   height: "80px",
@@ -436,17 +460,16 @@ export default function GameBox({ isMobilePortrait }) {
           </div>
         </div>
         <div
-          className={`${isMobilePortrait ? "" : "mr-[78px]"} pl-9 mb-[84px] bg-center bg-no-repeat bg-cover min-h-[440px]`}
+          className={`${
+            isMobilePortrait ? "" : "mr-[78px]"
+          } pl-9 mb-[84px] bg-center bg-no-repeat bg-cover min-h-[440px]`}
           style={{
             backgroundImage: "url('/images/guesses.webp')",
             width: "772px",
             height: "456px",
           }}
         >
-          <GuessGrid
-            guesses={guesses}
-            answer={correctCrop}
-          />
+          <GuessGrid guesses={guesses} answer={correctCrop} />
         </div>
       </div>
       <div
@@ -456,8 +479,9 @@ export default function GameBox({ isMobilePortrait }) {
           }
           toggleMute();
         }}
-        className={`absolute -top-11 right-[4%] w-[30px] h-[30px] clickable z-10 ${isMobilePortrait ? "content-counter-rotate-mobile" : ""
-          }`}
+        className={`absolute -top-11 right-[4%] w-[30px] h-[30px] clickable z-10 ${
+          isMobilePortrait ? "content-counter-rotate-mobile" : ""
+        }`}
       >
         <img
           src={isMuted ? "/images/muted.webp" : "/images/unmuted.webp"}
@@ -472,8 +496,9 @@ export default function GameBox({ isMobilePortrait }) {
           }
           setShowHelp(true);
         }}
-        className={`absolute -top-14 right-1 w-[50px] h-[50px] group clickable z-10 ${isMobilePortrait ? "content-counter-rotate-mobile" : ""
-          }`}
+        className={`absolute -top-14 right-1 w-[50px] h-[50px] group clickable z-10 ${
+          isMobilePortrait ? "content-counter-rotate-mobile" : ""
+        }`}
       >
         <img
           src="/images/question-mark.webp"
@@ -487,10 +512,7 @@ export default function GameBox({ isMobilePortrait }) {
         />
       </div>
       {showHelp && (
-        <HelpModal
-          isMuted={isMuted}
-          onClose={() => setShowHelp(false)}
-        />
+        <HelpModal isMuted={isMuted} onClose={() => setShowHelp(false)} />
       )}
       {showShareModal && (
         <ShareModal
