@@ -8,7 +8,7 @@ export default function CollectionsGrid({ selectedCrop, onSelect, isMuted, class
   if (crops.length === 0) {
     const fetchInitialData = async () => {
       try {
-        const cropResponse = await fetch(process.env.REACT_APP_CROPS_URL);
+        const cropResponse = await fetch(process.env.REACT_APP_API_URL + "/crops");
 
         if (!cropResponse.ok) {
           throw new Error(`HTTP error! status: ${cropResponse.status}`);
