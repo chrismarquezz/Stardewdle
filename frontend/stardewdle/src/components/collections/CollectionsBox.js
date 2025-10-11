@@ -150,7 +150,7 @@ export default function CollectionsBox({ isMobilePortrait }) {
           }
           toggleMute();
         }}
-        className={`absolute bottom-2 -right-10 w-[30px] h-[30px] clickable z-10 ${isMobilePortrait ? "content-counter-rotate-mobile" : ""}`}
+        className={`absolute -top-11 right-[4%] w-[30px] h-[30px] clickable z-10 ${isMobilePortrait ? "content-counter-rotate-mobile" : ""}`}
       >
         <img
           src={isMuted ? "/images/muted.webp" : "/images/unmuted.webp"}
