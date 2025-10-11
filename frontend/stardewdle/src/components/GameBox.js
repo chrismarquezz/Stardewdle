@@ -456,7 +456,7 @@ export default function GameBox({ isMobilePortrait }) {
           }
           toggleMute();
         }}
-        className={`absolute bottom-16 -right-11 w-[30px] h-[30px] clickable z-10 ${isMobilePortrait ? "content-counter-rotate-mobile" : ""
+        className={`absolute -top-11 right-[4%] w-[30px] h-[30px] clickable z-10 ${isMobilePortrait ? "content-counter-rotate-mobile" : ""
           }`}
       >
         <img
@@ -472,7 +472,7 @@ export default function GameBox({ isMobilePortrait }) {
           }
           setShowHelp(true);
         }}
-        className={`absolute bottom-1 -right-14 w-[50px] h-[50px] group clickable z-10 ${isMobilePortrait ? "content-counter-rotate-mobile" : ""
+        className={`absolute -top-14 right-1 w-[50px] h-[50px] group clickable z-10 ${isMobilePortrait ? "content-counter-rotate-mobile" : ""
           }`}
       >
         <img
