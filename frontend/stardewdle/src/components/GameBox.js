@@ -160,7 +160,7 @@ export default function GameBox({ isMobilePortrait }) {
   useEffect(() => {
     const updateGuessStats = async () => {
       try {
-        const res = await fetch(process.env.REACT_APP_WORD_API);
+        const res = await fetch(process.env.REACT_APP_API_URL + "/word");
         const data = await res.json();
         setCorrectGuesses(data.correct_guesses);
         setTotalGuesses(data.total_guesses);
@@ -179,7 +179,7 @@ export default function GameBox({ isMobilePortrait }) {
 
     const fetchNewCrop = async () => {
       try {
-        const cropResponse = await fetch(process.env.REACT_APP_CROPS_API);
+        const cropResponse = await fetch(process.env.REACT_APP_API_URL + "/crops");
         if (!cropResponse.ok) {
           throw new Error(`HTTP error! status: ${cropResponse.status}`);
         }
@@ -188,7 +188,7 @@ export default function GameBox({ isMobilePortrait }) {
 
         if (cropList.length === 0) return;
 
-        const response = await fetch(process.env.REACT_APP_WORD_API);
+        const response = await fetch(process.env.REACT_APP_API_URL + "/word");
         const data = await response.json();
         const word = data.word;
 
@@ -230,7 +230,7 @@ export default function GameBox({ isMobilePortrait }) {
     if (!selectedCrop || guesses.length >= 6 || gameOver) return;
 
     try {
-    const response = await fetch(process.env.REACT_APP_GUESS_API, {
+    const response = await fetch(process.env.REACT_APP_API_URL + "/guess", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -259,7 +259,7 @@ export default function GameBox({ isMobilePortrait }) {
 
         try {
           const res = await fetch(
-            process.env.REACT_APP_WORD_API
+            process.env.REACT_APP_API_URL + "/word"
           );
           const data = await res.json();
           setCorrectGuesses(data.correct_guesses);
