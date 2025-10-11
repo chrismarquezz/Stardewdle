@@ -176,7 +176,7 @@ export default function CollectionsBox({ isMobilePortrait }) {
                 </p>
               </div>
               <p className="w-[500px] border-t-4 border-[#c9ba98] mx-auto text-4xl text-center text-[#c9ba98] pt-2">
-                Crop has appeared {cropCount[selectedCrop.name]} times
+                Crop has appeared {cropCount[selectedCrop.name]} time{cropCount[selectedCrop.name]==1 ? "" : "s"}
               </p>
             </>
           ) : (
