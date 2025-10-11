@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSound } from "../../context/SoundContext";
 import CollectionsGrid from "./CollectionsGrid";
+import CollectionsModal from "./CollectionsModal";
 import CropLoader from "../CropLoader";
 
 function formatName(name) {
@@ -17,41 +18,60 @@ export default function CollectionsBox({ isMobilePortrait }) {
 
   const [crops, setCrops] = useState([]);
   const { isMuted, toggleMute } = useSound();
+  const [showCollectionsModal, setShowCollectionsModal] = useState(false);
+
+  useEffect(() => {
+    const hasSeenCollectionsModal = localStorage.getItem(
+      "stardewdle-hasSeenCollectionsModal"
+    );
+    if (!hasSeenCollectionsModal) {
+      setShowCollectionsModal(true);
+      localStorage.setItem("stardewdle-hasSeenCollectionsModal", "true");
+    }
+  }, []);
 
   useEffect(() => {
     if (crops.length === 0) {
       const fetchInitialData = async () => {
-        try {  
-          const cropResponse = await fetch("https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/crops");
-  
+        try {
+          const cropResponse = await fetch(
+            "https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/crops"
+          );
+
           if (!cropResponse.ok) {
             throw new Error(`HTTP error! status: ${cropResponse.status}`);
           }
-  
+
           const cropList = await cropResponse.json();
           setCrops(cropList);
         } catch (error) {
           console.error("Failed to fetch crop data from Lambda:", error);
         }
       };
-  
+
       fetchInitialData();
     }
   }, []);
 
   if (crops.length === 0) {
-    return <CropLoader className={isMobilePortrait ? "content-counter-rotate-mobile" : ""}/>;
+    return (
+      <CropLoader
+        className={isMobilePortrait ? "content-counter-rotate-mobile" : ""}
+      />
+    );
   }
 
   return (
     <div
       className={`relative shadow-xl bg-no-repeat bg-center ${
-        isMobilePortrait ? "collections-box-mobile-layout" : "relative flex flex-row mt-3 justify-between w-full pl-3"
+        isMobilePortrait
+          ? "collections-box-mobile-layout"
+          : "relative flex flex-row mt-3 justify-between w-full pl-3"
       }`}
       style={{
         backgroundImage: "url('/images/collections/collectionsBG.webp')",
         backgroundSize: "100% 100%",
-        width: isMobilePortrait ? "1500px" : "1600px", 
+        width: isMobilePortrait ? "1500px" : "1600px",
         height: isMobilePortrait ? "940px" : "800px",
       }}
     >
@@ -71,13 +91,23 @@ export default function CollectionsBox({ isMobilePortrait }) {
           isMobilePortrait={isMobilePortrait}
         />
       </div>
-      <div className={`flex flex-col align-center w-full place-items-center h-full justify-center ${isMobilePortrait ? "content-counter-rotate-mobile" : ""}`}>
-        <div className={`flex flex-col items-center ${isMobilePortrait ? "" : "mr-12 mt-[20px]"} gap-4`}>
+      <div
+        className={`flex flex-col align-center w-full place-items-center h-full justify-center ${
+          isMobilePortrait ? "content-counter-rotate-mobile" : ""
+        }`}
+      >
+        <div
+          className={`flex flex-col items-center ${
+            isMobilePortrait ? "" : "mr-12 mt-[20px]"
+          } gap-4`}
+        >
           {selectedCrop ? (
             <>
               <p className="text-7xl text-center text-[#c9ba98]">
                 {formatName(selectedCrop.name)}
-                <p className="w-[500px] border-b-4 border-[#c9ba98] mx-auto text-4xl text-center text-[#c9ba98] pb-2">{selectedCrop.infodetail}</p>
+                <p className="w-[500px] border-b-4 border-[#c9ba98] mx-auto text-4xl text-center text-[#c9ba98] pb-2">
+                  {selectedCrop.infodetail}
+                </p>
               </p>
               <div className="flex flex-row items-center h-full mr-10 gap-4">
                 <div
@@ -107,8 +137,8 @@ export default function CollectionsBox({ isMobilePortrait }) {
                     {(selectedCrop.season == "all"
                       ? ["spring", "summer", "fall", "winter"]
                       : Array.isArray(selectedCrop.season)
-                        ? selectedCrop.season.map((s) => s.toLowerCase())
-                        : []
+                      ? selectedCrop.season.map((s) => s.toLowerCase())
+                      : []
                     ).map((season) => (
                       <div
                         key={season}
@@ -150,7 +180,9 @@ export default function CollectionsBox({ isMobilePortrait }) {
           }
           toggleMute();
         }}
-        className={`absolute -top-11 right-[4%] w-[30px] h-[30px] clickable z-10 ${isMobilePortrait ? "content-counter-rotate-mobile" : ""}`}
+        className={`absolute -top-11 right-[4%] w-[30px] h-[30px] clickable z-10 ${
+          isMobilePortrait ? "content-counter-rotate-mobile" : ""
+        }`}
       >
         <img
           src={isMuted ? "/images/muted.webp" : "/images/unmuted.webp"}
@@ -158,6 +190,34 @@ export default function CollectionsBox({ isMobilePortrait }) {
           className="w-full h-full"
         />
       </div>
+      <div
+        onClick={() => {
+          if (!isMuted) {
+            new Audio("/sounds/help.mp3").play();
+          }
+          setShowCollectionsModal(true);
+        }}
+        className={`absolute -top-14 right-1 w-[50px] h-[50px] group clickable z-10 ${
+          isMobilePortrait ? "content-counter-rotate-mobile" : ""
+        }`}
+      >
+        <img
+          src="/images/question-mark.webp"
+          alt="Collections Modal"
+          className="w-full h-full transition-opacity duration-200 group-hover:opacity-0"
+        />
+        <img
+          src="/images/question-mark-hover.webp"
+          alt="Collections Modal Hover"
+          className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+        />
+      </div>
+      {showCollectionsModal && (
+        <CollectionsModal
+          isMuted={isMuted}
+          onClose={() => setShowCollectionsModal(false)}
+        />
+      )}
     </div>
   );
 }
