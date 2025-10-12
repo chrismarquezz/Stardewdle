@@ -561,13 +561,13 @@ export default function GameBox({ isMobilePortrait }) {
           }
           setShowHints(!showHints);
         }}
-        className={`absolute -top-11 left-[4%] w-[30px] h-[30px] clickable z-10 ${
+        className={`absolute -top-14 left-[4%] w-[50px] h-[50px] clickable z-10 ${
           isMobilePortrait ? "content-counter-rotate-mobile" : ""
         }`}
       >
         <img
           src={
-            showHints ? "/images/question-mark.webp" : "/images/unmuted.webp"
+            showHints ? "/images/helpOn.webp" : "/images/helpOff.webp"
           }
           alt="Toggle Hints"
           className="w-full h-full"
