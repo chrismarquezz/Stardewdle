@@ -541,12 +541,12 @@ export default function GameBox({ isMobilePortrait }) {
         }`}
       >
         <img
-          src="/images/question-mark.webp"
+          src="/images/info.webp"
           alt="Updates"
-          className="w-full h-full transition-opacity duration-200 group-hover:opacity-0"
+          className="w-full h-full transition-opacity duration-200"
         />
         <img
-          src="/images/question-mark-hover.webp"
+          src="/images/infoHover.webp"
           alt="Updates Hover"
           className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
         />
@@ -604,7 +604,7 @@ export default function GameBox({ isMobilePortrait }) {
         <img
           src="/images/question-mark.webp"
           alt="Help"
-          className="w-full h-full transition-opacity duration-200 group-hover:opacity-0"
+          className="w-full h-full transition-opacity duration-200"
         />
         <img
           src="/images/question-mark-hover.webp"
