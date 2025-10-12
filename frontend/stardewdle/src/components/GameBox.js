@@ -98,13 +98,12 @@ export default function GameBox({ isMobilePortrait }) {
   const addConstraints = (crop) => {
     setConstraints((prevConstraints) => {
       const newConstraints = { ...prevConstraints };
-      console.log(...crop["season"], " ", correctCrop["season"]);
 
       for (const key in newConstraints) {
         if (Object.hasOwn(crop, key)) {
           const prevArray = prevConstraints[key];
-          const newValue = crop[key] === correctCrop[key] ? null : (crop[key][0] === "all" ? ["spring",'summer','fall','winter'] : crop[key]);
-
+          const newValue = JSON.stringify(crop[key]) === JSON.stringify(correctCrop[key]) ? null : (crop[key][0] === "all" ? ["spring",'summer','fall','winter'] : crop[key]);
+          if (!newValue) continue;
           if (!prevArray.includes(newValue)) {
             newConstraints[key] = [...prevArray, newValue];
           }
@@ -377,6 +376,7 @@ export default function GameBox({ isMobilePortrait }) {
             isMobilePortrait ? "mr-6" : "mr-24"
           } mt-[80px] gap-4`}
         >
+
           <div
             className="relative bg-no-repeat bg-contain"
             style={{
@@ -406,6 +406,7 @@ export default function GameBox({ isMobilePortrait }) {
                 {selectedCrop ? formatName(selectedCrop.name) : ""}
               </p>
             </div>
+            {JSON.stringify(constraints)}
 
             {gameOver &&
             (guesses[5] ? guesses[5].crop.name === correctCrop.name : true) ? (
