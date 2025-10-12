@@ -74,13 +74,15 @@ export default function GameBox({ isMobilePortrait }) {
   });
 
   const [showHelp, setShowHelp] = useState(false);
-  const { isMuted, toggleMute } = useSound();
   const [showShareModal, setShowShareModal] = useState(false);
   const [shareText, setShareText] = useState("");
   const [timeLeft, setTimeLeft] = useState(getTimeUntilMidnightUTC());
   const [correctGuesses, setCorrectGuesses] = useState(null);
   const [totalGuesses, setTotalGuesses] = useState(null);
   const [showUpdates, setShowUpdates] = useState(false);
+  const [showHints, setShowHints] = useState(false);
+
+  const { isMuted, toggleMute } = useSound();
 
   const isFinalGuess = guesses.length === 5;
 
@@ -479,18 +481,34 @@ export default function GameBox({ isMobilePortrait }) {
       >
         <img
           src="/images/question-mark.webp"
-          alt="Help"
+          alt="Updates"
           className="w-full h-full transition-opacity duration-200 group-hover:opacity-0"
         />
         <img
           src="/images/question-mark-hover.webp"
-          alt="Help Hover"
+          alt="Updates Hover"
           className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
         />
       </div>
       {showUpdates && (
         <UpdatesModal isMuted={isMuted} onClose={() => setShowUpdates(false)} />
       )}
+      <div
+        onClick={() => {
+          if (!isMuted) {
+            new Audio("/sounds/pluck.mp3").play();
+          }
+          setShowHints(!showHints);
+        }}
+        className={`absolute -top-11 left-[4%] w-[30px] h-[30px] clickable z-10 ${isMobilePortrait ? "content-counter-rotate-mobile" : ""
+          }`}
+      >
+        <img
+          src={showHints ? "/images/question-mark.webp" : "/images/unmuted.webp"}
+          alt="Toggle Hints"
+          className="w-full h-full"
+        />
+      </div>
       <div
         onClick={() => {
           if (isMuted) {
