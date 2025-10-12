@@ -64,7 +64,6 @@ export default function GameBox({ isMobilePortrait }) {
     const saved = localStorage.getItem("stardewdle-gameOver");
     return saved ? JSON.parse(saved) : false;
   });
-
   const [storedDate, setStoredDate] = useState(() => {
     const saved = localStorage.getItem("stardewdle-date");
     return saved ? saved : new Date().toISOString().split("T")[0];
@@ -72,6 +71,10 @@ export default function GameBox({ isMobilePortrait }) {
   const [crops, setCrops] = useState(() => {
     const saved = localStorage.getItem("stardewdle-crops");
     return saved ? JSON.parse(saved) : [];
+  });
+  const [showHints, setShowHints] = useState(() => {
+    const saved = localStorage.getItem("stardewdle-showHints");
+    return saved ? JSON.parse(saved) : false;
   });
 
   const [showHelp, setShowHelp] = useState(false);
@@ -81,20 +84,25 @@ export default function GameBox({ isMobilePortrait }) {
   const [correctGuesses, setCorrectGuesses] = useState(null);
   const [totalGuesses, setTotalGuesses] = useState(null);
   const [showUpdates, setShowUpdates] = useState(false);
-  const [showHints, setShowHints] = useState(false);
 
   const { isMuted, toggleMute } = useSound();
 
   const isFinalGuess = guesses.length === 5;
 
-  const [constraints, setConstraints] = useState({
-    name: [],
-    growth_time: [],
-    base_price: [],
-    regrows: [],
-    type: [],
-    season: [],
+  const [constraints, setConstraints] = useState(() => {
+    const saved = localStorage.getItem("stardewdle-constraints");
+    return saved
+      ? JSON.parse(saved)
+      : {
+          name: [],
+          growth_time: [],
+          base_price: [],
+          regrows: [],
+          type: [],
+          season: [],
+        };
   });
+
   const addConstraints = (crop) => {
     setConstraints((prevConstraints) => {
       const newConstraints = { ...prevConstraints };
@@ -102,7 +110,12 @@ export default function GameBox({ isMobilePortrait }) {
       for (const key in newConstraints) {
         if (Object.hasOwn(crop, key)) {
           const prevArray = prevConstraints[key];
-          const newValue = JSON.stringify(crop[key]) === JSON.stringify(correctCrop[key]) ? null : (crop[key][0] === "all" ? ["spring",'summer','fall','winter'] : crop[key]);
+          const newValue =
+            JSON.stringify(crop[key]) === JSON.stringify(correctCrop[key])
+              ? null
+              : crop[key][0] === "all"
+              ? ["spring", "summer", "fall", "winter"]
+              : crop[key];
           if (!newValue) continue;
           if (!prevArray.includes(newValue)) {
             newConstraints[key] = [...prevArray, newValue];
@@ -133,6 +146,14 @@ export default function GameBox({ isMobilePortrait }) {
 
     return `${todaysDate()}\n${header}\n${grid}\nPlay at: https://stardewdle.com/`;
   }
+
+  useEffect(() => {
+    localStorage.setItem("stardewdle-showHints", JSON.stringify(showHints));
+  }, [showHints]);
+
+  useEffect(() => {
+    localStorage.setItem("stardewdle-constraints", JSON.stringify(constraints));
+  }, [constraints]);
 
   useEffect(() => {
     if (gameOver && !shareText && guesses.length > 0) {
@@ -376,7 +397,6 @@ export default function GameBox({ isMobilePortrait }) {
             isMobilePortrait ? "mr-6" : "mr-24"
           } mt-[80px] gap-4`}
         >
-
           <div
             className="relative bg-no-repeat bg-contain"
             style={{

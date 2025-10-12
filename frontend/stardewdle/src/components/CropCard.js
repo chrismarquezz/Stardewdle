@@ -24,7 +24,6 @@ export default function CropCard({ crop, isSelected, onClick, isMuted, guessable
         backgroundPosition: "center",
       }}
     >
-      {/* Crop Image */}
       <img
         src={crop.image_url}
         alt={crop.name}
@@ -36,8 +35,6 @@ export default function CropCard({ crop, isSelected, onClick, isMuted, guessable
           guessable ? "" : "bg-gray-500"
         }`}
       />
-
-      {/* Custom Label Tooltip */}
       <div
         className="absolute -top-5 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-medium text-[#BC6131] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
         style={{
