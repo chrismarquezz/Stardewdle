@@ -42,14 +42,24 @@ function checkConstraints(constraints, crop, showHints) {
 }
 
 
-export default function CropGrid({ selectedCrop, onSelect, isMuted, className, isMobilePortrait, constraints, showHints }) {
+export default function CropGrid({
+  selectedCrop,
+  onSelect,
+  isMuted,
+  className,
+  isMobilePortrait,
+  constraints,
+  showHints,
+}) {
   const [crops, setCrops] = useState([]);
 
   useEffect(() => {
     if (crops.length === 0) {
       const fetchInitialData = async () => {
         try {
-          const cropResponse = await fetch(process.env.REACT_APP_API_URL + "/crops");
+          const cropResponse = await fetch(
+            process.env.REACT_APP_API_URL + "/crops"
+          );
 
           if (!cropResponse.ok) {
             throw new Error(`HTTP error! status: ${cropResponse.status}`);
@@ -68,13 +78,13 @@ export default function CropGrid({ selectedCrop, onSelect, isMuted, className, i
 
   const gridStyles = isMobilePortrait
     ? {
-      gridTemplateColumns: "repeat(9, 60px)",
-      gridAutoRows: "60px",
-    }
+        gridTemplateColumns: "repeat(9, 60px)",
+        gridAutoRows: "60px",
+      }
     : {
-      gridTemplateColumns: "repeat(8, 60px)",
-      gridAutoRows: "60px",
-    };
+        gridTemplateColumns: "repeat(8, 60px)",
+        gridAutoRows: "60px",
+      };
 
   return (
     <div
