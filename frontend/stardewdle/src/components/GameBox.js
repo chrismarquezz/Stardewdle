@@ -86,6 +86,27 @@ export default function GameBox({ isMobilePortrait }) {
 
   const isFinalGuess = guesses.length === 5;
 
+  const [constraints, setConstraints] = useState({ "name": [], "growth_time": [], "base_price": [], "regrows": [], "type": [], "season": [], })
+  const addConstraints = (crop) => {
+    setConstraints(prevConstraints => {
+      const newConstraints = { ...prevConstraints };
+      console.log(...crop["season"]," ",correctCrop["season"])
+
+      for (const key in newConstraints) {
+        if (Object.hasOwn(crop, key)) {
+          const prevArray = prevConstraints[key];
+          const newValue = crop[key] === correctCrop[key] ? null : crop[key];
+
+          if (!prevArray.includes(newValue)) {
+            newConstraints[key] = [...prevArray, newValue];
+          }
+        }
+      }
+
+      return newConstraints;
+    });
+  };
+
   function generateShareText(resultGrid, win) {
     const header = win
       ? "I solved today's Stardewdle!"
@@ -252,6 +273,10 @@ export default function GameBox({ isMobilePortrait }) {
         result && Object.values(result).every((val) => val === "match");
 
       setGuesses(updatedGuesses);
+
+      addConstraints(selectedCrop)
+      console.log()
+
       if (!gameOver && guesses.length < 6) setSelectedCrop(null);
 
       if (isWin) {
@@ -327,6 +352,7 @@ export default function GameBox({ isMobilePortrait }) {
           isMuted={!gameOver && guesses.length < 6 ? isMuted : true}
           className={isMobilePortrait ? "content-counter-rotate-mobile" : ""}
           isMobilePortrait={isMobilePortrait}
+          constraints={constraints}
         />
       </div>
 
@@ -443,6 +469,7 @@ export default function GameBox({ isMobilePortrait }) {
                   height: "80px",
                 }}
               >
+                    {JSON.stringify(constraints)}
                 <img
                   src="/images/submit-button.webp"
                   alt="Submit"
@@ -466,7 +493,7 @@ export default function GameBox({ isMobilePortrait }) {
             height: "456px",
           }}
         >
-          <GuessGrid guesses={guesses} answer={correctCrop} />
+          <GuessGrid guesses={guesses} answer={correctCrop}/>
         </div>
       </div>
       <div
