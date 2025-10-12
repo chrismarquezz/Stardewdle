@@ -2,25 +2,36 @@ import { useEffect, useState } from "react";
 import CropCard from "./CropCard";
 
 function checkConstraints(constraints, crop) {
-  if (constraints["name"].includes(crop.name) || 
-      constraints["growth_time"].includes(crop.growth_time) || 
-      constraints["base_price"].includes(crop.base_price) || 
-      constraints["regrows"].includes(crop.regrows) || 
-      constraints["type"].includes(crop.type) || 
-      constraints["season"].includes(crop.season)) 
-      {
-        return true;
-      }
+  if (
+    constraints["name"].includes(crop.name) ||
+    constraints["growth_time"].includes(crop.growth_time) ||
+    constraints["base_price"].includes(crop.base_price) ||
+    constraints["regrows"].includes(crop.regrows) ||
+    constraints["type"].includes(crop.type) ||
+    constraints["season"].includes(crop.season)
+  ) {
+    return true;
+  }
 }
 
-export default function CropGrid({ selectedCrop, onSelect, isMuted, className, isMobilePortrait, constraints }) {
+export default function CropGrid({
+  selectedCrop,
+  onSelect,
+  isMuted,
+  className,
+  isMobilePortrait,
+  constraints,
+  showHints,
+}) {
   const [crops, setCrops] = useState([]);
 
   useEffect(() => {
     if (crops.length === 0) {
       const fetchInitialData = async () => {
         try {
-          const cropResponse = await fetch(process.env.REACT_APP_API_URL + "/crops");
+          const cropResponse = await fetch(
+            process.env.REACT_APP_API_URL + "/crops"
+          );
 
           if (!cropResponse.ok) {
             throw new Error(`HTTP error! status: ${cropResponse.status}`);
@@ -39,13 +50,13 @@ export default function CropGrid({ selectedCrop, onSelect, isMuted, className, i
 
   const gridStyles = isMobilePortrait
     ? {
-      gridTemplateColumns: "repeat(9, 60px)",
-      gridAutoRows: "60px",
-    }
+        gridTemplateColumns: "repeat(9, 60px)",
+        gridAutoRows: "60px",
+      }
     : {
-      gridTemplateColumns: "repeat(8, 60px)",
-      gridAutoRows: "60px",
-    };
+        gridTemplateColumns: "repeat(8, 60px)",
+        gridAutoRows: "60px",
+      };
 
   return (
     <div
@@ -57,20 +68,23 @@ export default function CropGrid({ selectedCrop, onSelect, isMuted, className, i
         backgroundRepeat: "no-repeat",
       }}
     >
-      <div
-        className="grid gap-[6px] place-items-center"
-        style={gridStyles}
-      >
-        {crops.map((crop) => (
-          <CropCard
-            key={crop.name}
-            crop={crop}
-            isSelected={selectedCrop?.name === crop.name}
-            onClick={onSelect}
-            isMuted={isMuted}
-            guessable={!checkConstraints(constraints, crop)}
-          />
-        ))}
+      <div className="grid gap-[6px] place-items-center" style={gridStyles}>
+        {crops.map((crop) => {
+          const isGuessable = showHints
+            ? !checkConstraints(constraints, crop)
+            : true;
+
+          return (
+            <CropCard
+              key={crop.name}
+              crop={crop}
+              isSelected={selectedCrop?.name === crop.name}
+              onClick={onSelect}
+              isMuted={isMuted}
+              guessable={isGuessable}
+            />
+          );
+        })}
       </div>
     </div>
   );
