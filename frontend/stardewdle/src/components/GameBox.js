@@ -406,8 +406,6 @@ export default function GameBox({ isMobilePortrait }) {
                 {selectedCrop ? formatName(selectedCrop.name) : ""}
               </p>
             </div>
-            {JSON.stringify(constraints)}
-
             {gameOver &&
             (guesses[5] ? guesses[5].crop.name === correctCrop.name : true) ? (
               <div className="mt-4 flex items-center justify-center gap-4">
