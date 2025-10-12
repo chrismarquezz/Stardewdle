@@ -1,4 +1,4 @@
-export default function CropCard({ crop, isSelected, onClick, isMuted }) {
+export default function CropCard({ crop, isSelected, onClick, isMuted, guessable}) {
   //const { isMuted } = useSound();
 
   const formattedName = crop.name
@@ -14,7 +14,6 @@ export default function CropCard({ crop, isSelected, onClick, isMuted }) {
         if (!isMuted) {
           new Audio("/sounds/select.mp3").play();
         }
-
         onClick(crop);
       }}
       className={`relative w-16 h-16 clickable p-1 flex items-center justify-center group ${
@@ -31,6 +30,10 @@ export default function CropCard({ crop, isSelected, onClick, isMuted }) {
         src={crop.image_url}
         alt={crop.name}
         className="w-[80%] h-[80%] object-contain"
+      />
+      
+      <div
+        className={`w-full h-full absolute opacity-70 mix-blend-multiply ${guessable ? "" : "bg-gray-500"}`}
       />
 
       {/* Custom Label Tooltip */}
