@@ -536,7 +536,7 @@ export default function GameBox({ isMobilePortrait }) {
           }
           setShowUpdates(true);
         }}
-        className={`absolute -top-14 left-1 w-[50px] h-[50px] group clickable z-10 ${
+        className={`absolute -top-[7.5%] right-1 w-[50px] h-[50px] group clickable z-10 ${
           isMobilePortrait ? "content-counter-rotate-mobile" : ""
         }`}
       >
@@ -546,7 +546,7 @@ export default function GameBox({ isMobilePortrait }) {
           className="w-full h-full transition-opacity duration-200"
         />
         <img
-          src="/images/infoHover.webp"
+          src="/images/info-hover.webp"
           alt="Updates Hover"
           className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
         />
@@ -561,16 +561,21 @@ export default function GameBox({ isMobilePortrait }) {
           }
           setShowHints(!showHints);
         }}
-        className={`absolute -top-14 left-[4%] w-[50px] h-[50px] clickable z-10 ${
+        className={`group absolute -top-[7.5%] right-[7.75%] w-[50px] h-[50px] clickable z-10 ${
           isMobilePortrait ? "content-counter-rotate-mobile" : ""
         }`}
       >
         <img
           src={
-            showHints ? "/images/helpOn.webp" : "/images/helpOff.webp"
+            showHints ? "/images/hint-on.webp" : "/images/hint-off.webp"
           }
           alt="Toggle Hints"
           className="w-full h-full"
+        />
+        <img
+          src={showHints ? "/images/hint-on-hover.webp" : "/images/hint-off-hover.webp"}
+          alt="Hint Hover"
+          className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
         />
       </div>
       <div
@@ -580,7 +585,7 @@ export default function GameBox({ isMobilePortrait }) {
           }
           toggleMute();
         }}
-        className={`absolute -top-11 right-[4%] w-[30px] h-[30px] clickable z-10 ${
+        className={`group absolute -top-[7.5%] right-[11.50%] w-[50px] h-[50px] clickable z-10 ${
           isMobilePortrait ? "content-counter-rotate-mobile" : ""
         }`}
       >
@@ -588,6 +593,11 @@ export default function GameBox({ isMobilePortrait }) {
           src={isMuted ? "/images/muted.webp" : "/images/unmuted.webp"}
           alt="Toggle Sound"
           className="w-full h-full"
+        />
+        <img
+          src={isMuted ? "/images/muted-hover.webp" : "/images/unmuted-hover.webp"}
+          alt="Sound Hover"
+          className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
         />
       </div>
       <div
@@ -597,7 +607,7 @@ export default function GameBox({ isMobilePortrait }) {
           }
           setShowHelp(true);
         }}
-        className={`absolute -top-14 right-1 w-[50px] h-[50px] group clickable z-10 ${
+        className={`absolute -top-[7.5%] right-[4%] w-[50px] h-[50px] group clickable z-10 ${
           isMobilePortrait ? "content-counter-rotate-mobile" : ""
         }`}
       >
