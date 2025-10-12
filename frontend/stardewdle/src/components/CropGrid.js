@@ -1,19 +1,48 @@
 import { useEffect, useState } from "react";
 import CropCard from "./CropCard";
 
-function checkConstraints(constraints, crop) {
-  if (constraints["name"].includes(crop.name) || 
-      constraints["growth_time"].includes(crop.growth_time) || 
-      constraints["base_price"].includes(crop.base_price) || 
-      constraints["regrows"].includes(crop.regrows) || 
-      constraints["type"].includes(crop.type) || 
-      constraints["season"].includes(crop.season)) 
-      {
-        return true;
+function checkConstraints(constraints, crop, showHints) {
+  if (!showHints) {
+    return constraints["name"].includes(crop.name);
+  }
+
+  const allConstraintsEmpty = Object.values(constraints).every(arr => arr.length === 0);
+  if (allConstraintsEmpty) {
+    return false;
+  }
+
+  for (const key in constraints) {
+    const constraintValues = constraints[key];
+    const cropValue = crop[key];
+
+    if (constraintValues.length === 0) {
+      continue;
+    }
+
+    let isMatch = false;
+
+    if (key === 'season' && Array.isArray(cropValue)) {
+      if (cropValue[0] === "all")
+        isMatch = true;
+      else {
+        isMatch = constraintValues.some(constraintArr =>
+          constraintArr.every(season => cropValue.includes(season))
+        );
       }
+    } else {
+      isMatch = constraintValues.includes(cropValue);
+    }
+
+    if (isMatch) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
-export default function CropGrid({ selectedCrop, onSelect, isMuted, className, isMobilePortrait, constraints }) {
+
+export default function CropGrid({ selectedCrop, onSelect, isMuted, className, isMobilePortrait, constraints, showHints }) {
   const [crops, setCrops] = useState([]);
 
   useEffect(() => {
@@ -68,7 +97,7 @@ export default function CropGrid({ selectedCrop, onSelect, isMuted, className, i
             isSelected={selectedCrop?.name === crop.name}
             onClick={onSelect}
             isMuted={isMuted}
-            guessable={!checkConstraints(constraints, crop)}
+            guessable={!checkConstraints(constraints, crop, showHints)}
           />
         ))}
       </div>

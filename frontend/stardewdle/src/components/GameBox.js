@@ -95,7 +95,7 @@ export default function GameBox({ isMobilePortrait }) {
       for (const key in newConstraints) {
         if (Object.hasOwn(crop, key)) {
           const prevArray = prevConstraints[key];
-          const newValue = crop[key] === correctCrop[key] ? null : crop[key];
+          const newValue = crop[key] === correctCrop[key] ? null : (crop[key][0] === "all" ? ["spring",'summer','fall','winter'] : crop[key]);
 
           if (!prevArray.includes(newValue)) {
             newConstraints[key] = [...prevArray, newValue];
@@ -353,6 +353,7 @@ export default function GameBox({ isMobilePortrait }) {
           className={isMobilePortrait ? "content-counter-rotate-mobile" : ""}
           isMobilePortrait={isMobilePortrait}
           constraints={constraints}
+          showHints={showHints}
         />
       </div>
 
@@ -469,7 +470,6 @@ export default function GameBox({ isMobilePortrait }) {
                   height: "80px",
                 }}
               >
-                    {JSON.stringify(constraints)}
                 <img
                   src="/images/submit-button.webp"
                   alt="Submit"
