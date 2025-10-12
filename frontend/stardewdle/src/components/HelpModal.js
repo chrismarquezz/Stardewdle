@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 export default function HelpModal({ isMuted, onClose, scaleFactor }) {
   const playCloseSound = () => {
     if (!isMuted) {
-      new Audio("/sounds/help.mp3").play();
+      new Audio("/sounds/modal.mp3").play();
     }
     onClose();
   };

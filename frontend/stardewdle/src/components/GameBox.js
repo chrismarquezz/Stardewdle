@@ -5,6 +5,7 @@ import GuessGrid from "./GuessGrid";
 import CropLoader from "../components/CropLoader";
 import ShareModal from "./ShareModal";
 import HelpModal from "./HelpModal";
+import UpdatesModal from "./UpdatesModal";
 
 const DAILY_RESET_ENABLED = true;
 
@@ -79,6 +80,7 @@ export default function GameBox({ isMobilePortrait }) {
   const [timeLeft, setTimeLeft] = useState(getTimeUntilMidnightUTC());
   const [correctGuesses, setCorrectGuesses] = useState(null);
   const [totalGuesses, setTotalGuesses] = useState(null);
+  const [showUpdates, setShowUpdates] = useState(false);
 
   const isFinalGuess = guesses.length === 5;
 
@@ -374,7 +376,7 @@ export default function GameBox({ isMobilePortrait }) {
                 <div
                   onClick={() => {
                     if (!isMuted) {
-                      new Audio("/sounds/help.mp3").play();
+                      new Audio("/sounds/modal.mp3").play();
                     }
                     setShowShareModal(true);
                   }}
@@ -403,7 +405,7 @@ export default function GameBox({ isMobilePortrait }) {
                   <div
                     onClick={() => {
                       if (!isMuted) {
-                        new Audio("/sounds/help.mp3").play();
+                        new Audio("/sounds/modal.mp3").play();
                       }
                       setShowShareModal(true);
                     }}
@@ -467,6 +469,30 @@ export default function GameBox({ isMobilePortrait }) {
       </div>
       <div
         onClick={() => {
+          if (!isMuted) {
+            new Audio("/sounds/modal.mp3").play();
+          }
+          setShowUpdates(true);
+        }}
+        className={`absolute -top-14 left-1 w-[50px] h-[50px] group clickable z-10 ${isMobilePortrait ? "content-counter-rotate-mobile" : ""
+          }`}
+      >
+        <img
+          src="/images/question-mark.webp"
+          alt="Help"
+          className="w-full h-full transition-opacity duration-200 group-hover:opacity-0"
+        />
+        <img
+          src="/images/question-mark-hover.webp"
+          alt="Help Hover"
+          className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+        />
+      </div>
+      {showUpdates && (
+        <UpdatesModal isMuted={isMuted} onClose={() => setShowUpdates(false)} />
+      )}
+      <div
+        onClick={() => {
           if (isMuted) {
             new Audio("/sounds/pluck.mp3").play();
           }
@@ -484,7 +510,7 @@ export default function GameBox({ isMobilePortrait }) {
       <div
         onClick={() => {
           if (!isMuted) {
-            new Audio("/sounds/help.mp3").play();
+            new Audio("/sounds/modal.mp3").play();
           }
           setShowHelp(true);
         }}

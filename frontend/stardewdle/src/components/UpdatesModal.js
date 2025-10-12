@@ -1,6 +1,6 @@
 import ReactDOM from "react-dom";
 
-export default function CollectionsModal({ isMuted, onClose, scaleFactor }) {
+export default function UpdatesModal({ isMuted, onClose, scaleFactor }) {
   const playCloseSound = () => {
     if (!isMuted) {
       new Audio("/sounds/modal.mp3").play();
@@ -37,26 +37,41 @@ export default function CollectionsModal({ isMuted, onClose, scaleFactor }) {
           </button>
 
           <h2 className="text-[#BC6131] text-center text-2xl md:text-5xl font-semibold mb-2">
-            Collections Page
+            What's New
           </h2>
 
-          <div className="space-y-2 md:space-y-4 text-[#BC6131] text-left text-md sm:text-2xl md:text-3xl leading-none overflow-y-auto">
-            <p>- Browse through all available crops from Stardew Valley</p>
-            <p>- Click on any crop to view detailed information such as:</p>
-            <ul className="list-disc ml-6 md:ml-10">
-              <li>Growth time and regrow status</li>
-              <li>Seasons the crop can grow in</li>
-              <li>Base selling price</li>
-              <li>Crop type (vegetable, fruit, etc.)</li>
-            </ul>
-            <p>
-              - Each crop also displays how many times it has appeared as the
-              Daily Crop
-            </p>
-            <p>
-              - Use this page to learn about every crop in the game and track
-              which ones show up most often in Stardewdle!
-            </p>
+          {/* Scrollable content */}
+          <div className="space-y-2 md:space-y-4 text-[#BC6131] text-left text-md sm:text-2xl md:text-3xl leading-none overflow-y-auto max-h-[70vh] pr-2">
+            <div>
+              <p className="font-semibold">v1.2.0 — October 2025</p>
+              <ul className="list-disc ml-6 md:ml-10">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+              </ul>
+            </div>
+
+            <div>
+              <p className="font-semibold">v1.1.0 — June 2025</p>
+              <ul className="list-disc ml-6 md:ml-10">
+                <li></li>
+                <li></li>
+                <li></li>
+              </ul>
+            </div>
+
+            <div>
+              <p className="font-semibold">v1.0.0 — Initial Release</p>
+              <ul className="list-disc ml-6 md:ml-10">
+                <li></li>
+                <li></li>
+              </ul>
+            </div>
+
+            <div className="mt-4 italic">
+              <p>Future updates will appear here as new features are released!</p>
+            </div>
           </div>
         </div>
       </div>

@@ -203,7 +203,7 @@ export default function CollectionsBox({ isMobilePortrait }) {
       <div
         onClick={() => {
           if (!isMuted) {
-            new Audio("/sounds/help.mp3").play();
+            new Audio("/sounds/modal.mp3").play();
           }
           setShowCollectionsModal(true);
         }}
