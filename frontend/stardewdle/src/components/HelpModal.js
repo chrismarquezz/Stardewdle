@@ -1,6 +1,6 @@
 import ReactDOM from "react-dom";
 
-export default function HelpModal({ isMuted, onClose, scaleFactor }) {
+export default function HelpModal({ isMuted, onClose }) {
   const playCloseSound = () => {
     if (!isMuted) {
       new Audio("/sounds/modal.mp3").play();
@@ -15,80 +15,79 @@ export default function HelpModal({ isMuted, onClose, scaleFactor }) {
     >
       <div
         className="relative max-w-[95vw] max-h-[95vh] flex flex-col"
-        style={{
-          transform: `scale(${scaleFactor})`,
-          transformOrigin: "center",
-        }}
         onClick={(e) => e.stopPropagation()}
       >
-
         {/* Content */}
-        <div className="justify-center align-middle relative z-10 flex flex-col overflow-y-auto p-4 md:pl-8 md:pr-8"
+        <div
+          className="relative z-10 flex flex-col overflow-y-auto p-6 md:pl-10 md:pr-10
+          w-[85vw] max-w-[1100px] h-auto md:h-[80vh]"
           style={{
             backgroundImage: "url('/images/help-bg.webp')",
             backgroundSize: "100% 100%",
-          }}>
+          }}
+        >
+          {/* Close button */}
           <button
             onClick={playCloseSound}
-            className="clickable absolute top-0 text-red-500 text-4xl md:text-6xl hover:text-gray-300"
+            className="clickable absolute top-2 left-6 text-red-500 text-4xl md:text-7xl hover:text-gray-300"
           >
             x
           </button>
 
-          <h2 className="text-[#BC6131] text-center text-2xl md:text-5xl font-semibold mb-2">
+          {/* Title */}
+          <h2 className="text-[#BC6131] text-center text-3xl sm:text-5xl md:text-7xl font-semibold mb-6 mt-2">
             How to Play
           </h2>
 
-          <div className="space-y-2 md:space-y-4 text-[#BC6131] text-left text-md sm:text-2xl md:text-3xl leading-none overflow-y-auto">
+          {/* Content */}
+          <div className="flex-1 space-y-4 md:space-y-6 text-[#BC6131] text-left text-lg sm:text-3xl md:text-4xl leading-snug overflow-y-auto">
             <p>- Select a crop from the grid</p>
             <p>- Click "Submit" to guess the crop of the day</p>
             <p>- You get 6 tries to guess correctly</p>
+
             <div>
               <p>- The result grid shows feedback:</p>
-              <div className="flex flex-col md:flex-row items-center gap-2 md:gap-10 text-nowrap">
-                <div className="ml-4 md:ml-10 mt-2 md:mt-4 space-y-2 md:space-y-4">
-                  <div className="flex items-center gap-1 md:gap-3">
-                    <div className="w-3 h-3 md:w-6 md:h-6 bg-green-500 border md:border-2 border-green-700 rounded-sm" />
+              <div className="flex flex-col md:flex-row items-center gap-4 md:gap-10 text-nowrap">
+                <div className="ml-6 md:ml-10 mt-2 md:mt-4 space-y-3 md:space-y-5">
+                  <div className="flex items-center gap-2 md:gap-4">
+                    <div className="w-4 h-4 md:w-8 md:h-8 bg-green-500 border md:border-2 border-green-700 rounded-sm" />
                     <span>Exact match</span>
                   </div>
-                  <div className="flex items-center gap-1 md:gap-3">
-                    <div className="w-3 h-3 md:w-6 md:h-6 bg-yellow-400 border md:border-2 border-yellow-600 rounded-sm" />
+                  <div className="flex items-center gap-2 md:gap-4">
+                    <div className="w-4 h-4 md:w-8 md:h-8 bg-yellow-400 border md:border-2 border-yellow-600 rounded-sm" />
                     <span>Partial match</span>
                   </div>
-                  <div className="flex items-center gap-1 md:gap-3">
-                    <div className="w-3 h-3 md:w-6 md:h-6 bg-red-500 border md:border-2 border-red-700 rounded-sm" />
+                  <div className="flex items-center gap-2 md:gap-4">
+                    <div className="w-4 h-4 md:w-8 md:h-8 bg-red-500 border md:border-2 border-red-700 rounded-sm" />
                     <span>Incorrect</span>
                   </div>
                 </div>
-                <div className="space-y-2 md:space-y-4">
-                  <div className="flex items-center gap-1 md:gap-3">
+
+                <div className="space-y-3 md:space-y-5">
+                  <div className="flex items-center gap-2 md:gap-4">
                     <img
                       src="/images/arrow4U.webp"
                       alt="Up Arrow"
-                      className="w-3 h-3 md:w-6 md:h-6"
+                      className="w-4 h-4 md:w-8 md:h-8"
                     />
-                    <span>
-                      The correct value is higher
-                    </span>
+                    <span>The correct value is higher</span>
                   </div>
-                  <div className="flex items-center gap-1 md:gap-3">
+                  <div className="flex items-center gap-2 md:gap-4">
                     <img
                       src="/images/arrow4D.webp"
                       alt="Down Arrow"
-                      className="w-3 h-3 md:w-6 md:h-6"
+                      className="w-4 h-4 md:w-8 md:h-8"
                     />
-                    <span>
-                      The correct value is lower
-                    </span>
+                    <span>The correct value is lower</span>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="mt-2 md:mt-4">
-              <p>
-                - Hover over the season image to see the season name
-              </p>
-            </div>
+            <p>- Hover over the season image to see the season name</p>
+            <p>
+              - If you ever feel stuck, turn on the hint feature to eliminate
+              possible crops based on feedback from each guess
+            </p>
           </div>
         </div>
       </div>
