@@ -8,6 +8,7 @@ import HelpModal from "./HelpModal";
 import UpdatesModal from "./UpdatesModal";
 
 const DAILY_RESET_ENABLED = true;
+const MOST_RECENT_UPDATE = "2025-10-13T00:00:00Z";
 
 function formatName(name) {
   return name
@@ -20,8 +21,9 @@ function formatName(name) {
 
 function todaysDate() {
   const today = new Date(new Date().toUTCString());
-  return `${today.getUTCMonth() + 1
-    }/${today.getUTCDate()}/${today.getUTCFullYear()}`;
+  return `${
+    today.getUTCMonth() + 1
+  }/${today.getUTCDate()}/${today.getUTCFullYear()}`;
 }
 
 function getTimeUntilMidnightUTC() {
@@ -83,6 +85,7 @@ export default function GameBox({ isMobilePortrait }) {
   const [correctGuesses, setCorrectGuesses] = useState(null);
   const [totalGuesses, setTotalGuesses] = useState(null);
   const [showUpdates, setShowUpdates] = useState(false);
+  const [shouldPulse, setShouldPulse] = useState(false);
 
   const { isMuted, toggleMute } = useSound();
 
@@ -93,13 +96,13 @@ export default function GameBox({ isMobilePortrait }) {
     return saved
       ? JSON.parse(saved)
       : {
-        name: [],
-        growth_time: [],
-        base_price: [],
-        regrows: [],
-        type: [],
-        season: [],
-      };
+          name: [],
+          growth_time: [],
+          base_price: [],
+          regrows: [],
+          type: [],
+          season: [],
+        };
   });
 
   const addConstraints = (crop) => {
@@ -109,9 +112,13 @@ export default function GameBox({ isMobilePortrait }) {
       for (const key in newConstraints) {
         if (Object.hasOwn(crop, key)) {
           const prevArray = prevConstraints[key];
-          console.log(JSON.stringify(crop[key]), JSON.stringify(correctCrop[key]));
+          console.log(
+            JSON.stringify(crop[key]),
+            JSON.stringify(correctCrop[key])
+          );
           const newValue =
             JSON.stringify(crop[key]) === JSON.stringify(correctCrop[key])
+<<<<<<< Updated upstream
               ? (
                 key === "regrows"
                   ? !correctCrop["regrows"]
@@ -121,9 +128,22 @@ export default function GameBox({ isMobilePortrait }) {
                       ? [["spring"], ["summer"], ["fall"], ["winter"]].filter(season => season[0] !== crop["season"][0])
                       : null
               )
+=======
+              ? key === "regrows"
+                ? !correctCrop["regrows"]
+                : key === "type"
+                ? ["fruit", "vegetable", "flower", "forage"].filter(
+                    (season) => season !== crop["type"]
+                  )
+                : key === "season" && crop["season"].length === 1
+                ? ["spring", "summer", "fall", "winter"].filter(
+                    (season) => season !== crop["season"][0]
+                  )
+                : null
+>>>>>>> Stashed changes
               : crop[key][0] === "all"
-                ? ["spring", "summer", "fall", "winter"]
-                : crop[key];
+              ? ["spring", "summer", "fall", "winter"]
+              : crop[key];
           if (newValue === null) continue;
           if (Array.isArray(newValue) && newValue.length === 3) {
             newValue.forEach(val => {
@@ -162,6 +182,21 @@ export default function GameBox({ isMobilePortrait }) {
 
     return `${todaysDate()}\n${header}\n${grid}\nPlay at: https://stardewdle.com/`;
   }
+
+  useEffect(() => {
+    const lastSeen = localStorage.getItem("stardewdle-lastUpdateSeen");
+
+    if (!lastSeen) {
+      setShouldPulse(true);
+    } else {
+      const lastSeenDate = new Date(lastSeen);
+      const mostRecentDate = new Date(MOST_RECENT_UPDATE);
+
+      if (lastSeenDate < mostRecentDate) {
+        setShouldPulse(true);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     if (gameOver && !shareText && guesses.length > 0) {
@@ -205,13 +240,24 @@ export default function GameBox({ isMobilePortrait }) {
     localStorage.setItem("stardewdle-guesses", JSON.stringify(guesses));
     localStorage.setItem("stardewdle-correctCrop", JSON.stringify(correctCrop));
     localStorage.setItem("stardewdle-gameOver", JSON.stringify(gameOver));
-    localStorage.setItem("stardewdle-selectedCrop", JSON.stringify(selectedCrop));
+    localStorage.setItem(
+      "stardewdle-selectedCrop",
+      JSON.stringify(selectedCrop)
+    );
     localStorage.setItem("stardewdle-date", storedDate);
     localStorage.setItem("stardewdle-crops", JSON.stringify(crops));
     localStorage.setItem("stardewdle-showHints", JSON.stringify(showHints));
     localStorage.setItem("stardewdle-constraints", JSON.stringify(constraints));
-
-  }, [guesses, correctCrop, gameOver, selectedCrop, storedDate, crops, showHints, constraints]);
+  }, [
+    guesses,
+    correctCrop,
+    gameOver,
+    selectedCrop,
+    storedDate,
+    crops,
+    showHints,
+    constraints,
+  ]);
 
   useEffect(() => {
     const updateGuessStats = async () => {
@@ -270,7 +316,14 @@ export default function GameBox({ isMobilePortrait }) {
         setSelectedCrop(null);
         setGameOver(false);
         setStoredDate(today);
-        setConstraints({ name: [], growth_time: [], base_price: [], regrows: [], type: [], season: [] })
+        setConstraints({
+          name: [],
+          growth_time: [],
+          base_price: [],
+          regrows: [],
+          type: [],
+          season: [],
+        });
       }
       fetchNewCrop();
     }
@@ -361,10 +414,11 @@ export default function GameBox({ isMobilePortrait }) {
 
   return (
     <div
-      className={`relative shadow-xl bg-no-repeat bg-center ${isMobilePortrait
-        ? "gamebox-mobile-layout"
-        : "flex flex-row justify-between w-full pl-3 mt-3"
-        }`}
+      className={`relative shadow-xl bg-no-repeat bg-center ${
+        isMobilePortrait
+          ? "gamebox-mobile-layout"
+          : "flex flex-row justify-between w-full pl-3 mt-3"
+      }`}
       style={{
         backgroundImage: isMobilePortrait
           ? "url('/images/box-bg-sm.webp')"
@@ -384,7 +438,7 @@ export default function GameBox({ isMobilePortrait }) {
         <CropGrid
           selectedCrop={selectedCrop}
           onSelect={
-            !gameOver && guesses.length < 6 ? setSelectedCrop : () => { }
+            !gameOver && guesses.length < 6 ? setSelectedCrop : () => {}
           }
           crops={crops}
           isMuted={!gameOver && guesses.length < 6 ? isMuted : true}
@@ -396,12 +450,14 @@ export default function GameBox({ isMobilePortrait }) {
       </div>
 
       <div
-        className={`flex flex-col align-center w-full place-items-center ${isMobilePortrait ? "content-counter-rotate-mobile" : ""
-          }`}
+        className={`flex flex-col align-center w-full place-items-center ${
+          isMobilePortrait ? "content-counter-rotate-mobile" : ""
+        }`}
       >
         <div
-          className={`flex flex-row items-center h-full ${isMobilePortrait ? "mr-6" : "mr-24"
-            } mt-[80px] gap-4`}
+          className={`flex flex-row items-center h-full ${
+            isMobilePortrait ? "mr-6" : "mr-24"
+          } mt-[80px] gap-4`}
         >
           <div
             className="relative bg-no-repeat bg-contain"
@@ -434,7 +490,7 @@ export default function GameBox({ isMobilePortrait }) {
             </div>
             {/*JSON.stringify(constraints)*/}
             {gameOver &&
-              (guesses[5] ? guesses[5].crop.name === correctCrop.name : true) ? (
+            (guesses[5] ? guesses[5].crop.name === correctCrop.name : true) ? (
               <div className="mt-4 flex items-center justify-center gap-4">
                 <p className="text-green-700 text-5xl font-bold whitespace-nowrap">
                   You guessed it!
@@ -499,10 +555,11 @@ export default function GameBox({ isMobilePortrait }) {
                   if (!selectedCrop || guesses.length >= 6 || gameOver) return;
                   handleSubmit();
                 }}
-                className={`relative mt-4 group ${!selectedCrop || guesses.length >= 6 || gameOver
-                  ? "opacity-40 pointer-events-none"
-                  : "clickable hover:scale-105 transition-transform"
-                  }`}
+                className={`relative mt-4 group ${
+                  !selectedCrop || guesses.length >= 6 || gameOver
+                    ? "opacity-40 pointer-events-none"
+                    : "clickable hover:scale-105 transition-transform"
+                }`}
                 style={{
                   width: "216px",
                   height: "80px",
@@ -523,8 +580,9 @@ export default function GameBox({ isMobilePortrait }) {
           </div>
         </div>
         <div
-          className={`${isMobilePortrait ? "" : "mr-[78px]"
-            } pl-9 mb-[84px] bg-center bg-no-repeat bg-cover min-h-[440px]`}
+          className={`${
+            isMobilePortrait ? "" : "mr-[78px]"
+          } pl-9 mb-[84px] bg-center bg-no-repeat bg-cover min-h-[440px]`}
           style={{
             backgroundImage: "url('/images/guesses.webp')",
             width: "772px",
@@ -540,9 +598,17 @@ export default function GameBox({ isMobilePortrait }) {
             new Audio("/sounds/modal.mp3").play();
           }
           setShowUpdates(true);
+
+          localStorage.setItem(
+            "stardewdle-lastUpdateSeen",
+            new Date().toISOString()
+          );
+          setShouldPulse(false);
         }}
-        className={`absolute -top-[7.5%] right-1 w-[50px] h-[50px] group clickable z-10 transition-transform duration-200 hover:scale-110${isMobilePortrait ? "content-counter-rotate-mobile" : ""
-          }`}
+        className={`absolute -top-[7.5%] right-1 w-[50px] h-[50px] group clickable z-10 
+    transition-transform duration-200 hover:scale-110
+    ${shouldPulse ? "animate-bounceHard" : ""}
+    ${isMobilePortrait ? "content-counter-rotate-mobile" : ""}`}
       >
         <img
           src="/images/info.webp"
@@ -576,8 +642,9 @@ export default function GameBox({ isMobilePortrait }) {
           }
           setShowHints(!showHints);
         }}
-        className={`group absolute -top-[7.5%] right-[7.75%] w-[50px] h-[50px] clickable z-10 transition-transform duration-200 hover:scale-110${isMobilePortrait ? "content-counter-rotate-mobile" : ""
-          }`}
+        className={`group absolute -top-[7.5%] right-[7.75%] w-[50px] h-[50px] clickable z-10 transition-transform duration-200 hover:scale-110${
+          isMobilePortrait ? "content-counter-rotate-mobile" : ""
+        }`}
       >
         <img
           src={showHints ? "/images/hint-on.webp" : "/images/hint-off.webp"}
@@ -612,8 +679,9 @@ export default function GameBox({ isMobilePortrait }) {
           }
           toggleMute();
         }}
-        className={`group absolute -top-[7.5%] right-[11.50%] w-[50px] h-[50px] clickable z-10 transition-transform duration-200 hover:scale-110 ${isMobilePortrait ? "content-counter-rotate-mobile" : ""
-          }`}
+        className={`group absolute -top-[7.5%] right-[11.50%] w-[50px] h-[50px] clickable z-10 transition-transform duration-200 hover:scale-110 ${
+          isMobilePortrait ? "content-counter-rotate-mobile" : ""
+        }`}
       >
         <img
           src={isMuted ? "/images/muted.webp" : "/images/unmuted.webp"}
@@ -647,8 +715,9 @@ export default function GameBox({ isMobilePortrait }) {
           }
           setShowHelp(true);
         }}
-        className={`absolute -top-[7.5%] right-[4%] w-[50px] h-[50px] group clickable z-10 transition-transform duration-200 hover:scale-110${isMobilePortrait ? "content-counter-rotate-mobile" : ""
-          }`}
+        className={`absolute -top-[7.5%] right-[4%] w-[50px] h-[50px] group clickable z-10 transition-transform duration-200 hover:scale-110${
+          isMobilePortrait ? "content-counter-rotate-mobile" : ""
+        }`}
       >
         <img
           src="/images/question-mark.webp"
