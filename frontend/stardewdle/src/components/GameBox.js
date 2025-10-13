@@ -118,15 +118,23 @@ export default function GameBox({ isMobilePortrait }) {
                   : key === "type"
                     ? ["fruit", "vegetable", "flower", "forage"].filter(season => season !== crop["type"])
                     : key === "season" && crop["season"].length === 1
-                      ? ["spring", "summer", "fall", "winter"].filter(season => season !== crop["season"][0])
+                      ? [["spring"], ["summer"], ["fall"], ["winter"]].filter(season => season[0] !== crop["season"][0])
                       : null
               )
               : crop[key][0] === "all"
                 ? ["spring", "summer", "fall", "winter"]
                 : crop[key];
           if (newValue === null) continue;
-          if (!prevArray.includes(newValue)) {
-            newConstraints[key] = [...prevArray, newValue];
+          if (Array.isArray(newValue) && newValue.length === 3) {
+            newValue.forEach(val => {
+              if (!prevArray.includes(val)) {
+                newConstraints[key] = [...newConstraints[key], val];
+              }
+            });
+          } else {
+            if (!prevArray.includes(newValue)) {
+              newConstraints[key] = [...prevArray, newValue];
+            }
           }
         }
       }
