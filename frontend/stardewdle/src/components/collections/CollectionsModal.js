@@ -45,13 +45,13 @@ export default function CollectionsModal({ isMuted, onClose, scaleFactor }) {
             <p>- Click on any crop to view information such as:</p>
             <ul className="list-disc ml-6 md:ml-10">
               <li>Crop type</li>
-              <li>Growth time</li>
               <li>Base selling price</li>
+              <li>Growth time</li>
               <li>Regrow status</li>
               <li>Seasons of growth</li>
             </ul>
             <p>
-              - You can also see how often a crop has been the daily crop
+              - You can also see how often a crop has been the Daily Crop
             </p>
             <p>
               - Use this page to prepare for your next guess!
