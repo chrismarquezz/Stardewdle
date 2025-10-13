@@ -21,9 +21,8 @@ function formatName(name) {
 
 function todaysDate() {
   const today = new Date(new Date().toUTCString());
-  return `${
-    today.getUTCMonth() + 1
-  }/${today.getUTCDate()}/${today.getUTCFullYear()}`;
+  return `${today.getUTCMonth() + 1
+    }/${today.getUTCDate()}/${today.getUTCFullYear()}`;
 }
 
 function getTimeUntilMidnightUTC() {
@@ -96,13 +95,13 @@ export default function GameBox({ isMobilePortrait }) {
     return saved
       ? JSON.parse(saved)
       : {
-          name: [],
-          growth_time: [],
-          base_price: [],
-          regrows: [],
-          type: [],
-          season: [],
-        };
+        name: [],
+        growth_time: [],
+        base_price: [],
+        regrows: [],
+        type: [],
+        season: [],
+      };
   });
 
   const addConstraints = (crop) => {
@@ -112,26 +111,22 @@ export default function GameBox({ isMobilePortrait }) {
       for (const key in newConstraints) {
         if (Object.hasOwn(crop, key)) {
           const prevArray = prevConstraints[key];
-          console.log(
-            JSON.stringify(crop[key]),
-            JSON.stringify(correctCrop[key])
-          );
           const newValue =
             JSON.stringify(crop[key]) === JSON.stringify(correctCrop[key])
               ? key === "regrows"
                 ? !correctCrop["regrows"]
                 : key === "type"
-                ? ["fruit", "vegetable", "flower", "forage"].filter(
+                  ? ["fruit", "vegetable", "flower", "forage"].filter(
                     (season) => season !== crop["type"]
                   )
-                : key === "season" && crop["season"].length === 1
-                ? [["spring"], ["summer"], ["fall"], ["winter"]].filter(
-                    (season) => season[0] !== crop["season"][0]
-                  )
-                : null
+                  : key === "season" && crop["season"].length === 1
+                    ? [["spring"], ["summer"], ["fall"], ["winter"]].filter(
+                      (season) => season[0] !== crop["season"][0]
+                    )
+                    : null
               : crop[key][0] === "all"
-              ? ["spring", "summer", "fall", "winter"]
-              : crop[key];
+                ? ["spring", "summer", "fall", "winter"]
+                : crop[key];
           if (newValue === null) continue;
           if (Array.isArray(newValue) && newValue.length === 3) {
             newValue.forEach((val) => {
@@ -354,9 +349,7 @@ export default function GameBox({ isMobilePortrait }) {
         result && Object.values(result).every((val) => val === "match");
 
       setGuesses(updatedGuesses);
-
       addConstraints(selectedCrop);
-      console.log();
 
       if (!gameOver && guesses.length < 6) setSelectedCrop(null);
 
@@ -402,11 +395,10 @@ export default function GameBox({ isMobilePortrait }) {
 
   return (
     <div
-      className={`relative shadow-xl bg-no-repeat bg-center ${
-        isMobilePortrait
+      className={`relative shadow-xl bg-no-repeat bg-center ${isMobilePortrait
           ? "gamebox-mobile-layout"
           : "flex flex-row justify-between w-full pl-3 mt-3"
-      }`}
+        }`}
       style={{
         backgroundImage: isMobilePortrait
           ? "url('/images/box-bg-sm.webp')"
@@ -426,7 +418,7 @@ export default function GameBox({ isMobilePortrait }) {
         <CropGrid
           selectedCrop={selectedCrop}
           onSelect={
-            !gameOver && guesses.length < 6 ? setSelectedCrop : () => {}
+            !gameOver && guesses.length < 6 ? setSelectedCrop : () => { }
           }
           crops={crops}
           isMuted={!gameOver && guesses.length < 6 ? isMuted : true}
@@ -438,14 +430,12 @@ export default function GameBox({ isMobilePortrait }) {
       </div>
 
       <div
-        className={`flex flex-col align-center w-full place-items-center ${
-          isMobilePortrait ? "content-counter-rotate-mobile" : ""
-        }`}
+        className={`flex flex-col align-center w-full place-items-center ${isMobilePortrait ? "content-counter-rotate-mobile" : ""
+          }`}
       >
         <div
-          className={`flex flex-row items-center h-full ${
-            isMobilePortrait ? "mr-6" : "mr-24"
-          } mt-[80px] gap-4`}
+          className={`flex flex-row items-center h-full ${isMobilePortrait ? "mr-6" : "mr-24"
+            } mt-[80px] gap-4`}
         >
           <div
             className="relative bg-no-repeat bg-contain"
@@ -478,7 +468,7 @@ export default function GameBox({ isMobilePortrait }) {
             </div>
             {/*JSON.stringify(constraints)*/}
             {gameOver &&
-            (guesses[5] ? guesses[5].crop.name === correctCrop.name : true) ? (
+              (guesses[5] ? guesses[5].crop.name === correctCrop.name : true) ? (
               <div className="mt-4 flex items-center justify-center gap-4">
                 <p className="text-green-700 text-5xl font-bold whitespace-nowrap">
                   You guessed it!
@@ -543,11 +533,10 @@ export default function GameBox({ isMobilePortrait }) {
                   if (!selectedCrop || guesses.length >= 6 || gameOver) return;
                   handleSubmit();
                 }}
-                className={`relative mt-4 group ${
-                  !selectedCrop || guesses.length >= 6 || gameOver
+                className={`relative mt-4 group ${!selectedCrop || guesses.length >= 6 || gameOver
                     ? "opacity-40 pointer-events-none"
                     : "clickable hover:scale-105 transition-transform"
-                }`}
+                  }`}
                 style={{
                   width: "216px",
                   height: "80px",
@@ -568,9 +557,8 @@ export default function GameBox({ isMobilePortrait }) {
           </div>
         </div>
         <div
-          className={`${
-            isMobilePortrait ? "" : "mr-[78px]"
-          } pl-9 mb-[84px] bg-center bg-no-repeat bg-cover min-h-[440px]`}
+          className={`${isMobilePortrait ? "" : "mr-[78px]"
+            } pl-9 mb-[84px] bg-center bg-no-repeat bg-cover min-h-[440px]`}
           style={{
             backgroundImage: "url('/images/guesses.webp')",
             width: "772px",
@@ -630,9 +618,8 @@ export default function GameBox({ isMobilePortrait }) {
           }
           setShowHints(!showHints);
         }}
-        className={`group absolute -top-[7.5%] right-[7.75%] w-[50px] h-[50px] clickable z-10 transition-transform duration-200 hover:scale-110${
-          isMobilePortrait ? "content-counter-rotate-mobile" : ""
-        }`}
+        className={`group absolute -top-[7.5%] right-[7.75%] w-[50px] h-[50px] clickable z-10 transition-transform duration-200 hover:scale-110${isMobilePortrait ? "content-counter-rotate-mobile" : ""
+          }`}
       >
         <img
           src={showHints ? "/images/hint-on.webp" : "/images/hint-off.webp"}
@@ -667,9 +654,8 @@ export default function GameBox({ isMobilePortrait }) {
           }
           toggleMute();
         }}
-        className={`group absolute -top-[7.5%] right-[11.50%] w-[50px] h-[50px] clickable z-10 transition-transform duration-200 hover:scale-110 ${
-          isMobilePortrait ? "content-counter-rotate-mobile" : ""
-        }`}
+        className={`group absolute -top-[7.5%] right-[11.50%] w-[50px] h-[50px] clickable z-10 transition-transform duration-200 hover:scale-110 ${isMobilePortrait ? "content-counter-rotate-mobile" : ""
+          }`}
       >
         <img
           src={isMuted ? "/images/muted.webp" : "/images/unmuted.webp"}
@@ -703,9 +689,8 @@ export default function GameBox({ isMobilePortrait }) {
           }
           setShowHelp(true);
         }}
-        className={`absolute -top-[7.5%] right-[4%] w-[50px] h-[50px] group clickable z-10 transition-transform duration-200 hover:scale-110${
-          isMobilePortrait ? "content-counter-rotate-mobile" : ""
-        }`}
+        className={`absolute -top-[7.5%] right-[4%] w-[50px] h-[50px] group clickable z-10 transition-transform duration-200 hover:scale-110${isMobilePortrait ? "content-counter-rotate-mobile" : ""
+          }`}
       >
         <img
           src="/images/question-mark.webp"
