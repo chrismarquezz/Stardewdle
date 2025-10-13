@@ -550,6 +550,17 @@ export default function GameBox({ isMobilePortrait }) {
           alt="Updates Hover"
           className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
         />
+        <div
+          className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-lg font-medium text-[#BC6131] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
+          style={{
+            backgroundImage: "url('/images/label.webp')",
+            backgroundSize: "100% 100%",
+            backgroundRepeat: "no-repeat",
+            height: "28px",
+          }}
+        >
+          {"Updates"}
+        </div>
       </div>
       {showUpdates && (
         <UpdatesModal isMuted={isMuted} onClose={() => setShowUpdates(false)} />
@@ -579,6 +590,17 @@ export default function GameBox({ isMobilePortrait }) {
           alt="Hint Hover"
           className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
         />
+        <div
+          className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-lg font-medium text-[#BC6131] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
+          style={{
+            backgroundImage: "url('/images/label.webp')",
+            backgroundSize: "100% 100%",
+            backgroundRepeat: "no-repeat",
+            height: "28px",
+          }}
+        >
+          {"Toggle Hints"}
+        </div>
       </div>
       <div
         onClick={() => {
@@ -587,14 +609,14 @@ export default function GameBox({ isMobilePortrait }) {
           }
           toggleMute();
         }}
-        className={`group absolute -top-[7.5%] right-[11.50%] w-[50px] h-[50px] clickable z-10 transition-transform duration-200 hover:scale-110${
+        className={`group absolute -top-[7.5%] right-[11.50%] w-[50px] h-[50px] clickable z-10 transition-transform duration-200 hover:scale-110 ${
           isMobilePortrait ? "content-counter-rotate-mobile" : ""
         }`}
       >
         <img
           src={isMuted ? "/images/muted.webp" : "/images/unmuted.webp"}
           alt="Toggle Sound"
-          className="w-full h-full"
+          className="w-full h-full transition-opacity duration-200 group-hover:opacity-0"
         />
         <img
           src={
@@ -603,7 +625,19 @@ export default function GameBox({ isMobilePortrait }) {
           alt="Sound Hover"
           className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
         />
+        <div
+          className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-lg font-medium text-[#BC6131] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
+          style={{
+            backgroundImage: "url('/images/label.webp')",
+            backgroundSize: "100% 100%",
+            backgroundRepeat: "no-repeat",
+            height: "28px",
+          }}
+        >
+          {"Mute/Unmute"}
+        </div>
       </div>
+
       <div
         onClick={() => {
           if (!isMuted) {
@@ -625,6 +659,17 @@ export default function GameBox({ isMobilePortrait }) {
           alt="Help Hover"
           className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
         />
+        <div
+          className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-lg font-medium text-[#BC6131] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
+          style={{
+            backgroundImage: "url('/images/label.webp')",
+            backgroundSize: "100% 100%",
+            backgroundRepeat: "no-repeat",
+            height: "28px",
+          }}
+        >
+          {"Help"}
+        </div>
       </div>
       {showHelp && (
         <HelpModal isMuted={isMuted} onClose={() => setShowHelp(false)} />
