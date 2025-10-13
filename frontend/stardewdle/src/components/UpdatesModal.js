@@ -21,7 +21,6 @@ export default function UpdatesModal({ isMuted, onClose, scaleFactor }) {
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Content */}
         <div
           className="justify-center align-middle relative z-10 flex flex-col overflow-y-auto p-4 md:pl-8 md:pr-8"
           style={{
@@ -40,37 +39,51 @@ export default function UpdatesModal({ isMuted, onClose, scaleFactor }) {
             What's New
           </h2>
 
-          {/* Scrollable content */}
           <div className="space-y-2 md:space-y-4 text-[#BC6131] text-left text-md sm:text-2xl md:text-3xl leading-none overflow-y-auto max-h-[70vh] pr-2">
             <div>
               <p className="font-semibold">v1.2.0 — October 2025</p>
               <ul className="list-disc ml-6 md:ml-10">
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
+                <li>
+                  Implemented a "What's New" button to inform players of updates
+                  and new features
+                </li>
+                <li>
+                  Added a stat to Collections to track how many times a crop has
+                  been the Daily Crop
+                </li>
+                <li>
+                  Created a hint feature that filters out crops as the player
+                  guesses
+                </li>
+                <li>New button styles on Play screen</li>
               </ul>
             </div>
 
             <div>
               <p className="font-semibold">v1.1.0 — June 2025</p>
               <ul className="list-disc ml-6 md:ml-10">
-                <li></li>
-                <li></li>
-                <li></li>
+                <li>
+                  Added the Collections page, refresh your memory on crop
+                  information here
+                </li>
+                <li>Designed a mobile-friendly interface</li>
+                <li>
+                  Now showing total guesses and correct guesses on share screen
+                </li>
               </ul>
             </div>
 
             <div>
-              <p className="font-semibold">v1.0.0 — Initial Release</p>
+              <p className="font-semibold">v1.0.0 — May 2025</p>
               <ul className="list-disc ml-6 md:ml-10">
-                <li></li>
-                <li></li>
+                <li>Released the first version of Stardewdle</li>
               </ul>
             </div>
 
             <div className="mt-4 italic">
-              <p>Future updates will appear here as new features are released!</p>
+              <p>
+                Future updates will appear here as new features are released!
+              </p>
             </div>
           </div>
         </div>
