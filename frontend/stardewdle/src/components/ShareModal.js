@@ -14,7 +14,7 @@ export default function ShareModal({
 
   const playCloseSound = () => {
     if (!isMuted) {
-      new Audio("/sounds/help.mp3").play();
+      new Audio("/sounds/modal.mp3").play();
     }
     onClose();
   };

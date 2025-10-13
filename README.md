@@ -12,12 +12,12 @@ Built with **React** on the frontend and an **AWS-supported** backend, the game 
 
 ## Gameplay Overview
 
-- 🔍 Guess a crop from Stardew Valley in 6 tries or less.
-- 📊 After each guess, see feedback:
-  - ✅ Green: exact match
-  - 🟡 Yellow: partial match
-  - ❌ Red: incorrect
-- 🌱 Attributes compared include:
+- Guess a crop from Stardew Valley in 6 tries or less.
+- After each guess, see feedback:
+  - Green: exact match
+  - Yellow: partial match
+  - Red: incorrect
+- Attributes compared include:
   - Growth Time (days)
   - Sell Price (at Normal quality)
   - Regrows (Yes/No)
@@ -35,9 +35,9 @@ Built with **React** on the frontend and an **AWS-supported** backend, the game 
 
 <br />
 
-## Live Demo
+## Play Game
 
-👉 [Play Stardewdle Here](https://stardewdle.com/)
+[Play Stardewdle Here](https://stardewdle.com/)
 
 <br />
 
@@ -49,24 +49,6 @@ Built with **React** on the frontend and an **AWS-supported** backend, the game 
 
 ![Game Screenshot 3](https://github.com/user-attachments/assets/ebf53c50-5e0e-4f04-834e-05a972501bde)
 
-
-
-<br />
-
-## Running Locally
-
-```bash
-# Clone the repo
-git clone https://github.com/chrismarquezz/stardewdle.git
-cd frontend/stardewdle
-
-# Install frontend dependencies
-npm install
-npm start
-```
-
-> Make sure you have Node.js installed.
-
 <br />
 
 ## Authors
@@ -74,12 +56,6 @@ npm start
 - [Chris Marquez](https://github.com/chrismarquezz)
 - [Omar Siddiqui](https://github.com/osid54)
   
-<br />
-
-## Features To Come
-
-- Nothing new for now
-
 <br />
 
 ## Credits

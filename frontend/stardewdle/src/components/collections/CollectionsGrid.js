@@ -5,25 +5,26 @@ export default function CollectionsGrid({ selectedCrop, onSelect, isMuted, class
   const [crops, setCrops] = useState([]);
 
   useEffect(() => {
-    if (crops.length === 0) {
-      const fetchInitialData = async () => {
-        try {  
-          const cropResponse = await fetch("https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/crops");
-  
-          if (!cropResponse.ok) {
-            throw new Error(`HTTP error! status: ${cropResponse.status}`);
-          }
-  
-          const cropList = await cropResponse.json();
-          setCrops(cropList);
-        } catch (error) {
-          console.error("Failed to fetch crop data from Lambda:", error);
+  if (crops.length === 0) {
+    const fetchInitialData = async () => {
+      try {
+        const cropResponse = await fetch(process.env.REACT_APP_API_URL + "/crops");
+
+        if (!cropResponse.ok) {
+          throw new Error(`HTTP error! status: ${cropResponse.status}`);
         }
-      };
-  
-      fetchInitialData();
-    }
-  }, []);
+
+        const cropList = await cropResponse.json();
+        setCrops(cropList);
+      } catch (error) {
+        console.error("Failed to fetch crop data from Lambda:", error);
+      }
+    };
+
+    fetchInitialData();
+  }
+}, []);
+
 
   const gridStyles = isMobilePortrait
     ? {
