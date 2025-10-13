@@ -3,19 +3,24 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        stardew: ['Stardew', 'sans-serif'],
+        stardew: ["Stardew", "sans-serif"],
       },
       screens: {
-        // 'sm': '640px',
-        // 'md': '768px',
-        // 'lg': '1024px',
-        // 'xl': '1280px',
-        // '2xl': '1536px',
-        '3xl': '1700px', 
-        '4xl': '2000px', 
-        '5xl': '2200px', 
+        "3xl": "1700px",
+        "4xl": "2000px",
+        "5xl": "2200px",
+      },
+      keyframes: {
+        bounceHard: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "30%": { transform: "translateY(-10px)" },
+          "50%": { transform: "translateY(0)" },
+        },
+      },
+      animation: {
+        bounceHard: "bounceHard 1s ease-in-out infinite",
       },
     },
   },
   plugins: [],
-}
+};
