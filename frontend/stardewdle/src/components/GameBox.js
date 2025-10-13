@@ -568,7 +568,7 @@ export default function GameBox({ isMobilePortrait }) {
           <GuessGrid guesses={guesses} answer={correctCrop} />
         </div>
       </div>
-      <div className={`absolute ${isMobilePortrait ? "h-1/2 w-full -top-[50px] -right-[38.5%] content-counter-rotate-mobile" : "-top-[55px] right-0"} `}>
+      <div className={`absolute ${isMobilePortrait ? "h-[50px] w-[165px] bottom-[75px] -right-[120px] content-counter-rotate-mobile" : "-top-[55px] right-0"} `}>
         <div
           className={`absolute right-0 w-[50px] h-[50px] group clickable z-10 transition-transform duration-200 hover:scale-110 ${shouldPulse ? "animate-bounceHard" : ""}`}
           onClick={() => {
