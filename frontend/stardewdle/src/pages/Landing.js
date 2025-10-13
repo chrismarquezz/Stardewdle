@@ -10,11 +10,11 @@ export default function Landing() {
 
   useEffect(() => {
     const handleResize = () => {
-      const maxWidth = window.innerWidth * 0.95; 
+      const maxWidth = window.innerWidth * 0.95;
       const maxHeight = window.innerHeight * 0.95;
 
       const designWidth = 1080;
-      const designHeight = 720; 
+      const designHeight = 720;
 
       const scaleW = maxWidth / designWidth;
       const scaleH = maxHeight / designHeight;
@@ -40,8 +40,8 @@ export default function Landing() {
       <div className="relative z-10 w-full h-full flex justify-center items-center overflow-hidden">
         <div
           style={{
-            width: "1080px", 
-            height: `${720 * scaleFactor}px`, 
+            width: "1080px",
+            height: `${720 * scaleFactor}px`,
             transform: `scale(${scaleFactor})`,
             transformOrigin: "top center",
           }}
@@ -53,7 +53,7 @@ export default function Landing() {
             alt="Stardewdle Title"
             className="mt-10 max-w-[800px]"
           />
-          
+
           {/*<div className="text-white"> ANNOUNCEMENT TEXT </div>*/}
 
           {/* Button group */}

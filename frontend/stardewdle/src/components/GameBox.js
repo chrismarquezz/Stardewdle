@@ -1,13 +1,14 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useSound } from "../context/SoundContext";
 import CropGrid from "./CropGrid";
 import GuessGrid from "./GuessGrid";
 import CropLoader from "../components/CropLoader";
 import ShareModal from "./ShareModal";
 import HelpModal from "./HelpModal";
-import usePageVisibility from "../hooks/UsePageVisibility";
+import UpdatesModal from "./UpdatesModal";
 
 const DAILY_RESET_ENABLED = true;
+const MOST_RECENT_UPDATE = "2025-10-13T00:00:00Z";
 
 function formatName(name) {
   return name
@@ -63,7 +64,6 @@ export default function GameBox({ isMobilePortrait }) {
     const saved = localStorage.getItem("stardewdle-gameOver");
     return saved ? JSON.parse(saved) : false;
   });
-
   const [storedDate, setStoredDate] = useState(() => {
     const saved = localStorage.getItem("stardewdle-date");
     return saved ? saved : new Date().toISOString().split("T")[0];
@@ -72,19 +72,79 @@ export default function GameBox({ isMobilePortrait }) {
     const saved = localStorage.getItem("stardewdle-crops");
     return saved ? JSON.parse(saved) : [];
   });
+  const [showHints, setShowHints] = useState(() => {
+    const saved = localStorage.getItem("stardewdle-showHints");
+    return saved ? JSON.parse(saved) : false;
+  });
 
   const [showHelp, setShowHelp] = useState(false);
-  const { isMuted, toggleMute } = useSound();
   const [showShareModal, setShowShareModal] = useState(false);
   const [shareText, setShareText] = useState("");
   const [timeLeft, setTimeLeft] = useState(getTimeUntilMidnightUTC());
   const [correctGuesses, setCorrectGuesses] = useState(null);
   const [totalGuesses, setTotalGuesses] = useState(null);
+  const [showUpdates, setShowUpdates] = useState(false);
+  const [shouldPulse, setShouldPulse] = useState(false);
 
-  const isTabVisible = usePageVisibility();
-  const isInitialMount = useRef(true);
+  const { isMuted, toggleMute } = useSound();
 
   const isFinalGuess = guesses.length === 5;
+
+  const [constraints, setConstraints] = useState(() => {
+    const saved = localStorage.getItem("stardewdle-constraints");
+    return saved
+      ? JSON.parse(saved)
+      : {
+        name: [],
+        growth_time: [],
+        base_price: [],
+        regrows: [],
+        type: [],
+        season: [],
+      };
+  });
+
+  const addConstraints = (crop) => {
+    setConstraints((prevConstraints) => {
+      const newConstraints = { ...prevConstraints };
+
+      for (const key in newConstraints) {
+        if (Object.hasOwn(crop, key)) {
+          const prevArray = prevConstraints[key];
+          const newValue =
+            JSON.stringify(crop[key]) === JSON.stringify(correctCrop[key])
+              ? key === "regrows"
+                ? !correctCrop["regrows"]
+                : key === "type"
+                  ? ["fruit", "vegetable", "flower", "forage"].filter(
+                    (season) => season !== crop["type"]
+                  )
+                  : key === "season" && crop["season"].length === 1
+                    ? [["spring"], ["summer"], ["fall"], ["winter"]].filter(
+                      (season) => season[0] !== crop["season"][0]
+                    )
+                    : null
+              : crop[key][0] === "all"
+                ? ["spring", "summer", "fall", "winter"]
+                : crop[key];
+          if (newValue === null) continue;
+          if (Array.isArray(newValue) && newValue.length === 3) {
+            newValue.forEach((val) => {
+              if (!prevArray.includes(val)) {
+                newConstraints[key] = [...newConstraints[key], val];
+              }
+            });
+          } else {
+            if (!prevArray.includes(newValue)) {
+              newConstraints[key] = [...prevArray, newValue];
+            }
+          }
+        }
+      }
+
+      return newConstraints;
+    });
+  };
 
   function generateShareText(resultGrid, win) {
     const header = win
@@ -107,6 +167,21 @@ export default function GameBox({ isMobilePortrait }) {
   }
 
   useEffect(() => {
+    const lastSeen = localStorage.getItem("stardewdle-lastUpdateSeen");
+
+    if (!lastSeen) {
+      setShouldPulse(true);
+    } else {
+      const lastSeenDate = new Date(lastSeen);
+      const mostRecentDate = new Date(MOST_RECENT_UPDATE);
+
+      if (lastSeenDate < mostRecentDate) {
+        setShouldPulse(true);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
     if (gameOver && !shareText && guesses.length > 0) {
       const isWin = guesses.some(
         (g) =>
@@ -119,7 +194,9 @@ export default function GameBox({ isMobilePortrait }) {
   }, [gameOver, shareText, guesses, correctCrop]);
 
   useEffect(() => {
-    const hasSeenHelpModal = localStorage.getItem("stardewdle-hasSeenHelpModal");
+    const hasSeenHelpModal = localStorage.getItem(
+      "stardewdle-hasSeenHelpModal"
+    );
     if (!hasSeenHelpModal) {
       setShowHelp(true);
       localStorage.setItem("stardewdle-hasSeenHelpModal", "true");
@@ -146,24 +223,36 @@ export default function GameBox({ isMobilePortrait }) {
     localStorage.setItem("stardewdle-guesses", JSON.stringify(guesses));
     localStorage.setItem("stardewdle-correctCrop", JSON.stringify(correctCrop));
     localStorage.setItem("stardewdle-gameOver", JSON.stringify(gameOver));
-    localStorage.setItem("stardewdle-selectedCrop", JSON.stringify(selectedCrop));
+    localStorage.setItem(
+      "stardewdle-selectedCrop",
+      JSON.stringify(selectedCrop)
+    );
     localStorage.setItem("stardewdle-date", storedDate);
     localStorage.setItem("stardewdle-crops", JSON.stringify(crops));
-  }, [guesses, correctCrop, gameOver, selectedCrop, storedDate, crops]);
+    localStorage.setItem("stardewdle-showHints", JSON.stringify(showHints));
+    localStorage.setItem("stardewdle-constraints", JSON.stringify(constraints));
+  }, [
+    guesses,
+    correctCrop,
+    gameOver,
+    selectedCrop,
+    storedDate,
+    crops,
+    showHints,
+    constraints,
+  ]);
 
   useEffect(() => {
     const updateGuessStats = async () => {
       try {
-        const res = await fetch(
-          "https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/word"
-        );
+        const res = await fetch(process.env.REACT_APP_API_URL + "/word");
         const data = await res.json();
         setCorrectGuesses(data.correct_guesses);
         setTotalGuesses(data.total_guesses);
       } catch (err) {
         console.error("Failed to fetch win stats:", err);
       }
-    }
+    };
 
     updateGuessStats();
   }, []);
@@ -175,7 +264,9 @@ export default function GameBox({ isMobilePortrait }) {
 
     const fetchNewCrop = async () => {
       try {
-        const cropResponse = await fetch("https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/crops");
+        const cropResponse = await fetch(
+          process.env.REACT_APP_API_URL + "/crops"
+        );
         if (!cropResponse.ok) {
           throw new Error(`HTTP error! status: ${cropResponse.status}`);
         }
@@ -183,7 +274,8 @@ export default function GameBox({ isMobilePortrait }) {
         setCrops(cropList);
 
         if (cropList.length === 0) return;
-        const response = await fetch("https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/word");
+
+        const response = await fetch(process.env.REACT_APP_API_URL + "/word");
         const data = await response.json();
         const word = data.word;
 
@@ -207,32 +299,46 @@ export default function GameBox({ isMobilePortrait }) {
         setSelectedCrop(null);
         setGameOver(false);
         setStoredDate(today);
+        setConstraints({
+          name: [],
+          growth_time: [],
+          base_price: [],
+          regrows: [],
+          type: [],
+          season: [],
+        });
       }
       fetchNewCrop();
     }
-  }, [storedDate, correctCrop]);
+  }, [storedDate, correctCrop, crops]);
 
   useEffect(() => {
-    if (isInitialMount.current) {
-      isInitialMount.current = false;
-    } else if (isTabVisible) {
-      console.log('Tab became visible, performing full page reload...');
-      window.location.reload();
-    }
-  }, [isTabVisible]);
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        console.log("Tab is visible again, reloading...");
+        window.location.reload();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
 
   const handleSubmit = async () => {
     if (!selectedCrop || guesses.length >= 6 || gameOver) return;
 
     try {
-      const response = await fetch(
-        "https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/guess",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ guess: selectedCrop.name, guessNum: guesses.length + 1 }),
-        }
-      );
+      const response = await fetch(process.env.REACT_APP_API_URL + "/guess", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          guess: selectedCrop.name,
+          guessNum: guesses.length + 1,
+        }),
+      });
 
       const data = await response.json();
       const result = data.result;
@@ -243,6 +349,8 @@ export default function GameBox({ isMobilePortrait }) {
         result && Object.values(result).every((val) => val === "match");
 
       setGuesses(updatedGuesses);
+      addConstraints(selectedCrop);
+
       if (!gameOver && guesses.length < 6) setSelectedCrop(null);
 
       if (isWin) {
@@ -251,9 +359,7 @@ export default function GameBox({ isMobilePortrait }) {
         setSelectedCrop(correctCrop);
 
         try {
-          const res = await fetch(
-            "https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/word"
-          );
+          const res = await fetch(process.env.REACT_APP_API_URL + "/word");
           const data = await res.json();
           setCorrectGuesses(data.correct_guesses);
           setTotalGuesses(data.total_guesses);
@@ -280,15 +386,23 @@ export default function GameBox({ isMobilePortrait }) {
   };
 
   if (!correctCrop || crops.length === 0) {
-    return <CropLoader className={isMobilePortrait ? "content-counter-rotate-mobile" : ""} />;
+    return (
+      <CropLoader
+        className={isMobilePortrait ? "content-counter-rotate-mobile" : ""}
+      />
+    );
   }
 
   return (
     <div
-      className={`relative shadow-xl bg-no-repeat bg-center ${isMobilePortrait ? "gamebox-mobile-layout" : "flex flex-row justify-between w-full pl-3 mt-3"
+      className={`relative shadow-xl bg-no-repeat bg-center ${isMobilePortrait
+        ? "gamebox-mobile-layout"
+        : "flex flex-row justify-between w-full pl-3 mt-3"
         }`}
       style={{
-        backgroundImage: isMobilePortrait ? "url('/images/box-bg-sm.webp')" : "url('/images/box-bg.webp')",
+        backgroundImage: isMobilePortrait
+          ? "url('/images/box-bg-sm.webp')"
+          : "url('/images/box-bg.webp')",
         backgroundSize: "100% 100%",
         width: isMobilePortrait ? "1500px" : "1600px",
         height: isMobilePortrait ? "940px" : "800px",
@@ -303,11 +417,15 @@ export default function GameBox({ isMobilePortrait }) {
       >
         <CropGrid
           selectedCrop={selectedCrop}
-          onSelect={!gameOver && guesses.length < 6 ? setSelectedCrop : () => { }}
+          onSelect={
+            !gameOver && guesses.length < 6 ? setSelectedCrop : () => { }
+          }
           crops={crops}
           isMuted={!gameOver && guesses.length < 6 ? isMuted : true}
           className={isMobilePortrait ? "content-counter-rotate-mobile" : ""}
           isMobilePortrait={isMobilePortrait}
+          constraints={constraints}
+          showHints={showHints}
         />
       </div>
 
@@ -315,7 +433,10 @@ export default function GameBox({ isMobilePortrait }) {
         className={`flex flex-col align-center w-full place-items-center ${isMobilePortrait ? "content-counter-rotate-mobile" : ""
           }`}
       >
-        <div className={`flex flex-row items-center h-full ${isMobilePortrait ? "mr-6" : "mr-24"} mt-[80px] gap-4`}>
+        <div
+          className={`flex flex-row items-center h-full ${isMobilePortrait ? "mr-6" : "mr-24"
+            } mt-[80px] gap-4`}
+        >
           <div
             className="relative bg-no-repeat bg-contain"
             style={{
@@ -345,7 +466,7 @@ export default function GameBox({ isMobilePortrait }) {
                 {selectedCrop ? formatName(selectedCrop.name) : ""}
               </p>
             </div>
-
+            {/*JSON.stringify(constraints)*/}
             {gameOver &&
               (guesses[5] ? guesses[5].crop.name === correctCrop.name : true) ? (
               <div className="mt-4 flex items-center justify-center gap-4">
@@ -356,7 +477,7 @@ export default function GameBox({ isMobilePortrait }) {
                 <div
                   onClick={() => {
                     if (!isMuted) {
-                      new Audio("/sounds/help.mp3").play();
+                      new Audio("/sounds/modal.mp3").play();
                     }
                     setShowShareModal(true);
                   }}
@@ -385,7 +506,7 @@ export default function GameBox({ isMobilePortrait }) {
                   <div
                     onClick={() => {
                       if (!isMuted) {
-                        new Audio("/sounds/help.mp3").play();
+                        new Audio("/sounds/modal.mp3").play();
                       }
                       setShowShareModal(true);
                     }}
@@ -436,61 +557,162 @@ export default function GameBox({ isMobilePortrait }) {
           </div>
         </div>
         <div
-          className={`${isMobilePortrait ? "" : "mr-[78px]"} pl-9 mb-[84px] bg-center bg-no-repeat bg-cover min-h-[440px]`}
+          className={`${isMobilePortrait ? "" : "mr-[78px]"
+            } pl-9 mb-[84px] bg-center bg-no-repeat bg-cover min-h-[440px]`}
           style={{
             backgroundImage: "url('/images/guesses.webp')",
             width: "772px",
             height: "456px",
           }}
         >
-          <GuessGrid
-            guesses={guesses}
-            answer={correctCrop}
-          />
+          <GuessGrid guesses={guesses} answer={correctCrop} />
         </div>
       </div>
-      <div
-        onClick={() => {
-          if (isMuted) {
-            new Audio("/sounds/pluck.mp3").play();
-          }
-          toggleMute();
-        }}
-        className={`absolute bottom-16 -right-11 w-[30px] h-[30px] clickable z-10 ${isMobilePortrait ? "content-counter-rotate-mobile" : ""
-          }`}
-      >
-        <img
-          src={isMuted ? "/images/muted.webp" : "/images/unmuted.webp"}
-          alt="Toggle Sound"
-          className="w-full h-full"
-        />
-      </div>
-      <div
-        onClick={() => {
-          if (!isMuted) {
-            new Audio("/sounds/help.mp3").play();
-          }
-          setShowHelp(true);
-        }}
-        className={`absolute bottom-1 -right-14 w-[50px] h-[50px] group clickable z-10 ${isMobilePortrait ? "content-counter-rotate-mobile" : ""
-          }`}
-      >
-        <img
-          src="/images/question-mark.webp"
-          alt="Help"
-          className="w-full h-full transition-opacity duration-200 group-hover:opacity-0"
-        />
-        <img
-          src="/images/question-mark-hover.webp"
-          alt="Help Hover"
-          className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-        />
+      <div className={`absolute ${isMobilePortrait ? "h-1/2 w-full -top-[50px] -right-[38.5%] content-counter-rotate-mobile" : "-top-[55px] right-0"} `}>
+        <div
+          className={`absolute right-0 w-[50px] h-[50px] group clickable z-10 transition-transform duration-200 hover:scale-110 ${shouldPulse ? "animate-bounceHard" : ""}`}
+          onClick={() => {
+            if (!isMuted) {
+              new Audio("/sounds/modal.mp3").play();
+            }
+            setShowUpdates(true);
+
+            localStorage.setItem(
+              "stardewdle-lastUpdateSeen",
+              new Date().toISOString()
+            );
+            setShouldPulse(false);
+          }}
+        >
+          <img
+            src="/images/info.webp"
+            alt="Updates"
+            className="w-full h-full transition-opacity duration-200"
+          />
+          <img
+            src="/images/info-hover.webp"
+            alt="Updates Hover"
+            className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+          />
+          <div
+            className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-lg font-medium text-[#BC6131] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
+            style={{
+              backgroundImage: "url('/images/label.webp')",
+              backgroundSize: "100% 100%",
+              backgroundRepeat: "no-repeat",
+              height: "28px",
+            }}
+          >
+            {"Updates"}
+          </div>
+        </div>
+        {showUpdates && (
+          <UpdatesModal isMuted={isMuted} onClose={() => setShowUpdates(false)} />
+        )}
+
+        <div
+          className={`group absolute right-[110px] w-[50px] h-[50px] clickable z-10 transition-transform duration-200 hover:scale-110`}
+          onClick={() => {
+            if (!isMuted) {
+              new Audio("/sounds/pluck.mp3").play();
+            }
+            setShowHints(!showHints);
+          }}
+        >
+          <img
+            src={showHints ? "/images/hint-on.webp" : "/images/hint-off.webp"}
+            alt="Toggle Hints"
+            className="w-full h-full"
+          />
+          <img
+            src={
+              showHints
+                ? "/images/hint-on-hover.webp"
+                : "/images/hint-off-hover.webp"
+            }
+            alt="Hint Hover"
+            className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+          />
+          <div
+            className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-lg font-medium text-[#BC6131] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
+            style={{
+              backgroundImage: "url('/images/label.webp')",
+              backgroundSize: "100% 100%",
+              backgroundRepeat: "no-repeat",
+              height: "28px",
+            }}
+          >
+            {"Toggle Hints"}
+          </div>
+        </div>
+        <div
+          onClick={() => {
+            if (isMuted) {
+              new Audio("/sounds/pluck.mp3").play();
+            }
+            toggleMute();
+          }}
+          className={`group absolute right-[165px] w-[50px] h-[50px] clickable z-10 transition-transform duration-200 hover:scale-110`}
+        >
+          <img
+            src={isMuted ? "/images/muted.webp" : "/images/unmuted.webp"}
+            alt="Toggle Sound"
+            className="w-full h-full transition-opacity duration-200 group-hover:opacity-0"
+          />
+          <img
+            src={
+              isMuted ? "/images/muted-hover.webp" : "/images/unmuted-hover.webp"
+            }
+            alt="Sound Hover"
+            className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+          />
+          <div
+            className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-lg font-medium text-[#BC6131] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
+            style={{
+              backgroundImage: "url('/images/label.webp')",
+              backgroundSize: "100% 100%",
+              backgroundRepeat: "no-repeat",
+              height: "28px",
+            }}
+          >
+            {"Mute/Unmute"}
+          </div>
+        </div>
+
+        <div
+          onClick={() => {
+            if (!isMuted) {
+              new Audio("/sounds/modal.mp3").play();
+            }
+            setShowHelp(true);
+          }}
+          className={`absolute right-[55px] w-[50px] h-[50px] group clickable z-10 transition-transform duration-200 hover:scale-110`}
+        >
+          <img
+            src="/images/question-mark.webp"
+            alt="Help"
+            className="w-full h-full transition-opacity duration-200"
+          />
+          <img
+            src="/images/question-mark-hover.webp"
+            alt="Help Hover"
+            className="absolute top-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+          />
+          <div
+            className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-lg font-medium text-[#BC6131] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
+            style={{
+              backgroundImage: "url('/images/label.webp')",
+              backgroundSize: "100% 100%",
+              backgroundRepeat: "no-repeat",
+              height: "28px",
+            }}
+          >
+            {"Help"}
+          </div>
+        </div>
       </div>
       {showHelp && (
-        <HelpModal
-          isMuted={isMuted}
-          onClose={() => setShowHelp(false)}
-        />
+        <HelpModal isMuted={isMuted} onClose={() => setShowHelp(false)} />
       )}
       {showShareModal && (
         <ShareModal

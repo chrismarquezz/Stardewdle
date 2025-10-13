@@ -60,7 +60,7 @@ function getColor(key, guessValue, correctValue) {
         return new Set(val);
       }
       if (typeof val === 'string') return new Set([val]);
-      return new Set(); 
+      return new Set();
     };
 
     const guessedSet = normalizeToSet(guessValue);
@@ -91,8 +91,8 @@ function getArrow(key, guessValue, correctValue) {
     return guessValue > correctValue
       ? "arrow4D"
       : guessValue < correctValue
-      ? "arrow4U"
-      : null;
+        ? "arrow4U"
+        : null;
   }
 
   return null;
@@ -106,12 +106,12 @@ export default function GuessGrid({ guesses, answer, className }) {
       guessEntry && isFullMatch(crop, answer)
         ? "green"
         : guessEntry
-        ? "red"
-        : "gray";
+          ? "red"
+          : "gray";
 
     return (
       <div
-        key={i} 
+        key={i}
         className="grid gap-1 items-center w-full"
         style={{ gridTemplateColumns: COL_DIST }}
       >
@@ -127,13 +127,12 @@ export default function GuessGrid({ guesses, answer, className }) {
         >
           {/* Color overlay */}
           <div
-            className={`w-[75%] h-[75%] absolute inset-0 m-auto z-0 rounded-sm opacity-80 mix-blend-multiply ${
-              cropColor === "green"
+            className={`w-[75%] h-[75%] absolute inset-0 m-auto z-0 rounded-sm opacity-80 mix-blend-multiply ${cropColor === "green"
                 ? "bg-green-500"
                 : cropColor === "red"
-                ? "bg-red-500"
-                : "bg-white"
-            }`}
+                  ? "bg-red-500"
+                  : "bg-white"
+              }`}
           />
 
           {/* Crop image */}
@@ -181,9 +180,8 @@ export default function GuessGrid({ guesses, answer, className }) {
               key={j}
               className="relative h-full flex items-center justify-center text-2xl leading-none"
               style={{
-                backgroundImage: `url('/images/${
-                  BOX_IMAGE_MAP[key] || "boxLarge.webp"
-                }')`,
+                backgroundImage: `url('/images/${BOX_IMAGE_MAP[key] || "boxLarge.webp"
+                  }')`,
                 backgroundSize: "100% 100%",
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
@@ -191,24 +189,21 @@ export default function GuessGrid({ guesses, answer, className }) {
             >
               {/* Color Overlay */}
               <div
-                className={`w-[${
-                  W_STRETCH_MAP[key]
-                }%] h-[75%] absolute inset-0 m-auto z-0 rounded-sm opacity-80 mix-blend-multiply ${
-                  color === "green"
+                className={`w-[${W_STRETCH_MAP[key]
+                  }%] h-[75%] absolute inset-0 m-auto z-0 rounded-sm opacity-80 mix-blend-multiply ${color === "green"
                     ? "bg-green-500"
                     : color === "yellow"
-                    ? "bg-yellow-400"
-                    : color === "red"
-                    ? "bg-red-500"
-                    : "bg-white"
-                }`}
+                      ? "bg-yellow-400"
+                      : color === "red"
+                        ? "bg-red-500"
+                        : "bg-white"
+                  }`}
               />
 
               {/* Content */}
               <div
-                className={`relative z-10 flex items-center justify-center ${
-                  color === "yellow" ? "text-black" : "text-white"
-                }`}
+                className={`relative z-10 flex items-center justify-center ${color === "yellow" ? "text-black" : "text-white"
+                  }`}
               >
                 {guessEntry ? (
                   key === "season" ? (
@@ -216,8 +211,8 @@ export default function GuessGrid({ guesses, answer, className }) {
                       {(value == "all"
                         ? ["spring", "summer", "fall", "winter"]
                         : Array.isArray(value)
-                        ? value.map((s) => s.toLowerCase())
-                        : []
+                          ? value.map((s) => s.toLowerCase())
+                          : []
                       ).map((season) => (
                         <div
                           key={season}
@@ -288,26 +283,26 @@ export default function GuessGrid({ guesses, answer, className }) {
     );
   });
 
-return (
-  <div className={`space-y-[2px] h-full w-full items-center justify-center`}>
-    <div className={`h-full w-full flex flex-col justify-center ${className}`}>
-      {/* Headers */}
-      <div className="grid gap-1" style={{ gridTemplateColumns: COL_DIST }}>
-        <div className="text-center text-3xl text-[#BC6131] leading-none">
-          Crop
-        </div>
-        {ATTRIBUTE_LABELS.map((label) => (
-          <div
-            key={label}
-            className="text-center text-3xl text-[#BC6131] leading-none"
-          >
-            {label}
+  return (
+    <div className={`space-y-[2px] h-full w-full items-center justify-center`}>
+      <div className={`h-full w-full flex flex-col justify-center ${className}`}>
+        {/* Headers */}
+        <div className="grid gap-1" style={{ gridTemplateColumns: COL_DIST }}>
+          <div className="text-center text-3xl text-[#BC6131] leading-none">
+            Crop
           </div>
-        ))}
+          {ATTRIBUTE_LABELS.map((label) => (
+            <div
+              key={label}
+              className="text-center text-3xl text-[#BC6131] leading-none"
+            >
+              {label}
+            </div>
+          ))}
+        </div>
+        {/* Rows */}
+        {rows}
       </div>
-      {/* Rows */}
-      {rows}
     </div>
-  </div>
-);
+  );
 }
