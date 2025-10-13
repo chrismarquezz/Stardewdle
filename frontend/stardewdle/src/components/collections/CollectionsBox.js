@@ -200,8 +200,8 @@ export default function CollectionsBox({ isMobilePortrait }) {
           }
           toggleMute();
         }}
-        className={`group absolute -top-[7.5%] right-[4%] w-[50px] h-[50px] clickable z-10 transition-transform duration-200 hover:scale-110${
-          isMobilePortrait ? "content-counter-rotate-mobile" : ""
+        className={`group absolute w-[50px] h-[50px] clickable z-10 transition-transform duration-200 hover:scale-110 ${
+          isMobilePortrait ? "content-counter-rotate-mobile bottom-[70px] -right-[55px]" : "-top-[7.5%] right-[4%]"
         }`}
       >
         <img
@@ -235,8 +235,8 @@ export default function CollectionsBox({ isMobilePortrait }) {
           }
           setShowCollectionsModal(true);
         }}
-        className={`absolute -top-[7.5%] right-1 w-[50px] h-[50px] group clickable z-10 transition-transform duration-200 hover:scale-110${
-          isMobilePortrait ? "content-counter-rotate-mobile" : ""
+        className={`absolute w-[50px] h-[50px] group clickable z-10 transition-transform duration-200 hover:scale-110 ${
+          isMobilePortrait ? "content-counter-rotate-mobile bottom-[15px] -right-[55px]" : "-top-[7.5%] right-1"
         }`}
       >
         <img

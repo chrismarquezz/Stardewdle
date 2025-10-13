@@ -396,8 +396,8 @@ export default function GameBox({ isMobilePortrait }) {
   return (
     <div
       className={`relative shadow-xl bg-no-repeat bg-center ${isMobilePortrait
-          ? "gamebox-mobile-layout"
-          : "flex flex-row justify-between w-full pl-3 mt-3"
+        ? "gamebox-mobile-layout"
+        : "flex flex-row justify-between w-full pl-3 mt-3"
         }`}
       style={{
         backgroundImage: isMobilePortrait
@@ -534,8 +534,8 @@ export default function GameBox({ isMobilePortrait }) {
                   handleSubmit();
                 }}
                 className={`relative mt-4 group ${!selectedCrop || guesses.length >= 6 || gameOver
-                    ? "opacity-40 pointer-events-none"
-                    : "clickable hover:scale-105 transition-transform"
+                  ? "opacity-40 pointer-events-none"
+                  : "clickable hover:scale-105 transition-transform"
                   }`}
                 style={{
                   width: "216px",
@@ -568,150 +568,147 @@ export default function GameBox({ isMobilePortrait }) {
           <GuessGrid guesses={guesses} answer={correctCrop} />
         </div>
       </div>
-      <div
-        onClick={() => {
-          if (!isMuted) {
-            new Audio("/sounds/modal.mp3").play();
-          }
-          setShowUpdates(true);
+      <div className={`absolute ${isMobilePortrait ? "h-1/2 w-full -top-[50px] -right-[38.5%] content-counter-rotate-mobile" : "-top-[55px] right-0"} `}>
+        <div
+          className={`absolute right-0 w-[50px] h-[50px] group clickable z-10 transition-transform duration-200 hover:scale-110 ${shouldPulse ? "animate-bounceHard" : ""}`}
+          onClick={() => {
+            if (!isMuted) {
+              new Audio("/sounds/modal.mp3").play();
+            }
+            setShowUpdates(true);
 
-          localStorage.setItem(
-            "stardewdle-lastUpdateSeen",
-            new Date().toISOString()
-          );
-          setShouldPulse(false);
-        }}
-        className={`absolute -top-[7.5%] right-1 w-[50px] h-[50px] group clickable z-10 
-    transition-transform duration-200 hover:scale-110
-    ${shouldPulse ? "animate-bounceHard" : ""}
-    ${isMobilePortrait ? "content-counter-rotate-mobile" : ""}`}
-      >
-        <img
-          src="/images/info.webp"
-          alt="Updates"
-          className="w-full h-full transition-opacity duration-200"
-        />
-        <img
-          src="/images/info-hover.webp"
-          alt="Updates Hover"
-          className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-        />
-        <div
-          className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-lg font-medium text-[#BC6131] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
-          style={{
-            backgroundImage: "url('/images/label.webp')",
-            backgroundSize: "100% 100%",
-            backgroundRepeat: "no-repeat",
-            height: "28px",
+            localStorage.setItem(
+              "stardewdle-lastUpdateSeen",
+              new Date().toISOString()
+            );
+            setShouldPulse(false);
           }}
         >
-          {"Updates"}
+          <img
+            src="/images/info.webp"
+            alt="Updates"
+            className="w-full h-full transition-opacity duration-200"
+          />
+          <img
+            src="/images/info-hover.webp"
+            alt="Updates Hover"
+            className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+          />
+          <div
+            className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-lg font-medium text-[#BC6131] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
+            style={{
+              backgroundImage: "url('/images/label.webp')",
+              backgroundSize: "100% 100%",
+              backgroundRepeat: "no-repeat",
+              height: "28px",
+            }}
+          >
+            {"Updates"}
+          </div>
         </div>
-      </div>
-      {showUpdates && (
-        <UpdatesModal isMuted={isMuted} onClose={() => setShowUpdates(false)} />
-      )}
-      <div
-        onClick={() => {
-          if (!isMuted) {
-            new Audio("/sounds/pluck.mp3").play();
-          }
-          setShowHints(!showHints);
-        }}
-        className={`group absolute -top-[7.5%] right-[7.75%] w-[50px] h-[50px] clickable z-10 transition-transform duration-200 hover:scale-110${isMobilePortrait ? "content-counter-rotate-mobile" : ""
-          }`}
-      >
-        <img
-          src={showHints ? "/images/hint-on.webp" : "/images/hint-off.webp"}
-          alt="Toggle Hints"
-          className="w-full h-full"
-        />
-        <img
-          src={
-            showHints
-              ? "/images/hint-on-hover.webp"
-              : "/images/hint-off-hover.webp"
-          }
-          alt="Hint Hover"
-          className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-        />
-        <div
-          className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-lg font-medium text-[#BC6131] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
-          style={{
-            backgroundImage: "url('/images/label.webp')",
-            backgroundSize: "100% 100%",
-            backgroundRepeat: "no-repeat",
-            height: "28px",
-          }}
-        >
-          {"Toggle Hints"}
-        </div>
-      </div>
-      <div
-        onClick={() => {
-          if (isMuted) {
-            new Audio("/sounds/pluck.mp3").play();
-          }
-          toggleMute();
-        }}
-        className={`group absolute -top-[7.5%] right-[11.50%] w-[50px] h-[50px] clickable z-10 transition-transform duration-200 hover:scale-110 ${isMobilePortrait ? "content-counter-rotate-mobile" : ""
-          }`}
-      >
-        <img
-          src={isMuted ? "/images/muted.webp" : "/images/unmuted.webp"}
-          alt="Toggle Sound"
-          className="w-full h-full transition-opacity duration-200 group-hover:opacity-0"
-        />
-        <img
-          src={
-            isMuted ? "/images/muted-hover.webp" : "/images/unmuted-hover.webp"
-          }
-          alt="Sound Hover"
-          className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-        />
-        <div
-          className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-lg font-medium text-[#BC6131] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
-          style={{
-            backgroundImage: "url('/images/label.webp')",
-            backgroundSize: "100% 100%",
-            backgroundRepeat: "no-repeat",
-            height: "28px",
-          }}
-        >
-          {"Mute/Unmute"}
-        </div>
-      </div>
+        {showUpdates && (
+          <UpdatesModal isMuted={isMuted} onClose={() => setShowUpdates(false)} />
+        )}
 
-      <div
-        onClick={() => {
-          if (!isMuted) {
-            new Audio("/sounds/modal.mp3").play();
-          }
-          setShowHelp(true);
-        }}
-        className={`absolute -top-[7.5%] right-[4%] w-[50px] h-[50px] group clickable z-10 transition-transform duration-200 hover:scale-110${isMobilePortrait ? "content-counter-rotate-mobile" : ""
-          }`}
-      >
-        <img
-          src="/images/question-mark.webp"
-          alt="Help"
-          className="w-full h-full transition-opacity duration-200"
-        />
-        <img
-          src="/images/question-mark-hover.webp"
-          alt="Help Hover"
-          className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-        />
         <div
-          className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-lg font-medium text-[#BC6131] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
-          style={{
-            backgroundImage: "url('/images/label.webp')",
-            backgroundSize: "100% 100%",
-            backgroundRepeat: "no-repeat",
-            height: "28px",
+          className={`group absolute right-[110px] w-[50px] h-[50px] clickable z-10 transition-transform duration-200 hover:scale-110`}
+          onClick={() => {
+            if (!isMuted) {
+              new Audio("/sounds/pluck.mp3").play();
+            }
+            setShowHints(!showHints);
           }}
         >
-          {"Help"}
+          <img
+            src={showHints ? "/images/hint-on.webp" : "/images/hint-off.webp"}
+            alt="Toggle Hints"
+            className="w-full h-full"
+          />
+          <img
+            src={
+              showHints
+                ? "/images/hint-on-hover.webp"
+                : "/images/hint-off-hover.webp"
+            }
+            alt="Hint Hover"
+            className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+          />
+          <div
+            className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-lg font-medium text-[#BC6131] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
+            style={{
+              backgroundImage: "url('/images/label.webp')",
+              backgroundSize: "100% 100%",
+              backgroundRepeat: "no-repeat",
+              height: "28px",
+            }}
+          >
+            {"Toggle Hints"}
+          </div>
+        </div>
+        <div
+          onClick={() => {
+            if (isMuted) {
+              new Audio("/sounds/pluck.mp3").play();
+            }
+            toggleMute();
+          }}
+          className={`group absolute right-[165px] w-[50px] h-[50px] clickable z-10 transition-transform duration-200 hover:scale-110`}
+        >
+          <img
+            src={isMuted ? "/images/muted.webp" : "/images/unmuted.webp"}
+            alt="Toggle Sound"
+            className="w-full h-full transition-opacity duration-200 group-hover:opacity-0"
+          />
+          <img
+            src={
+              isMuted ? "/images/muted-hover.webp" : "/images/unmuted-hover.webp"
+            }
+            alt="Sound Hover"
+            className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+          />
+          <div
+            className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-lg font-medium text-[#BC6131] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
+            style={{
+              backgroundImage: "url('/images/label.webp')",
+              backgroundSize: "100% 100%",
+              backgroundRepeat: "no-repeat",
+              height: "28px",
+            }}
+          >
+            {"Mute/Unmute"}
+          </div>
+        </div>
+
+        <div
+          onClick={() => {
+            if (!isMuted) {
+              new Audio("/sounds/modal.mp3").play();
+            }
+            setShowHelp(true);
+          }}
+          className={`absolute right-[55px] w-[50px] h-[50px] group clickable z-10 transition-transform duration-200 hover:scale-110`}
+        >
+          <img
+            src="/images/question-mark.webp"
+            alt="Help"
+            className="w-full h-full transition-opacity duration-200"
+          />
+          <img
+            src="/images/question-mark-hover.webp"
+            alt="Help Hover"
+            className="absolute top-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+          />
+          <div
+            className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-lg font-medium text-[#BC6131] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
+            style={{
+              backgroundImage: "url('/images/label.webp')",
+              backgroundSize: "100% 100%",
+              backgroundRepeat: "no-repeat",
+              height: "28px",
+            }}
+          >
+            {"Help"}
+          </div>
         </div>
       </div>
       {showHelp && (

@@ -21,12 +21,12 @@ export default function Game() {
         window.innerWidth < 768 && window.innerHeight > window.innerWidth;
       setIsMobilePortrait(currentlyIsMobilePortrait);
 
-      
+
       let effectiveDesignWidth = designWidth;
       let effectiveDesignHeight = designHeight;
       if (currentlyIsMobilePortrait) {
-        effectiveDesignWidth = designHeight; 
-        effectiveDesignHeight = designWidth; 
+        effectiveDesignWidth = designHeight;
+        effectiveDesignHeight = designWidth;
       }
 
       const scaleW = maxWidth / effectiveDesignWidth;
@@ -35,7 +35,7 @@ export default function Game() {
       setScaleFactor(Math.min(scaleW, scaleH));
     };
 
-    handleResize(); 
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -59,13 +59,13 @@ export default function Game() {
         <div
           className="flex flex-col items-center"
           style={{
-            width: "1600px", 
+            width: "1600px",
             height: isMobilePortrait ? "800px" : "900px",
             transform: `scale(${scaleFactor})`,
             transformOrigin: "center center",
           }}
         >
-          <div className={`relative ${isMobilePortrait ? "top-[-470px]" : ""}`}>
+          <div className={`relative ${isMobilePortrait ? "top-[-480px] right-[120px]" : ""}`}>
             <div
               onClick={() => {
                 if (!isMuted) {

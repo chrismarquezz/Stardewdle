@@ -41,21 +41,20 @@ export default function CollectionsModal({ isMuted, onClose, scaleFactor }) {
           </h2>
 
           <div className="space-y-2 md:space-y-4 text-[#BC6131] text-left text-md sm:text-2xl md:text-3xl leading-none overflow-y-auto">
-            <p>- Browse through all available crops from Stardew Valley</p>
-            <p>- Click on any crop to view detailed information such as:</p>
+            <p>- Browse through all the crops from Stardew Valley</p>
+            <p>- Click on any crop to view information such as:</p>
             <ul className="list-disc ml-6 md:ml-10">
-              <li>Growth time and regrow status</li>
-              <li>Seasons the crop can grow in</li>
+              <li>Crop type</li>
+              <li>Growth time</li>
               <li>Base selling price</li>
-              <li>Crop type (vegetable, fruit, etc.)</li>
+              <li>Regrow status</li>
+              <li>Seasons of growth</li>
             </ul>
             <p>
-              - Each crop also displays how many times it has appeared as the
-              Daily Crop
+              - You can also see how often a crop has been the daily crop
             </p>
             <p>
-              - Use this page to learn about every crop in the game and track
-              which ones show up most often in Stardewdle!
+              - Use this page to prepare for your next guess!
             </p>
           </div>
         </div>
