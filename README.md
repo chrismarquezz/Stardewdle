@@ -19,7 +19,7 @@ Built with **React** on the frontend and an **AWS-supported** backend, the game 
   - Red: incorrect
 - Attributes compared include:
   - Growth Time (days)
-  - Sell Price (at Normal quality)
+  - Sell Price (at normal quality)
   - Regrows (Yes/No)
   - Crop Type (Fruit/Vegetable/Mushroom/Forage/Flower)
   - Season (Spring, Summer, Fall, Winter)
@@ -45,9 +45,9 @@ Built with **React** on the frontend and an **AWS-supported** backend, the game 
 
 ![Game Screenshot 1](https://github.com/user-attachments/assets/b2aaffd4-cb23-4fb7-b491-64afa6862eee)
 
-![Game Screenshot 2](https://github.com/user-attachments/assets/b4578f36-07a0-4c78-b470-d55ce3f90a5f)
+![Game Screenshot 2](https://github.com/user-attachments/assets/88495f41-8df5-4283-bd3e-6d9d7db33899)
 
-![Game Screenshot 3](https://github.com/user-attachments/assets/ebf53c50-5e0e-4f04-834e-05a972501bde)
+![Game Screenshot 3](https://github.com/user-attachments/assets/6f4f30cf-b60e-476f-90a2-70c63e266016)
 
 <br />
 
