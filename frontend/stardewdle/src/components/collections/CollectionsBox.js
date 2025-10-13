@@ -145,8 +145,8 @@ export default function CollectionsBox({ isMobilePortrait }) {
                 </div>
                 <p className="text-4xl text-center text-[#c9ba98] tracking-wide">
                   {formatName(selectedCrop.type)} <br />
-                  Grows in {selectedCrop.growth_time} days <br />
                   Sells for {selectedCrop.base_price}g <br />
+                  Grows in {selectedCrop.growth_time} days <br />
                   Does {selectedCrop.regrows ? "" : "not"} regrow <br />
                   <div className="flex gap-3 items-center justify-center">
                     {"Seasons: "}{" "}

@@ -55,7 +55,7 @@ export default function UpdatesModal({ isMuted, onClose, scaleFactor }) {
                   Created a hint feature that filters out crops as the player
                   guesses
                 </li>
-                <li>New button styles on Play screen</li>
+                <li>New button styles on Game Page</li>
               </ul>
             </div>
 
@@ -63,8 +63,8 @@ export default function UpdatesModal({ isMuted, onClose, scaleFactor }) {
               <p className="font-semibold">v1.1.0 — June 2025</p>
               <ul className="list-disc ml-6 md:ml-10">
                 <li>
-                  Added the Collections page, refresh your memory on crop
-                  information here
+                  Added the Collections page, where you can refresh your memory on crop
+                  information
                 </li>
                 <li>Designed a mobile-friendly interface</li>
                 <li>
@@ -82,7 +82,7 @@ export default function UpdatesModal({ isMuted, onClose, scaleFactor }) {
 
             <div className="mt-4 italic">
               <p>
-                Future updates will appear here as new features are released!
+                Future updates will appear here as new changes are made!
               </p>
             </div>
           </div>
