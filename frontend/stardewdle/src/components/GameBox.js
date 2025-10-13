@@ -118,17 +118,6 @@ export default function GameBox({ isMobilePortrait }) {
           );
           const newValue =
             JSON.stringify(crop[key]) === JSON.stringify(correctCrop[key])
-<<<<<<< Updated upstream
-              ? (
-                key === "regrows"
-                  ? !correctCrop["regrows"]
-                  : key === "type"
-                    ? ["fruit", "vegetable", "flower", "forage"].filter(season => season !== crop["type"])
-                    : key === "season" && crop["season"].length === 1
-                      ? [["spring"], ["summer"], ["fall"], ["winter"]].filter(season => season[0] !== crop["season"][0])
-                      : null
-              )
-=======
               ? key === "regrows"
                 ? !correctCrop["regrows"]
                 : key === "type"
@@ -136,17 +125,16 @@ export default function GameBox({ isMobilePortrait }) {
                     (season) => season !== crop["type"]
                   )
                 : key === "season" && crop["season"].length === 1
-                ? ["spring", "summer", "fall", "winter"].filter(
-                    (season) => season !== crop["season"][0]
+                ? [["spring"], ["summer"], ["fall"], ["winter"]].filter(
+                    (season) => season[0] !== crop["season"][0]
                   )
                 : null
->>>>>>> Stashed changes
               : crop[key][0] === "all"
               ? ["spring", "summer", "fall", "winter"]
               : crop[key];
           if (newValue === null) continue;
           if (Array.isArray(newValue) && newValue.length === 3) {
-            newValue.forEach(val => {
+            newValue.forEach((val) => {
               if (!prevArray.includes(val)) {
                 newConstraints[key] = [...newConstraints[key], val];
               }
