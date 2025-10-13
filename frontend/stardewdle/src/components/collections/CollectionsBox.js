@@ -35,7 +35,9 @@ export default function CollectionsBox({ isMobilePortrait }) {
     if (crops.length === 0) {
       const fetchInitialData = async () => {
         try {
-          const cropResponse = await fetch(process.env.REACT_APP_API_URL + "/crops");
+          const cropResponse = await fetch(
+            process.env.REACT_APP_API_URL + "/crops"
+          );
 
           if (!cropResponse.ok) {
             throw new Error(`HTTP error! status: ${cropResponse.status}`);
@@ -48,7 +50,9 @@ export default function CollectionsBox({ isMobilePortrait }) {
         }
 
         try {
-          const countResponse = await fetch(process.env.REACT_APP_API_URL + "/count");
+          const countResponse = await fetch(
+            process.env.REACT_APP_API_URL + "/count"
+          );
 
           if (!countResponse.ok) {
             throw new Error(`HTTP error! status: ${countResponse.status}`);
@@ -75,10 +79,11 @@ export default function CollectionsBox({ isMobilePortrait }) {
 
   return (
     <div
-      className={`relative shadow-xl bg-no-repeat bg-center ${isMobilePortrait
+      className={`relative shadow-xl bg-no-repeat bg-center ${
+        isMobilePortrait
           ? "collections-box-mobile-layout"
           : "relative flex flex-row mt-3 justify-between w-full pl-3"
-        }`}
+      }`}
       style={{
         backgroundImage: "url('/images/collections/collectionsBG.webp')",
         backgroundSize: "100% 100%",
@@ -103,12 +108,14 @@ export default function CollectionsBox({ isMobilePortrait }) {
         />
       </div>
       <div
-        className={`flex flex-col align-center w-full place-items-center h-full justify-center ${isMobilePortrait ? "content-counter-rotate-mobile" : ""
-          }`}
+        className={`flex flex-col align-center w-full place-items-center h-full justify-center ${
+          isMobilePortrait ? "content-counter-rotate-mobile" : ""
+        }`}
       >
         <div
-          className={`flex flex-col items-center ${isMobilePortrait ? "" : "mr-12 mt-[20px]"
-            } gap-4`}
+          className={`flex flex-col items-center ${
+            isMobilePortrait ? "" : "mr-12 mt-[20px]"
+          } gap-4`}
         >
           {selectedCrop ? (
             <>
@@ -146,8 +153,8 @@ export default function CollectionsBox({ isMobilePortrait }) {
                     {(selectedCrop.season == "all"
                       ? ["spring", "summer", "fall", "winter"]
                       : Array.isArray(selectedCrop.season)
-                        ? selectedCrop.season.map((s) => s.toLowerCase())
-                        : []
+                      ? selectedCrop.season.map((s) => s.toLowerCase())
+                      : []
                     ).map((season) => (
                       <div
                         key={season}
@@ -176,7 +183,8 @@ export default function CollectionsBox({ isMobilePortrait }) {
                 </p>
               </div>
               <p className="w-[500px] border-t-4 border-[#c9ba98] mx-auto text-4xl text-center text-[#c9ba98] pt-2">
-                Crop has appeared {cropCount[selectedCrop.name]} time{cropCount[selectedCrop.name]==1 ? "" : "s"}
+                Crop has appeared {cropCount[selectedCrop.name]} time
+                {cropCount[selectedCrop.name] == 1 ? "" : "s"}
               </p>
             </>
           ) : (
@@ -192,12 +200,21 @@ export default function CollectionsBox({ isMobilePortrait }) {
           }
           toggleMute();
         }}
-        className={`absolute -top-11 right-[4%] w-[30px] h-[30px] clickable z-10 ${isMobilePortrait ? "content-counter-rotate-mobile" : ""}`}
+        className={`group absolute -top-[7.5%] right-[4%] w-[50px] h-[50px] clickable z-10 ${
+          isMobilePortrait ? "content-counter-rotate-mobile" : ""
+        }`}
       >
         <img
           src={isMuted ? "/images/muted.webp" : "/images/unmuted.webp"}
           alt="Toggle Sound"
           className="w-full h-full"
+        />
+        <img
+          src={
+            isMuted ? "/images/muted-hover.webp" : "/images/unmuted-hover.webp"
+          }
+          alt="Sound Hover"
+          className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
         />
       </div>
       <div
@@ -207,7 +224,9 @@ export default function CollectionsBox({ isMobilePortrait }) {
           }
           setShowCollectionsModal(true);
         }}
-        className={`absolute -top-14 right-1 w-[50px] h-[50px] group clickable z-10 ${isMobilePortrait ? "content-counter-rotate-mobile" : ""}`}
+        className={`absolute -top-[7.5%] right-1 w-[50px] h-[50px] group clickable z-10 ${
+          isMobilePortrait ? "content-counter-rotate-mobile" : ""
+        }`}
       >
         <img
           src="/images/question-mark.webp"
