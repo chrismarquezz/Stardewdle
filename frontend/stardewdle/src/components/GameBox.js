@@ -112,21 +112,25 @@ export default function GameBox({ isMobilePortrait }) {
         if (Object.hasOwn(crop, key)) {
           const prevArray = prevConstraints[key];
           const newValue =
-            JSON.stringify(crop[key]) === JSON.stringify(correctCrop[key])
-              ? key === "regrows"
-                ? !correctCrop["regrows"]
-                : key === "type"
-                  ? ["fruit", "vegetable", "flower", "forage"].filter(
-                    (season) => season !== crop["type"]
-                  )
-                  : key === "season" && crop["season"].length === 1
-                    ? [["spring"], ["summer"], ["fall"], ["winter"]].filter(
-                      (season) => season[0] !== crop["season"][0]
-                    )
-                    : null
+            key === "season" && (correctCrop[key][0] === "all" || (correctCrop["season"].length > 1 && correctCrop["season"].includes(crop["season"][0])))
+              ? null
               : crop[key][0] === "all"
                 ? ["spring", "summer", "fall", "winter"]
-                : crop[key];
+
+                : JSON.stringify(crop[key]) === JSON.stringify(correctCrop[key])
+                  ? (
+                    key === "regrows"
+                      ? !correctCrop["regrows"]
+                      : key === "type"
+                        ? ["fruit", "vegetable", "flower", "forage"].filter(
+                          (season) => season !== crop["type"]
+                        )
+                        : key === "season" && crop["season"].length === 1
+                          ? [["spring"], ["summer"], ["fall"], ["winter"]].filter(
+                            (season) => season[0] !== crop["season"][0]
+                          )
+                          : null
+                  ) : crop[key];
           if (newValue === null) continue;
           if (Array.isArray(newValue) && newValue.length === 3) {
             newValue.forEach((val) => {

@@ -116,12 +116,12 @@ export default function CollectionsBox({ isMobilePortrait }) {
         >
           {selectedCrop ? (
             <>
-              <p className="text-7xl text-center text-[#c9ba98]">
+              <div className="text-7xl text-center text-[#c9ba98]">
                 {formatName(selectedCrop.name)}
-                <p className="w-[500px] border-b-4 border-[#c9ba98] mx-auto text-4xl text-center text-[#c9ba98] pb-2">
+                <div className="w-[500px] border-b-4 border-[#c9ba98] mx-auto text-4xl text-center text-[#c9ba98] pb-2">
                   {selectedCrop.infodetail}
-                </p>
-              </p>
+                </div>
+              </div>
               <div className="flex flex-row items-center h-full mr-10 gap-4">
                 <div
                   className="relative bg-no-repeat bg-contain"
@@ -140,14 +140,14 @@ export default function CollectionsBox({ isMobilePortrait }) {
                     />
                   )}
                 </div>
-                <p className="text-4xl text-center text-[#c9ba98] tracking-wide">
+                <div className="text-4xl text-center text-[#c9ba98] tracking-wide">
                   {formatName(selectedCrop.type)} <br />
                   Sells for {selectedCrop.base_price}g <br />
                   Grows in {selectedCrop.growth_time} days <br />
                   Does {selectedCrop.regrows ? "" : "not"} regrow <br />
                   <div className="flex gap-3 items-center justify-center">
                     {"Seasons: "}{" "}
-                    {(selectedCrop.season === "all"
+                    {(selectedCrop.season[0] === "all"
                       ? ["spring", "summer", "fall", "winter"]
                       : Array.isArray(selectedCrop.season)
                         ? selectedCrop.season.map((s) => s.toLowerCase())
@@ -177,12 +177,12 @@ export default function CollectionsBox({ isMobilePortrait }) {
                       </div>
                     ))}
                   </div>
-                </p>
+                </div>
               </div>
-              <p className="w-[500px] border-t-4 border-[#c9ba98] mx-auto text-4xl text-center text-[#c9ba98] pt-2">
+              <div className="w-[500px] border-t-4 border-[#c9ba98] mx-auto text-4xl text-center text-[#c9ba98] pt-2">
                 Crop has appeared {cropCount[selectedCrop.name]} time
                 {cropCount[selectedCrop.name] === 1 ? "" : "s"}
-              </p>
+              </div>
             </>
           ) : (
             ""
