@@ -94,8 +94,3 @@ All images and sound assets used in this game are created by **ConcernedApe** fo
 This project is a fan-made game and is not affiliated with or endorsed by **ConcernedApe**.
 
 <br />
-
-## Disclaimer
-
-This project is for educational and personal use only.  
-No copyright infringement is intended.
