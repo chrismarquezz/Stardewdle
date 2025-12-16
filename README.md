@@ -70,8 +70,21 @@ Built with **React** on the frontend and an **AWS-supported** backend, the game 
 
 ## Authors
 
-- [Chris Marquez](https://github.com/chrismarquezz)
-- [Omar Siddiqui](https://github.com/osid54)
+**Chris Marquez**  
+<p align="left">
+  <a href="mailto:cmarquez@villanova.edu" target="_blank"><img src="https://img.shields.io/badge/Email-0078D4?style=for-the-badge&logo=outlook&logoColor=white" alt="Outlook Email Badge"/></a>
+  <a href="https://www.linkedin.com/in/chris--marquez" target="_blank"><img src="https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white" /></a>
+  <a href="https://github.com/chrismarquezz" target="_blank"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" /></a>
+  <a href="https://www.chrismarquez.dev" target="_blank"><img src="https://img.shields.io/badge/Portfolio-555555?style=for-the-badge&logoColor=white" /></a>
+</p>
+
+**Omar Siddiqui**  
+<p align="left">
+  <a href="mailto:2004.osid54@gmail.com" target="_blank"><img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Gmail Badge"/></a>
+  <a href="https://www.linkedin.com/in/omar-siddiqui-34610132a" target="_blank"><img src="https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white" /></a>
+  <a href="https://github.com/osid54" target="_blank"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" /></a>
+  <a href="https://www.osid.dev/" target="_blank"><img src="https://img.shields.io/badge/Portfolio-555555?style=for-the-badge&logoColor=white" /></a>
+</p>
   
 <br />
 
