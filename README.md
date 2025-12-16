@@ -16,8 +16,6 @@ After each guess, the game provides color-coded feedback based on five key attri
 
 <img src="https://img.shields.io/badge/-%23FF4136?style=for-the-badge&labelColor=FF4136" alt="Red Tile" width="10" height="18" /> **Red** indicates the value is **Incorrect**. For the numerical attributes (**Growth Time** and **Sell Price**), a directional arrow will accompany the red tile to help you: $\bigtriangleup$ means the correct value is higher, and $\bigtriangledown$ means the correct value is lower.
 
-<br />
-
 ---
 
 ## Tech Stack
@@ -44,8 +42,6 @@ After each guess, the game provides color-coded feedback based on five key attri
   <img src="https://img.shields.io/badge/Requests-000000?style=for-the-badge&logoColor=white" />
 </p>
 
-<br />
-
 ---
 
 ## Screenshots
@@ -55,8 +51,6 @@ After each guess, the game provides color-coded feedback based on five key attri
 ![Game Screenshot 2](https://github.com/user-attachments/assets/88495f41-8df5-4283-bd3e-6d9d7db33899)
 
 ![Game Screenshot 3](https://github.com/user-attachments/assets/6f4f30cf-b60e-476f-90a2-70c63e266016)
-
-<br />
 
 ---
 
@@ -77,8 +71,6 @@ After each guess, the game provides color-coded feedback based on five key attri
   <a href="https://www.osid.dev/" target="_blank"><img src="https://img.shields.io/badge/Portfolio-555555?style=for-the-badge&logoColor=white" /></a>
 </p>
 
-<br />
-
 ---
 
 ## Credits
@@ -86,4 +78,4 @@ After each guess, the game provides color-coded feedback based on five key attri
 All images and sound assets used in this game are created by **ConcernedApe** for *Stardew Valley*.  
 This project is a fan-made game and is not affiliated with or endorsed by **ConcernedApe**.
 
-<br />
+---
