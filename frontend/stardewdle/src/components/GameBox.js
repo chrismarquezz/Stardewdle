@@ -112,21 +112,25 @@ export default function GameBox({ isMobilePortrait }) {
         if (Object.hasOwn(crop, key)) {
           const prevArray = prevConstraints[key];
           const newValue =
-            JSON.stringify(crop[key]) === JSON.stringify(correctCrop[key])
-              ? key === "regrows"
-                ? !correctCrop["regrows"]
-                : key === "type"
-                  ? ["fruit", "vegetable", "flower", "forage"].filter(
-                    (season) => season !== crop["type"]
-                  )
-                  : key === "season" && crop["season"].length === 1
-                    ? [["spring"], ["summer"], ["fall"], ["winter"]].filter(
-                      (season) => season[0] !== crop["season"][0]
-                    )
-                    : null
+            key === "season" && (correctCrop[key][0] === "all" || (correctCrop["season"].length > 1 && correctCrop["season"].includes(crop["season"][0])))
+              ? null
               : crop[key][0] === "all"
                 ? ["spring", "summer", "fall", "winter"]
-                : crop[key];
+
+                : JSON.stringify(crop[key]) === JSON.stringify(correctCrop[key])
+                  ? (
+                    key === "regrows"
+                      ? !correctCrop["regrows"]
+                      : key === "type"
+                        ? ["fruit", "vegetable", "flower", "forage"].filter(
+                          (season) => season !== crop["type"]
+                        )
+                        : key === "season" && crop["season"].length === 1
+                          ? [["spring"], ["summer"], ["fall"], ["winter"]].filter(
+                            (season) => season[0] !== crop["season"][0]
+                          )
+                          : null
+                  ) : crop[key];
           if (newValue === null) continue;
           if (Array.isArray(newValue) && newValue.length === 3) {
             newValue.forEach((val) => {
@@ -568,7 +572,7 @@ export default function GameBox({ isMobilePortrait }) {
           <GuessGrid guesses={guesses} answer={correctCrop} />
         </div>
       </div>
-      <div className={`absolute ${isMobilePortrait ? "h-1/2 w-full -top-[50px] -right-[38.5%] content-counter-rotate-mobile" : "-top-[55px] right-0"} `}>
+      <div className={`absolute ${isMobilePortrait ? "h-[50px] w-[165px] bottom-[75px] -right-[120px] content-counter-rotate-mobile" : "-top-[55px] right-0"} `}>
         <div
           className={`absolute right-0 w-[50px] h-[50px] group clickable z-10 transition-transform duration-200 hover:scale-110 ${shouldPulse ? "animate-bounceHard" : ""}`}
           onClick={() => {
