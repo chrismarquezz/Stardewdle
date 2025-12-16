@@ -10,6 +10,8 @@ Built with **React** on the frontend and an **AWS-supported** backend, the game 
 
 <br />
 
+---
+
 ## Gameplay Overview
 
 - Guess a crop from Stardew Valley in 6 tries or less.
@@ -25,6 +27,8 @@ Built with **React** on the frontend and an **AWS-supported** backend, the game 
   - Season (Spring, Summer, Fall, Winter)
 
 <br />
+
+---
 
 ## Tech Stack
 
@@ -52,11 +56,7 @@ Built with **React** on the frontend and an **AWS-supported** backend, the game 
 
 <br />
 
-## Play Game
-
-[Play Stardewdle Here](https://stardewdle.com/)
-
-<br />
+---
 
 ## Screenshots
 
@@ -67,6 +67,8 @@ Built with **React** on the frontend and an **AWS-supported** backend, the game 
 ![Game Screenshot 3](https://github.com/user-attachments/assets/6f4f30cf-b60e-476f-90a2-70c63e266016)
 
 <br />
+
+---
 
 ## Authors
 
@@ -84,12 +86,12 @@ Built with **React** on the frontend and an **AWS-supported** backend, the game 
   <a href="https://github.com/osid54" target="_blank"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" /></a>
   <a href="https://www.osid.dev/" target="_blank"><img src="https://img.shields.io/badge/Portfolio-555555?style=for-the-badge&logoColor=white" /></a>
 </p>
-  
+
 <br />
+
+---
 
 ## Credits
 
 All images and sound assets used in this game are created by **ConcernedApe** for *Stardew Valley*.  
 This project is a fan-made game and is not affiliated with or endorsed by **ConcernedApe**.
-
-<br />
