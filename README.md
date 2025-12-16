@@ -2,11 +2,11 @@
 
 # Stardewdle
 
-Stardewdle is a Wordle-style guessing game based on crops from the popular game Stardew Valley.  
-Players have 6 attempts to guess the correct crop based on feedback about 5 key attributes:  
-**Growth Time**, **Price**, **Regrowth**, **Crop Type**, and **Season**.
+**Stardewdle** is a Wordle-style guessing game where players attempt to identify the **daily crop** from *Stardew Valley* in **6 attempts** or less.
 
-Built with **React** on the frontend and an **AWS-supported** backend, the game compares user guesses against a secret crop and provides color-coded feedback — similar to Wordle but for Stardew Valley!
+<a href="https://stardewdle.com/" target="_blank">
+    <img src="https://img.shields.io/badge/PLAY%20NOW-347C02?style=for-the-badge&logo=react&logoColor=white" alt="Play Stardewdle Now Badge" />
+</a>
 
 <br />
 
