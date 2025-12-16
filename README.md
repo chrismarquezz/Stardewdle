@@ -28,10 +28,21 @@ Built with **React** on the frontend and an **AWS-supported** backend, the game 
 
 ## Tech Stack
 
-- **Frontend**: React, JavaScript, TailwindCSS  
-- **Backend**: AWS Lambda (Node.js), API Gateway, DynamoDB  
-- **Deployment**: AWS Amplify (Frontend), AWS API Gateway + Lambda (Backend)  
-- **Data**: Stardew Valley Wiki (scraped and cleaned using Python scripts - BeautifulSoup + Requests)
+**Frontend Development**  
+[![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=222&labelColor=fff&style=flat)](https://react.dev/)
+[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=222&labelColor=fff&style=flat)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-06B6D4?logo=tailwindcss&logoColor=fff&labelColor=0b1120&style=flat)](https://tailwindcss.com/)
+[![AWS Amplify](https://img.shields.io/badge/AWS%20Amplify-FF9900?logo=aws-amplify&logoColor=fff&labelColor=232F3E&style=flat)](https://aws.amazon.com/amplify/)
+
+**Backend & API Development**  
+[![AWS Lambda](https://img.shields.io/badge/AWS%20Lambda-FF9900?logo=aws-lambda&logoColor=fff&labelColor=232F3E&style=flat)](https://aws.amazon.com/lambda/)
+[![API Gateway](https://img.shields.io/badge/API%20Gateway-FF4F8B?logo=amazon-api-gateway&logoColor=fff&labelColor=232F3E&style=flat)](https://aws.amazon.com/api-gateway/)
+[![DynamoDB](https://img.shields.io/badge/DynamoDB-4053D6?logo=amazon-dynamodb&logoColor=fff&labelColor=232F3E&style=flat)](https://aws.amazon.com/dynamodb/)
+
+**Data & Tooling**  
+[![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=fff&labelColor=143b5d&style=flat)](https://www.python.org/)
+[![BeautifulSoup](https://img.shields.io/badge/BeautifulSoup-4B8BBE?labelColor=143b5d&style=flat)](https://www.crummy.com/software/BeautifulSoup/)
+[![Requests](https://img.shields.io/badge/Requests-000000?labelColor=ededed&style=flat)](https://requests.readthedocs.io/en/latest/)
 
 <br />
 
