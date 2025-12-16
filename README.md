@@ -4,27 +4,17 @@
 
 **Stardewdle** is a Wordle-style guessing game where players attempt to identify the **daily crop** from *Stardew Valley* in **6 attempts** or less.
 
-<a href="https://stardewdle.com/" target="_blank">
-    <img src="https://img.shields.io/badge/PLAY%20NOW-347C02?style=for-the-badge&logo=react&logoColor=white" alt="Play Stardewdle Now Badge" />
-</a>
-
-<br />
-
 ---
 
 ## Gameplay Overview
 
-- Guess a crop from Stardew Valley in 6 tries or less.
-- After each guess, see feedback:
-  - Green: exact match
-  - Yellow: partial match
-  - Red: incorrect
-- Attributes compared include:
-  - Growth Time (days)
-  - Sell Price (at normal quality)
-  - Regrows (Yes/No)
-  - Crop Type (Fruit/Vegetable/Mushroom/Forage/Flower)
-  - Season (Spring, Summer, Fall, Winter)
+After each guess, the game provides color-coded feedback based on five key attributes: **Growth Time** (Days), **Sell Price** (Gold), **Regrows** (Yes/No), **Crop Type** (Fruit, Vegetable, Flower, Forage), and **Season** (Spring, Summer, Fall, Winter).
+
+<img src="https://img.shields.io/badge/-%23538D4E?style=for-the-badge&labelColor=538D4E" alt="Green Tile" width="10" height="18" /> **Green** indicates a **Perfect Match**: your value for the attribute is **exactly correct**. This applies to all five attributes.
+
+<img src="https://img.shields.io/badge/-%23B59F3B?style=for-the-badge&labelColor=B59F3B" alt="Yellow Tile" width="10" height="18" /> **Yellow** indicates a **Partial Season Match** and **appears exclusively for the Season attribute**. If the season you guessed is one of the crop's growing seasons, but the crop also grows in at least one other season, the tile will be yellow.
+
+<img src="https://img.shields.io/badge/-%23FF4136?style=for-the-badge&labelColor=FF4136" alt="Red Tile" width="10" height="18" /> **Red** indicates the value is **Incorrect**. For the numerical attributes (**Growth Time** and **Sell Price**), a directional arrow will accompany the red tile to help you: $\bigtriangleup$ means the correct value is higher, and $\bigtriangledown$ means the correct value is lower.
 
 <br />
 
@@ -95,3 +85,5 @@
 
 All images and sound assets used in this game are created by **ConcernedApe** for *Stardew Valley*.  
 This project is a fan-made game and is not affiliated with or endorsed by **ConcernedApe**.
+
+<br />
