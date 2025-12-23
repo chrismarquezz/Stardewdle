@@ -11,7 +11,6 @@ import './App.css';
 import Landing from "./pages/Landing";
 import Game from "./pages/Game";
 import Collections from "./pages/Collections";
-import Test from "./pages/Test";
 
 export default function App() {
   return (
@@ -21,7 +20,6 @@ export default function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/game" element={<Game />} />
         <Route path="/collections" element={<Collections />} />
-        <Route path="/test" element={<Test />} />
       </Routes>
     </Router>
     </SoundProvider>
