@@ -23,7 +23,7 @@ export default function CollectionsGrid({ selectedCrop, onSelect, isMuted, class
 
     fetchInitialData();
   }
-}, []);
+  }, [crops]);
 
 
   const gridStyles = isMobilePortrait

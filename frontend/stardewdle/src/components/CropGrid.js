@@ -25,8 +25,12 @@ function checkConstraints(constraints, crop, showHints) {
       if (cropValue[0] === "all")
         isMatch = true;
       else {
-        isMatch = constraintValues.some(constraintArr =>
-          constraintArr.every(season => cropValue.includes(season))
+        //console.log(constraintValues);
+        isMatch = constraintValues.some(constraintArr => {
+          if (Array.isArray(constraintArr))
+            return constraintArr.every(season => cropValue.includes(season))
+          return constraintArr === cropValue[0]
+        }
         );
       }
     } else {
@@ -74,17 +78,17 @@ export default function CropGrid({
 
       fetchInitialData();
     }
-  }, []);
+  }, [crops]);
 
   const gridStyles = isMobilePortrait
     ? {
-        gridTemplateColumns: "repeat(9, 60px)",
-        gridAutoRows: "60px",
-      }
+      gridTemplateColumns: "repeat(9, 60px)",
+      gridAutoRows: "60px",
+    }
     : {
-        gridTemplateColumns: "repeat(8, 60px)",
-        gridAutoRows: "60px",
-      };
+      gridTemplateColumns: "repeat(8, 60px)",
+      gridAutoRows: "60px",
+    };
 
   return (
     <div
