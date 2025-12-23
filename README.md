@@ -2,44 +2,47 @@
 
 # Stardewdle
 
-Stardewdle is a Wordle-style guessing game based on crops from the popular game Stardew Valley.  
-Players have 6 attempts to guess the correct crop based on feedback about 5 key attributes:  
-**Growth Time**, **Price**, **Regrowth**, **Crop Type**, and **Season**.
+**Stardewdle** is a Wordle-style guessing game where players attempt to identify the **daily crop** from *Stardew Valley* in **6 attempts** or less.
 
-Built with **React** on the frontend and an **AWS-supported** backend, the game compares user guesses against a secret crop and provides color-coded feedback — similar to Wordle but for Stardew Valley!
-
-<br />
+---
 
 ## Gameplay Overview
 
-- Guess a crop from Stardew Valley in 6 tries or less.
-- After each guess, see feedback:
-  - Green: exact match
-  - Yellow: partial match
-  - Red: incorrect
-- Attributes compared include:
-  - Growth Time (days)
-  - Sell Price (at normal quality)
-  - Regrows (Yes/No)
-  - Crop Type (Fruit/Vegetable/Mushroom/Forage/Flower)
-  - Season (Spring, Summer, Fall, Winter)
+After each guess, the game provides color-coded feedback based on five key attributes: **Growth Time** (Days), **Sell Price** (Gold), **Regrows** (Yes/No), **Crop Type** (Fruit, Vegetable, Flower, Forage), and **Season** (Spring, Summer, Fall, Winter).
 
-<br />
+<img src="https://img.shields.io/badge/-%23538D4E?style=for-the-badge&labelColor=538D4E" alt="Green Tile" width="10" height="18" /> **Green** indicates a **Perfect Match**: your value for the attribute is **exactly correct**. This applies to all five attributes.
+
+<img src="https://img.shields.io/badge/-%23B59F3B?style=for-the-badge&labelColor=B59F3B" alt="Yellow Tile" width="10" height="18" /> **Yellow** indicates a **Partial Season Match** and **appears exclusively for the Season attribute**. If the season you guessed is one of the crop's growing seasons, but the crop also grows in at least one other season, the tile will be yellow.
+
+<img src="https://img.shields.io/badge/-%23FF4136?style=for-the-badge&labelColor=FF4136" alt="Red Tile" width="10" height="18" /> **Red** indicates the value is **Incorrect**. For the numerical attributes (**Growth Time** and **Sell Price**), a directional arrow will accompany the red tile to help you: $\bigtriangleup$ means the correct value is higher, and $\bigtriangledown$ means the correct value is lower.
+
+---
 
 ## Tech Stack
 
-- **Frontend**: React, JavaScript, TailwindCSS  
-- **Backend**: AWS Lambda (Node.js), API Gateway, DynamoDB  
-- **Deployment**: AWS Amplify (Frontend), AWS API Gateway + Lambda (Backend)  
-- **Data**: Stardew Valley Wiki (scraped and cleaned using Python scripts - BeautifulSoup + Requests)
+**Frontend Development**  
+<p align="left">
+  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" />
+  <img src="https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white" />
+  <img src="https://img.shields.io/badge/AWS%20Amplify-FF9900?style=for-the-badge&logo=aws-amplify&logoColor=232F3E" />
+</p>
 
-<br />
+**Backend & API Development**  
+<p align="left">
+  <img src="https://img.shields.io/badge/AWS%20Lambda-FF9900?style=for-the-badge&logo=aws-lambda&logoColor=white" />
+  <img src="https://img.shields.io/badge/API%20Gateway-FF4F8B?style=for-the-badge&logo=amazon-api-gateway&logoColor=white" />
+  <img src="https://img.shields.io/badge/DynamoDB-4053D6?style=for-the-badge&logo=amazon-dynamodb&logoColor=white" />
+</p>
 
-## Play Game
+**Data & Tooling**  
+<p align="left">
+  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" />
+  <img src="https://img.shields.io/badge/BeautifulSoup-4B8BBE?style=for-the-badge&logoColor=white" />
+  <img src="https://img.shields.io/badge/Requests-000000?style=for-the-badge&logoColor=white" />
+</p>
 
-[Play Stardewdle Here](https://stardewdle.com/)
-
-<br />
+---
 
 ## Screenshots
 
@@ -49,23 +52,30 @@ Built with **React** on the frontend and an **AWS-supported** backend, the game 
 
 ![Game Screenshot 3](https://github.com/user-attachments/assets/6f4f30cf-b60e-476f-90a2-70c63e266016)
 
-<br />
+---
 
 ## Authors
 
-- [Chris Marquez](https://github.com/chrismarquezz)
-- [Omar Siddiqui](https://github.com/osid54)
-  
-<br />
+**Chris Marquez**  
+<p align="left">
+  <a href="mailto:cmarquez@villanova.edu" target="_blank"><img src="https://img.shields.io/badge/Email-0078D4?style=for-the-badge&logo=outlook&logoColor=white" alt="Outlook Email Badge"/></a>
+  <a href="https://www.linkedin.com/in/chris--marquez" target="_blank"><img src="https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white" /></a>
+  <a href="https://github.com/chrismarquezz" target="_blank"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" /></a>
+  <a href="https://www.chrismarquez.dev" target="_blank"><img src="https://img.shields.io/badge/Portfolio-555555?style=for-the-badge&logoColor=white" /></a>
+</p>
+
+**Omar Siddiqui**  
+<p align="left">
+  <a href="mailto:2004.osid54@gmail.com" target="_blank"><img src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Gmail Badge"/></a>
+  <a href="https://github.com/osid54" target="_blank"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" /></a>
+  <a href="https://www.osid.dev/" target="_blank"><img src="https://img.shields.io/badge/Portfolio-555555?style=for-the-badge&logoColor=white" /></a>
+</p>
+
+---
 
 ## Credits
 
 All images and sound assets used in this game are created by **ConcernedApe** for *Stardew Valley*.  
 This project is a fan-made game and is not affiliated with or endorsed by **ConcernedApe**.
 
-<br />
-
-## Disclaimer
-
-This project is for educational and personal use only.  
-No copyright infringement is intended.
+---

@@ -227,10 +227,7 @@ export default function GameBox({ isMobilePortrait }) {
     localStorage.setItem("stardewdle-guesses", JSON.stringify(guesses));
     localStorage.setItem("stardewdle-correctCrop", JSON.stringify(correctCrop));
     localStorage.setItem("stardewdle-gameOver", JSON.stringify(gameOver));
-    localStorage.setItem(
-      "stardewdle-selectedCrop",
-      JSON.stringify(selectedCrop)
-    );
+    localStorage.setItem("stardewdle-selectedCrop", JSON.stringify(selectedCrop));
     localStorage.setItem("stardewdle-date", storedDate);
     localStorage.setItem("stardewdle-crops", JSON.stringify(crops));
     localStorage.setItem("stardewdle-showHints", JSON.stringify(showHints));
@@ -288,7 +285,9 @@ export default function GameBox({ isMobilePortrait }) {
         );
 
         if (cropData) {
-          setCorrectCrop(cropData);
+          const cropDataWithDate = { ...cropData, date: today };
+          //console.log("cropDataWithDate:", cropDataWithDate);
+          setCorrectCrop(cropDataWithDate);
         } else {
           console.warn("Crop not found for word:", word);
         }
@@ -297,7 +296,7 @@ export default function GameBox({ isMobilePortrait }) {
       }
     };
 
-    if (storedDate !== today || !correctCrop || crops.length === 0) {
+    if (storedDate !== today || !correctCrop || crops.length === 0 || (correctCrop.date !== undefined && correctCrop.date !== today)) {
       if (storedDate !== today) {
         setGuesses([]);
         setSelectedCrop(null);
@@ -316,6 +315,23 @@ export default function GameBox({ isMobilePortrait }) {
     }
   }, [storedDate, correctCrop, crops]);
 
+  function resetStored() {
+      setGuesses([]);
+      setSelectedCrop(null);
+      setGameOver(false);
+      setStoredDate(new Date().toISOString().split("T")[0]);
+      setConstraints({
+        name: [],
+        growth_time: [],
+        base_price: [],
+        regrows: [],
+        type: [],
+        season: [],
+      });
+    window.location.reload();
+    console.log("Reloaded due to date change");
+  }
+
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (!document.hidden) {
@@ -333,6 +349,14 @@ export default function GameBox({ isMobilePortrait }) {
 
   const handleSubmit = async () => {
     if (!selectedCrop || guesses.length >= 6 || gameOver) return;
+
+    const today = new Date().toISOString().split("T")[0];
+    //console.log(storedDate, " ", today);
+    if (storedDate !== today || (correctCrop.date !== undefined && correctCrop.date !== today)) {
+      console.log("Resetting game due to date change");
+      resetStored();
+      return;
+    }
 
     try {
       const response = await fetch(process.env.REACT_APP_API_URL + "/guess", {
