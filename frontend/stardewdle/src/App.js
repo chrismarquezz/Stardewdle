@@ -11,7 +11,7 @@ import './App.css';
 import Landing from "./pages/Landing";
 import Game from "./pages/Game";
 import Collections from "./pages/Collections";
-import Test from "./pages/Test";
+//import Test from "./pages/Test";
 
 export default function App() {
   return (
