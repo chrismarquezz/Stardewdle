@@ -112,11 +112,10 @@ export default function GameBox({ isMobilePortrait }) {
         if (Object.hasOwn(crop, key)) {
           const prevArray = prevConstraints[key];
           const newValue =
-            key === "season" && (correctCrop[key][0] === "all" || (correctCrop["season"].length > 1 && correctCrop["season"].includes(crop["season"][0])))
+            key === "season" && (correctCrop["season"][0] === "all" || (correctCrop["season"].length > 1 && correctCrop["season"].includes(crop["season"][0])))
               ? null
-              : crop[key][0] === "all"
+              : crop["season"][0] === "all"
                 ? ["spring", "summer", "fall", "winter"]
-
                 : JSON.stringify(crop[key]) === JSON.stringify(correctCrop[key])
                   ? (
                     key === "regrows"
@@ -171,6 +170,31 @@ export default function GameBox({ isMobilePortrait }) {
   }
 
   useEffect(() => {
+    const today = new Date().toISOString().split("T")[0];
+    //console.log(storedDate, " ", today);
+    if (storedDate !== today || (correctCrop != null && correctCrop.date !== undefined && correctCrop.date !== today)) {
+      console.log("Resetting game due to date change");
+      resetStored();
+      return;
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        console.log("Tab is visible again, reloading...");
+        window.location.reload();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
+
+  useEffect(() => {
     const lastSeen = localStorage.getItem("stardewdle-lastUpdateSeen");
 
     if (!lastSeen) {
@@ -184,18 +208,6 @@ export default function GameBox({ isMobilePortrait }) {
       }
     }
   }, []);
-
-  useEffect(() => {
-    if (gameOver && !shareText && guesses.length > 0) {
-      const isWin = guesses.some(
-        (g) =>
-          g.crop.name.toLowerCase() === correctCrop?.name.toLowerCase() &&
-          Object.values(g.result).every((val) => val === "match")
-      );
-      const text = generateShareText(guesses, isWin);
-      setShareText(text);
-    }
-  }, [gameOver, shareText, guesses, correctCrop]);
 
   useEffect(() => {
     const hasSeenHelpModal = localStorage.getItem(
@@ -214,6 +226,18 @@ export default function GameBox({ isMobilePortrait }) {
 
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    if (gameOver && !shareText && guesses.length > 0) {
+      const isWin = guesses.some(
+        (g) =>
+          g.crop.name.toLowerCase() === correctCrop?.name.toLowerCase() &&
+          Object.values(g.result).every((val) => val === "match")
+      );
+      const text = generateShareText(guesses, isWin);
+      setShareText(text);
+    }
+  }, [gameOver, shareText, guesses, correctCrop]);
 
   useEffect(() => {
     if (guesses.length >= 6) {
@@ -265,23 +289,27 @@ export default function GameBox({ isMobilePortrait }) {
     const today = new Date().toISOString().split("T")[0];
 
     const fetchNewCrop = async () => {
+      //console.log("Fetching new crop for the day...");
       try {
-        const cropResponse = await fetch(
-          process.env.REACT_APP_API_URL + "/crops"
-        );
-        if (!cropResponse.ok) {
-          throw new Error(`HTTP error! status: ${cropResponse.status}`);
+        if (crops.length === 0) {
+          const cropResponse = await fetch(
+            process.env.REACT_APP_API_URL + "/crops"
+          );
+          if (!cropResponse.ok) {
+            throw new Error(`HTTP error! status: ${cropResponse.status}`);
+          }
+          const cropList = await cropResponse.json();
+          setCrops(cropList);
         }
-        const cropList = await cropResponse.json();
-        setCrops(cropList);
 
-        if (cropList.length === 0) return;
+        if (crops.length === 0) return;
 
         const response = await fetch(process.env.REACT_APP_API_URL + "/word");
+        //console.log("Fetched new crop for the day");
         const data = await response.json();
         const word = data.word;
 
-        const cropData = cropList.find(
+        const cropData = crops.find(
           (crop) => crop.name.toLowerCase() === word.toLowerCase()
         );
 
@@ -297,63 +325,39 @@ export default function GameBox({ isMobilePortrait }) {
       }
     };
 
-    if (storedDate !== today || !correctCrop || crops.length === 0 || (correctCrop.date !== undefined && correctCrop.date !== today)) {
-      if (storedDate !== today) {
-        setGuesses([]);
-        setSelectedCrop(null);
-        setGameOver(false);
-        setStoredDate(today);
-        setConstraints({
-          name: [],
-          growth_time: [],
-          base_price: [],
-          regrows: [],
-          type: [],
-          season: [],
-        });
+    if (!correctCrop || crops.length === 0 || storedDate !== today || (correctCrop != null && correctCrop.date !== undefined && correctCrop.date !== today)) {
+      if (storedDate !== today || (correctCrop != null && correctCrop.date !== undefined && correctCrop.date !== today)) {
+        resetStored(false);
       }
       fetchNewCrop();
     }
   }, [storedDate, correctCrop, crops]);
 
-  function resetStored() {
-      setGuesses([]);
-      setSelectedCrop(null);
-      setGameOver(false);
-      setStoredDate(new Date().toISOString().split("T")[0]);
-      setConstraints({
-        name: [],
-        growth_time: [],
-        base_price: [],
-        regrows: [],
-        type: [],
-        season: [],
-      });
-    window.location.reload();
-    console.log("Reloaded due to date change");
+  function resetStored(refresh = true) {
+    setGuesses([]);
+    setSelectedCrop(null);
+    setGameOver(false);
+    setStoredDate(new Date().toISOString().split("T")[0]);
+    setConstraints({
+      name: [],
+      growth_time: [],
+      base_price: [],
+      regrows: [],
+      type: [],
+      season: [],
+    });
+    if (refresh) {
+      window.location.reload();
+      console.log("Reloaded due to date change");
+    }
   }
-
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (!document.hidden) {
-        console.log("Tab is visible again, reloading...");
-        window.location.reload();
-      }
-    };
-
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-  }, []);
 
   const handleSubmit = async () => {
     if (!selectedCrop || guesses.length >= 6 || gameOver) return;
 
     const today = new Date().toISOString().split("T")[0];
     //console.log(storedDate, " ", today);
-    if (storedDate !== today || (correctCrop.date !== undefined && correctCrop.date !== today)) {
+    if (storedDate !== today || (correctCrop != null && correctCrop.date !== undefined && correctCrop.date !== today)) {
       console.log("Resetting game due to date change");
       resetStored();
       return;

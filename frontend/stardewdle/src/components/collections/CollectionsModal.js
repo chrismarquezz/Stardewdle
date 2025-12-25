@@ -31,7 +31,7 @@ export default function CollectionsModal({ isMuted, onClose, scaleFactor }) {
         >
           <button
             onClick={playCloseSound}
-            className="clickable absolute top-0 text-red-500 text-4xl md:text-6xl hover:text-gray-300"
+            className="clickable absolute top-0 text-[#BC6131] text-4xl md:text-6xl hover:text-red-500"
           >
             x
           </button>
@@ -54,7 +54,7 @@ export default function CollectionsModal({ isMuted, onClose, scaleFactor }) {
               - You can also see how often a crop has been the Daily Crop
             </p>
             <p>
-              - Use this page to prepare for your next guess!
+              - Use this page to prepare for your next guess
             </p>
           </div>
         </div>
