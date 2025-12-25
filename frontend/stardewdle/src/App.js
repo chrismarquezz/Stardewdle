@@ -15,13 +15,13 @@ import Collections from "./pages/Collections";
 export default function App() {
   return (
     <SoundProvider>
-    <Router>
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/game" element={<Game />} />
-        <Route path="/collections" element={<Collections />} />
-      </Routes>
-    </Router>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/game" element={<Game />} />
+          <Route path="/collections" element={<Collections />} />
+        </Routes>
+      </Router>
     </SoundProvider>
   );
 }

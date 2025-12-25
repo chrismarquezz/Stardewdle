@@ -51,13 +51,13 @@ export default function ShareModal({
           {/* Close Button */}
           <button
             onClick={playCloseSound}
-            className="clickable absolute left-[10px] top-[4px] md:top-0 text-red-500 text-4xl md:text-6xl hover:text-gray-300"
+            className="clickable absolute left-4 md:left-6 top-1 text-[#BC6131] text-4xl md:text-6xl hover:text-red-500"
           >
             x
           </button>
           {/* UTC Timer */}
           <p
-            className="text-[#BC6131] text-center text-lg md:text-5xl font-bold md:mb-1 md:min-w-[520px]"
+            className="text-[#BC6131] text-center text-2xl md:text-5xl font-bold md:mb-1 md:min-w-[520px]"
           >
             Next crop in: {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s
           </p>
