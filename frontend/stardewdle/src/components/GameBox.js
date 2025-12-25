@@ -244,6 +244,7 @@ export default function GameBox({ isMobilePortrait }) {
   ]);
 
   useEffect(() => {
+    if (!showShareModal) return;
     const updateGuessStats = async () => {
       try {
         const res = await fetch(process.env.REACT_APP_API_URL + "/word");
@@ -256,7 +257,7 @@ export default function GameBox({ isMobilePortrait }) {
     };
 
     updateGuessStats();
-  }, []);
+  }, [showShareModal]);
 
   useEffect(() => {
     if (!DAILY_RESET_ENABLED) return;
@@ -385,16 +386,6 @@ export default function GameBox({ isMobilePortrait }) {
         setGameOver(true);
         if (!isMuted) new Audio("/sounds/reward.mp3").play();
         setSelectedCrop(correctCrop);
-
-        try {
-          const res = await fetch(process.env.REACT_APP_API_URL + "/word");
-          const data = await res.json();
-          setCorrectGuesses(data.correct_guesses);
-          setTotalGuesses(data.total_guesses);
-        } catch (err) {
-          console.error("Failed to fetch win stats:", err);
-        }
-
         const text = generateShareText([...guesses, newGuess], true);
         setShareText(text);
         setShowShareModal(true);
