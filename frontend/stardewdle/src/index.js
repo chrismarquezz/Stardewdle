@@ -8,8 +8,8 @@ import { SoundProvider } from "./context/SoundContext";
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <SoundProvider>
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
   </SoundProvider>
 );
