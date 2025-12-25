@@ -1,6 +1,6 @@
 import ReactDOM from "react-dom";
 
-export default function HelpModal({ isMuted, onClose }) {
+export default function HelpModal({ isMuted, onClose, scaleFactor }) {
   const playCloseSound = () => {
     if (!isMuted) {
       new Audio("/sounds/modal.mp3").play();
@@ -15,12 +15,16 @@ export default function HelpModal({ isMuted, onClose }) {
     >
       <div
         className="relative max-w-[95vw] max-h-[95vh] flex flex-col"
+        style={{
+          transform: `scale(${scaleFactor})`,
+          transformOrigin: "center",
+        }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Content */}
         <div
-          className="relative z-10 flex flex-col overflow-y-auto p-6 md:pl-10 md:pr-10
-          w-[85vw] max-w-[1100px] h-auto md:h-[80vh]"
+          className="justify-center align-middle relative z-10 flex flex-col overflow-y-auto p-4 md:pl-8 md:pr-8"
+
           style={{
             backgroundImage: "url('/images/help-bg.webp')",
             backgroundSize: "100% 100%",
@@ -29,18 +33,19 @@ export default function HelpModal({ isMuted, onClose }) {
           {/* Close button */}
           <button
             onClick={playCloseSound}
-            className="clickable absolute top-2 left-6 text-red-500 text-4xl md:text-7xl hover:text-gray-300"
+            className="clickable absolute top-0 left-3 md:left-6 text-[#BC6131] text-4xl md:text-7xl hover:text-red-500"
           >
             x
           </button>
 
           {/* Title */}
-          <h2 className="text-[#BC6131] text-center text-3xl sm:text-5xl md:text-7xl font-semibold mb-6 mt-2">
+          <h2 className="text-[#BC6131] text-center text-2xl md:text-5xl font-semibold mb-2">
             How to Play
           </h2>
 
+          
           {/* Content */}
-          <div className="flex-1 space-y-4 md:space-y-6 text-[#BC6131] text-left text-lg sm:text-3xl md:text-4xl leading-snug overflow-y-auto">
+          <div className="space-y-2 md:space-y-4 text-[#BC6131] text-left text-md sm:text-2xl md:text-3xl leading-none overflow-y-auto max-h-[70vh] pr-2">
             <p>- Select a crop from the grid</p>
             <p>- Click "Submit" to guess the crop of the day</p>
             <p>- You get 6 tries to guess correctly</p>
@@ -85,8 +90,7 @@ export default function HelpModal({ isMuted, onClose }) {
             </div>
             <p>- Hover over the season image to see the season name</p>
             <p>
-              - If you ever feel stuck, turn on the hint feature to eliminate
-              possible crops based on feedback from each guess
+              - If you ever feel stuck, use the hint feature to narrow down your options
             </p>
           </div>
         </div>

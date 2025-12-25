@@ -30,7 +30,7 @@ export default function UpdatesModal({ isMuted, onClose, scaleFactor }) {
         >
           <button
             onClick={playCloseSound}
-            className="clickable absolute top-0 text-red-500 text-4xl md:text-6xl hover:text-gray-300"
+            className="clickable absolute top-0 left-3 md:left-6 text-[#BC6131] text-4xl md:text-7xl hover:text-red-500"
           >
             x
           </button>

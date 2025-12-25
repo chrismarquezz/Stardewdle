@@ -184,7 +184,7 @@ export default function Landing() {
                   }
                   setShowModal(false);
                 }}
-                className="clickable absolute top-[2%] left-[3%] text-red-500 text-6xl hover:text-gray-300"
+                className="clickable absolute top-[2%] left-[3%] text-gray-600 text-6xl hover:text-red-500"
               >
                 x
               </button>
