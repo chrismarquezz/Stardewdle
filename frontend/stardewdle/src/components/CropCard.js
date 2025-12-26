@@ -1,6 +1,6 @@
 import { formatName } from "../utils/formatString";
 
-export default function CropCard({ crop, isSelected, onClick, isMuted, guessable }) {
+export default function CropCard({ crop, isSelected, onClick, isMuted, guessable, isMobilePortrait }) {
   const formattedName = formatName(crop.name);
 
   return (
@@ -19,12 +19,13 @@ export default function CropCard({ crop, isSelected, onClick, isMuted, guessable
         backgroundImage: "url('/images/tile-bg.webp')",
         backgroundSize: "cover",
         backgroundPosition: "center",
+        scale: isMobilePortrait ? "1.1" : "1",
       }}
     >
       <img
         src={crop.image_url}
         alt={crop.name}
-        className="w-[80%] h-[80%] object-contain"
+        className={`object-contain w-[100%] h-[100%] p-[2px] pl-[6px] pb-[6px]`}
       />
       
       <div

@@ -63,21 +63,6 @@ body,
     padding: 0 !important;
   }
 
-  /* CropGrid */
-  .gamebox-mobile-layout .mobile-crop-grid-wrapper {
-    position: absolute;
-    top: 50%;
-    left: 27%;
-    transform: translate(-50%, -50%);
-    width: 900px;
-    height: 720px;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
   /* Right Side Container */
   .gamebox-mobile-layout .flex.flex-col.align-center.w-full.place-items-center {
     position: absolute;
