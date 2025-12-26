@@ -3,15 +3,7 @@ import { useSound } from "../../context/SoundContext";
 import CollectionsGrid from "./CollectionsGrid";
 import CollectionsModal from "./CollectionsModal";
 import CropLoader from "../CropLoader";
-
-function formatName(name) {
-  return name
-    .replace(/_/g, " ")
-    .replace(
-      /\w\S*/g,
-      (w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
-    );
-}
+import { formatName } from "../../utils/formatString";
 
 export default function CollectionsBox({ isMobilePortrait }) {
   const [selectedCrop, setSelectedCrop] = useState(null);

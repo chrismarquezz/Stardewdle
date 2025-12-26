@@ -6,18 +6,10 @@ import CropLoader from "../components/CropLoader";
 import ShareModal from "./ShareModal";
 import HelpModal from "./HelpModal";
 import UpdatesModal from "./UpdatesModal";
+import { formatName } from "../utils/formatString";
 
 const DAILY_RESET_ENABLED = true;
 const MOST_RECENT_UPDATE = "2025-10-13T00:00:00Z";
-
-function formatName(name) {
-  return name
-    .replace(/_/g, " ")
-    .replace(
-      /\w\S*/g,
-      (w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
-    );
-}
 
 function todaysDate() {
   const today = new Date(new Date().toUTCString());

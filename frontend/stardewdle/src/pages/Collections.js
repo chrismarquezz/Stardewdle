@@ -2,36 +2,24 @@ import CollectionsBox from "../components/collections/CollectionsBox";
 import { useNavigate } from "react-router-dom";
 import { useSound } from "../context/SoundContext";
 import { useState, useEffect } from "react";
+import { useResponsiveScale } from "../hooks/useResponsiveScale";
 
 export default function Game() {
   const { isMuted } = useSound();
   const navigate = useNavigate();
-  const [scaleFactor, setScaleFactor] = useState(1);
   const [isMobilePortrait, setIsMobilePortrait] = useState(false);
+
+  const designWidth = 1600;
+  const designHeight = 900;
+  const effectiveDesignWidth = isMobilePortrait ? designHeight : designWidth;
+  const effectiveDesignHeight = isMobilePortrait ? designWidth : designHeight;
+  const scaleFactor = useResponsiveScale(effectiveDesignWidth, effectiveDesignHeight);
 
   useEffect(() => {
     const handleResize = () => {
-      const maxWidth = window.innerWidth * 0.95;
-      const maxHeight = window.innerHeight * 0.95;
-
-      const designWidth = 1600;
-      const designHeight = 900;
-
       const currentlyIsMobilePortrait =
         window.innerWidth < 768 && window.innerHeight > window.innerWidth;
       setIsMobilePortrait(currentlyIsMobilePortrait);
-
-      let effectiveDesignWidth = designWidth;
-      let effectiveDesignHeight = designHeight;
-      if (currentlyIsMobilePortrait) {
-        effectiveDesignWidth = designHeight; 
-        effectiveDesignHeight = designWidth;
-      }
-
-      const scaleW = maxWidth / effectiveDesignWidth;
-      const scaleH = maxHeight / effectiveDesignHeight;
-
-      setScaleFactor(Math.min(scaleW, scaleH));
     };
 
     handleResize();
