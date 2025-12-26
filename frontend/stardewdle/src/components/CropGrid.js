@@ -25,7 +25,6 @@ function checkConstraints(constraints, crop, showHints) {
       if (cropValue[0] === "all")
         isMatch = true;
       else {
-        //console.log(constraintValues);
         isMatch = constraintValues.some(constraintArr => {
           if (Array.isArray(constraintArr))
             return constraintArr.every(season => cropValue.includes(season))
