@@ -1,11 +1,6 @@
-import path from "path";
-import { fileURLToPath } from "url";
 import fetch from "node-fetch";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, GetCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const cropsResponse = await fetch("https://2vo847ggnb.execute-api.us-east-1.amazonaws.com/crops");
 if (!cropsResponse.ok) {

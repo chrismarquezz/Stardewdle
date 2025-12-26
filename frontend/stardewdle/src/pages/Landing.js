@@ -1,31 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { useSound } from "../context/SoundContext";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useResponsiveScale } from "../hooks/useResponsiveScale";
 
 export default function Landing() {
   const { isMuted } = useSound();
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-  const [scaleFactor, setScaleFactor] = useState(1);
-
-  useEffect(() => {
-    const handleResize = () => {
-      const maxWidth = window.innerWidth * 0.95;
-      const maxHeight = window.innerHeight * 0.95;
-
-      const designWidth = 1080;
-      const designHeight = 720;
-
-      const scaleW = maxWidth / designWidth;
-      const scaleH = maxHeight / designHeight;
-
-      setScaleFactor(Math.min(scaleW, scaleH));
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  const scaleFactor = useResponsiveScale(1080, 720);
 
   return (
     <div className="relative min-h-screen w-full overflow-y-auto">

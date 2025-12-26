@@ -1,5 +1,3 @@
-import path from "path";
-import { fileURLToPath } from "url";
 import fetch from "node-fetch";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import {
@@ -7,9 +5,6 @@ import {
   PutCommand,
   ScanCommand,
 } from "@aws-sdk/lib-dynamodb";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 

@@ -1,10 +1,7 @@
+import { formatName } from "../utils/formatString";
+
 export default function CropCard({ crop, isSelected, onClick, isMuted, guessable }) {
-  const formattedName = crop.name
-    .replace(/_/g, " ")
-    .replace(
-      /\w\S*/g,
-      (w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
-    );
+  const formattedName = formatName(crop.name);
 
   return (
     <div
