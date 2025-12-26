@@ -338,7 +338,7 @@ export default function GameBox({ isMobilePortrait }) {
           correctCrop.date !== undefined &&
           correctCrop.date !== today)
       ) {
-        resetStored(false);
+        resetStored();
       }
       fetchNewCrop();
     }
@@ -374,7 +374,7 @@ export default function GameBox({ isMobilePortrait }) {
         correctCrop.date !== today)
     ) {
       console.log("Resetting game due to date change");
-      resetStored();
+      resetStored(true);
       return;
     }
 
