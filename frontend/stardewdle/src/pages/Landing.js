@@ -34,7 +34,6 @@ export default function Landing() {
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url('/images/background.webp')" }}
       />
-      {/*<audio src="/sounds/landing-music.mp3" autoPlay loop hidden />*/}
 
       {/* Scaled Content */}
       <div className="relative z-10 w-full h-full flex justify-center items-center overflow-hidden">
@@ -53,8 +52,6 @@ export default function Landing() {
             alt="Stardewdle Title"
             className="mt-10 max-w-[800px]"
           />
-
-          {/*<div className="text-white"> ANNOUNCEMENT TEXT </div>*/}
 
           {/* Button group */}
           <div className="flex flex-col items-center gap-4 mt-[140px]">

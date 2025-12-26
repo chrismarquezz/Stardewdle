@@ -171,7 +171,6 @@ export default function GameBox({ isMobilePortrait }) {
 
   useEffect(() => {
     const today = new Date().toISOString().split("T")[0];
-    //console.log(storedDate, " ", today);
     if (storedDate !== today || (correctCrop != null && correctCrop.date !== undefined && correctCrop.date !== today)) {
       console.log("Resetting game due to date change");
       resetStored();
@@ -289,7 +288,6 @@ export default function GameBox({ isMobilePortrait }) {
     const today = new Date().toISOString().split("T")[0];
 
     const fetchNewCrop = async () => {
-      //console.log("Fetching new crop for the day...");
       try {
         if (crops.length === 0) {
           const cropResponse = await fetch(
@@ -305,7 +303,6 @@ export default function GameBox({ isMobilePortrait }) {
         if (crops.length === 0) return;
 
         const response = await fetch(process.env.REACT_APP_API_URL + "/word");
-        //console.log("Fetched new crop for the day");
         const data = await response.json();
         const word = data.word;
 
@@ -315,7 +312,6 @@ export default function GameBox({ isMobilePortrait }) {
 
         if (cropData) {
           const cropDataWithDate = { ...cropData, date: today };
-          //console.log("cropDataWithDate:", cropDataWithDate);
           setCorrectCrop(cropDataWithDate);
         } else {
           console.warn("Crop not found for word:", word);
@@ -356,7 +352,6 @@ export default function GameBox({ isMobilePortrait }) {
     if (!selectedCrop || guesses.length >= 6 || gameOver) return;
 
     const today = new Date().toISOString().split("T")[0];
-    //console.log(storedDate, " ", today);
     if (storedDate !== today || (correctCrop != null && correctCrop.date !== undefined && correctCrop.date !== today)) {
       console.log("Resetting game due to date change");
       resetStored();
@@ -489,7 +484,6 @@ export default function GameBox({ isMobilePortrait }) {
                 {selectedCrop ? formatName(selectedCrop.name) : ""}
               </p>
             </div>
-            {/*JSON.stringify(constraints)*/}
             {gameOver &&
               (guesses[5] ? guesses[5].crop.name === correctCrop.name : true) ? (
               <div className="mt-4 flex items-center justify-center gap-4">
