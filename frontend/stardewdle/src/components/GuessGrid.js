@@ -1,3 +1,5 @@
+import { formatName } from "../utils/formatString";
+
 const ATTRIBUTE_KEYS = [
   "growth_time",
   "base_price",
@@ -153,12 +155,7 @@ export default function GuessGrid({ guesses, answer, className }) {
                   height: "28px",
                 }}
               >
-                {crop.name
-                  .replace(/_/g, " ")
-                  .replace(
-                    /\w\S*/g,
-                    (w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()
-                  )}
+                {formatName(crop.name)}
               </div>
             </div>
           )}
