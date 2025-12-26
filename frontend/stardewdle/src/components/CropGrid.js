@@ -81,8 +81,8 @@ export default function CropGrid({
 
   const gridStyles = isMobilePortrait
     ? {
-      gridTemplateColumns: "repeat(9, 60px)",
-      gridAutoRows: "60px",
+      gridTemplateColumns: "repeat(9, 66px)",
+      gridAutoRows: "66px",
     }
     : {
       gridTemplateColumns: "repeat(8, 60px)",
@@ -94,13 +94,13 @@ export default function CropGrid({
       className={`flex justify-center items-center h-full w-[90%] mt-[2px] ${className}`}
       style={{
         backgroundImage: "url('/images/cropgrid-bg.webp')",
-        backgroundSize: isMobilePortrait ? "80% 80%" : "90% 80%",
+        backgroundSize: isMobilePortrait ? "100% 100%" : "90% 80%",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
       }}
     >
       <div
-        className="grid gap-[6px] place-items-center"
+        className={`grid gap-[6px] place-items-center ${isMobilePortrait ? "content-counter-rotate-mobile" : ""}`}
         style={gridStyles}
       >
         {crops.map((crop) => (
@@ -111,6 +111,7 @@ export default function CropGrid({
             onClick={onSelect}
             isMuted={isMuted}
             guessable={!checkConstraints(constraints, crop, showHints)}
+            isMobilePortrait={isMobilePortrait}
           />
         ))}
       </div>

@@ -105,19 +105,16 @@ export default function GameBox({ isMobilePortrait }) {
         if (Object.hasOwn(crop, key)) {
           const prevArray = prevConstraints[key];
           const newValue =
-            key === "season" &&
-            (correctCrop["season"][0] === "all" ||
-              (correctCrop["season"].length > 1 &&
-                correctCrop["season"].includes(crop["season"][0])))
+            key === "season" && (correctCrop["season"][0] === "all" || (correctCrop["season"].length > 1 && correctCrop["season"].includes(crop["season"][0])))
               ? null
-              : crop["season"][0] === "all"
+              : key === "season" && crop["season"][0] === "all"
               ? ["spring", "summer", "fall", "winter"]
               : JSON.stringify(crop[key]) === JSON.stringify(correctCrop[key])
               ? key === "regrows"
                 ? !correctCrop["regrows"]
                 : key === "type"
                 ? ["fruit", "vegetable", "flower", "forage"].filter(
-                    (season) => season !== crop["type"]
+                  (type) => type !== crop["type"]
                   )
                 : key === "season" && crop["season"].length === 1
                 ? [["spring"], ["summer"], ["fall"], ["winter"]].filter(
@@ -450,7 +447,7 @@ export default function GameBox({ isMobilePortrait }) {
       <div
         className={
           isMobilePortrait
-            ? "mobile-crop-grid-wrapper content-counter-rotate-mobile"
+            ? "flex justify-center items-center h-[76%] w-[47%] translate-y-[16%] translate-x-[6.5%]"
             : "flex justify-center items-center h-full w-[90%] mt-[2px]"
         }
       >
@@ -461,7 +458,6 @@ export default function GameBox({ isMobilePortrait }) {
           }
           crops={crops}
           isMuted={!gameOver && guesses.length < 6 ? isMuted : true}
-          className={isMobilePortrait ? "content-counter-rotate-mobile" : ""}
           isMobilePortrait={isMobilePortrait}
           constraints={constraints}
           showHints={showHints}
@@ -475,8 +471,8 @@ export default function GameBox({ isMobilePortrait }) {
       >
         <div
           className={`flex flex-row items-center h-full ${
-            isMobilePortrait ? "mr-6" : "mr-24"
-          } mt-[80px] gap-4`}
+            isMobilePortrait ? "mr-6 mt-[96px]" : "mr-24 mt-[80px]"
+          }  gap-4`}
         >
           <div
             className="relative bg-no-repeat bg-contain"
@@ -507,6 +503,7 @@ export default function GameBox({ isMobilePortrait }) {
                 {selectedCrop ? formatName(selectedCrop.name) : ""}
               </p>
             </div>
+            {/*JSON.stringify(constraints)*/}
             {gameOver &&
             (guesses[5] ? guesses[5].crop.name === correctCrop.name : true) ? (
               <div className="mt-4 flex items-center justify-center gap-4">
@@ -599,11 +596,11 @@ export default function GameBox({ isMobilePortrait }) {
         </div>
         <div
           className={`${
-            isMobilePortrait ? "" : "mr-[78px]"
-          } pl-9 mb-[84px] bg-center bg-no-repeat bg-cover min-h-[440px]`}
+            isMobilePortrait ? "ml-2 pl-6 pb-2" : "pl-9 mr-[78px]"
+          } mb-[84px] bg-center bg-no-repeat bg-contain min-h-[440px]`}
           style={{
             backgroundImage: "url('/images/guesses.webp')",
-            width: "772px",
+            width: isMobilePortrait ? "750px" : "772px",
             height: "456px",
           }}
         >
