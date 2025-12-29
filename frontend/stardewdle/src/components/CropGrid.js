@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
 import CropCard from "./CropCard";
 
-function checkConstraints(constraints, crop, showHints) {
-  if (!showHints) {
-    return constraints["name"].includes(crop.name);
-  }
-
+function checkConstraints(constraints, crop, hints) {
   const allConstraintsEmpty = Object.values(constraints).every(arr => arr.length === 0);
   if (allConstraintsEmpty) {
     return false;
@@ -15,7 +11,7 @@ function checkConstraints(constraints, crop, showHints) {
     const constraintValues = constraints[key];
     const cropValue = crop[key];
 
-    if (constraintValues.length === 0) {
+    if (constraintValues.length === 0 || !hints[key]) {
       continue;
     }
 
@@ -32,6 +28,8 @@ function checkConstraints(constraints, crop, showHints) {
         }
         );
       }
+    } else if (key === "growth_time" || key === "base_price") {
+      isMatch = cropValue <= constraintValues[0] || cropValue >= constraintValues[1];
     } else {
       isMatch = constraintValues.includes(cropValue);
     }
@@ -41,7 +39,7 @@ function checkConstraints(constraints, crop, showHints) {
     }
   }
 
-  return false;
+  return constraints["name"].includes(crop.name);
 }
 
 
@@ -52,7 +50,7 @@ export default function CropGrid({
   className,
   isMobilePortrait,
   constraints,
-  showHints,
+  hints,
 }) {
   const [crops, setCrops] = useState([]);
 
@@ -110,7 +108,7 @@ export default function CropGrid({
             isSelected={selectedCrop?.name === crop.name}
             onClick={onSelect}
             isMuted={isMuted}
-            guessable={!checkConstraints(constraints, crop, showHints)}
+            guessable={!checkConstraints(constraints, crop, hints)}
             isMobilePortrait={isMobilePortrait}
           />
         ))}
