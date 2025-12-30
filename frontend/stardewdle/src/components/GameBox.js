@@ -10,7 +10,7 @@ import HintsModal from "./HintsModal";
 import { formatName } from "../utils/formatString";
 
 const DAILY_RESET_ENABLED = true;
-const MOST_RECENT_UPDATE = "2025-10-13T00:00:00Z";
+const MOST_RECENT_UPDATE = "2025-12-30T00:00:00Z";
 
 function todaysDate() {
   const today = new Date(new Date().toUTCString());
@@ -528,7 +528,7 @@ export default function GameBox({ isMobilePortrait }) {
                 {selectedCrop ? formatName(selectedCrop.name) : ""}
               </p>
             </div>
-            {/*JSON.stringify(constraints)*/}
+            {JSON.stringify(constraints)}
             {gameOver &&
             (guesses[5] ? guesses[5].crop.name === correctCrop.name : true) ? (
               <div className="mt-4 flex items-center justify-center gap-4">
