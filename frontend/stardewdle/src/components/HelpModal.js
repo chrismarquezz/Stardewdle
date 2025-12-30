@@ -21,7 +21,6 @@ export default function HelpModal({ isMuted, onClose, scaleFactor }) {
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Content */}
         <div
           className="justify-center align-middle relative z-10 flex flex-col overflow-y-auto p-4 md:pl-8 md:pr-8"
 
@@ -30,7 +29,6 @@ export default function HelpModal({ isMuted, onClose, scaleFactor }) {
             backgroundSize: "100% 100%",
           }}
         >
-          {/* Close button */}
           <button
             onClick={playCloseSound}
             className="clickable absolute top-0 left-3 md:left-6 text-[#BC6131] text-4xl md:text-7xl hover:text-red-500"
@@ -38,13 +36,10 @@ export default function HelpModal({ isMuted, onClose, scaleFactor }) {
             x
           </button>
 
-          {/* Title */}
           <h2 className="text-[#BC6131] text-center text-2xl md:text-5xl font-semibold mb-2">
             How to Play
           </h2>
 
-          
-          {/* Content */}
           <div className="space-y-2 md:space-y-4 text-[#BC6131] text-left text-md sm:text-2xl md:text-3xl leading-none overflow-y-auto max-h-[70vh] pr-2">
             <p>- Select a crop from the grid</p>
             <p>- Click "Submit" to guess the crop of the day</p>
@@ -52,7 +47,7 @@ export default function HelpModal({ isMuted, onClose, scaleFactor }) {
 
             <div>
               <p>- The result grid shows feedback:</p>
-              <div className="flex flex-col md:flex-row items-center gap-4 md:gap-10 text-nowrap">
+              <div className="flex flex-row items-center gap-4 md:gap-10 text-nowrap">
                 <div className="ml-6 md:ml-10 mt-2 md:mt-4 space-y-3 md:space-y-5">
                   <div className="flex items-center gap-2 md:gap-4">
                     <div className="w-4 h-4 md:w-8 md:h-8 bg-green-500 border md:border-2 border-green-700 rounded-sm" />

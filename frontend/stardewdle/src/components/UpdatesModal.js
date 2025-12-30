@@ -41,6 +41,21 @@ export default function UpdatesModal({ isMuted, onClose, scaleFactor }) {
 
           <div className="space-y-2 md:space-y-4 text-[#BC6131] text-left text-md sm:text-2xl md:text-3xl leading-none overflow-y-auto max-h-[70vh] pr-2">
             <div>
+              <p className="font-semibold">v1.3.0 — December 2025</p>
+              <ul className="list-disc ml-6 md:ml-10">
+                <li>
+                  Overhauled the hint system to provide useful hints
+                </li>
+                <li>
+                  You can now choose which hints you would like to see
+                </li>
+                <li>
+                  Make it as easy or as challenging as you like!
+                </li>
+              </ul>
+            </div>
+            
+            <div>
               <p className="font-semibold">v1.2.0 — October 2025</p>
               <ul className="list-disc ml-6 md:ml-10">
                 <li>
