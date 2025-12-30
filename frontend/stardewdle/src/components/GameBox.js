@@ -6,10 +6,11 @@ import CropLoader from "../components/CropLoader";
 import ShareModal from "./ShareModal";
 import HelpModal from "./HelpModal";
 import UpdatesModal from "./UpdatesModal";
+import HintsModal from "./HintsModal";
 import { formatName } from "../utils/formatString";
 
 const DAILY_RESET_ENABLED = true;
-const MOST_RECENT_UPDATE = "2025-10-13T00:00:00Z";
+const MOST_RECENT_UPDATE = "2025-12-30T00:00:00Z";
 
 function todaysDate() {
   const today = new Date(new Date().toUTCString());
@@ -65,11 +66,7 @@ export default function GameBox({ isMobilePortrait }) {
     const saved = localStorage.getItem("stardewdle-crops");
     return saved ? JSON.parse(saved) : [];
   });
-  const [showHints, setShowHints] = useState(() => {
-    const saved = localStorage.getItem("stardewdle-showHints");
-    return saved ? JSON.parse(saved) : false;
-  });
-
+  const [showHints, setShowHints] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
   const [shareText, setShareText] = useState("");
@@ -83,14 +80,38 @@ export default function GameBox({ isMobilePortrait }) {
 
   const isFinalGuess = guesses.length === 5;
 
+  const [hints, setHints] = useState(() => {
+    const saved = localStorage.getItem("stardewdle-hints");
+    return saved
+      ? JSON.parse(saved)
+      : {
+        growth_time: false,
+        base_price: false,
+        regrows: false,
+        type: false,
+        season: false,
+      };
+    });
   const [constraints, setConstraints] = useState(() => {
     const saved = localStorage.getItem("stardewdle-constraints");
+    if (JSON.parse(saved)) {
+      if (JSON.parse(saved).growth_time.length !== 2) {
+        return {
+          name: [],
+          growth_time: [0,99],
+          base_price: [0,9999],
+          regrows: [],
+          type: [],
+          season: [],
+        };
+      }
+    }
     return saved
       ? JSON.parse(saved)
       : {
           name: [],
-          growth_time: [],
-          base_price: [],
+          growth_time: [0,99],
+          base_price: [0,9999],
           regrows: [],
           type: [],
           season: [],
@@ -104,6 +125,13 @@ export default function GameBox({ isMobilePortrait }) {
       for (const key in newConstraints) {
         if (Object.hasOwn(crop, key)) {
           const prevArray = prevConstraints[key];
+          if (key === "growth_time" || key === "base_price") {
+            newConstraints[key] =
+              crop[key] === correctCrop[key] ? [correctCrop[key] - 1, correctCrop[key] + 1] :
+              [correctCrop[key] > crop[key] && crop[key] > prevArray[0] ? crop[key] : prevArray[0],
+              correctCrop[key] < crop[key] && crop[key] < prevArray[1] ? crop[key] : prevArray[1]] 
+            continue;
+          }
           const newValue =
             key === "season" && (correctCrop["season"][0] === "all" || (correctCrop["season"].length > 1 && correctCrop["season"].includes(crop["season"][0])))
               ? null
@@ -247,13 +275,10 @@ export default function GameBox({ isMobilePortrait }) {
     localStorage.setItem("stardewdle-guesses", JSON.stringify(guesses));
     localStorage.setItem("stardewdle-correctCrop", JSON.stringify(correctCrop));
     localStorage.setItem("stardewdle-gameOver", JSON.stringify(gameOver));
-    localStorage.setItem(
-      "stardewdle-selectedCrop",
-      JSON.stringify(selectedCrop)
-    );
+    localStorage.setItem("stardewdle-selectedCrop", JSON.stringify(selectedCrop));
     localStorage.setItem("stardewdle-date", storedDate);
     localStorage.setItem("stardewdle-crops", JSON.stringify(crops));
-    localStorage.setItem("stardewdle-showHints", JSON.stringify(showHints));
+    localStorage.setItem("stardewdle-hints", JSON.stringify(hints));
     localStorage.setItem("stardewdle-constraints", JSON.stringify(constraints));
   }, [
     guesses,
@@ -262,9 +287,28 @@ export default function GameBox({ isMobilePortrait }) {
     selectedCrop,
     storedDate,
     crops,
-    showHints,
+    hints,
     constraints,
   ]);
+
+  function resetStored(refresh = false) {
+    setGuesses([]);
+    setSelectedCrop(null);
+    setGameOver(false);
+    setStoredDate(new Date().toISOString().split("T")[0]);
+    setConstraints({
+      name: [],
+      growth_time: [0,99],
+      base_price: [0,9999],
+      regrows: [],
+      type: [],
+      season: [],
+    });
+    if (refresh) {
+      window.location.reload();
+      console.log("Reloaded due to date change");
+    }
+  }
 
   useEffect(() => {
     if (!showShareModal) return;
@@ -340,25 +384,6 @@ export default function GameBox({ isMobilePortrait }) {
       fetchNewCrop();
     }
   }, [storedDate, correctCrop, crops]);
-
-  function resetStored(refresh = false) {
-    setGuesses([]);
-    setSelectedCrop(null);
-    setGameOver(false);
-    setStoredDate(new Date().toISOString().split("T")[0]);
-    setConstraints({
-      name: [],
-      growth_time: [],
-      base_price: [],
-      regrows: [],
-      type: [],
-      season: [],
-    });
-    if (refresh) {
-      window.location.reload();
-      console.log("Reloaded due to date change");
-    }
-  }
 
   const handleSubmit = async () => {
     if (!selectedCrop || guesses.length >= 6 || gameOver) return;
@@ -460,7 +485,7 @@ export default function GameBox({ isMobilePortrait }) {
           isMuted={!gameOver && guesses.length < 6 ? isMuted : true}
           isMobilePortrait={isMobilePortrait}
           constraints={constraints}
-          showHints={showHints}
+          hints={hints}
         />
       </div>
 
@@ -666,20 +691,16 @@ export default function GameBox({ isMobilePortrait }) {
             if (!isMuted) {
               new Audio("/sounds/pluck.mp3").play();
             }
-            setShowHints(!showHints);
+            setShowHints(true);
           }}
         >
           <img
-            src={showHints ? "/images/hint-on.webp" : "/images/hint-off.webp"}
+            src={Object.values(hints).some((value) => value) ? "/images/hint-on.webp" : "/images/hint-off.webp"}
             alt="Toggle Hints"
             className="w-full h-full"
           />
           <img
-            src={
-              showHints
-                ? "/images/hint-on-hover.webp"
-                : "/images/hint-off-hover.webp"
-            }
+            src={Object.values(hints).some((value) => value) ? "/images/hint-on-hover.webp" : "/images/hint-off-hover.webp"}
             alt="Hint Hover"
             className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
           />
@@ -692,9 +713,17 @@ export default function GameBox({ isMobilePortrait }) {
               height: "28px",
             }}
           >
-            {"Toggle Hints"}
+            {"View Hints"}
           </div>
         </div>
+        {showHints && (
+          <HintsModal
+            isMuted={isMuted}
+            onClose={() => setShowHints(false)}
+            setHints={setHints}
+            hints={hints}
+          />
+        )}
         <div
           onClick={() => {
             if (isMuted) {
