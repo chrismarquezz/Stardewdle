@@ -94,6 +94,18 @@ export default function GameBox({ isMobilePortrait }) {
     });
   const [constraints, setConstraints] = useState(() => {
     const saved = localStorage.getItem("stardewdle-constraints");
+    if (JSON.parse(saved)) {
+      if (JSON.parse(saved).growth_time.length !== 2) {
+        return {
+          name: [],
+          growth_time: [0,99],
+          base_price: [0,9999],
+          regrows: [],
+          type: [],
+          season: [],
+        };
+      }
+    }
     return saved
       ? JSON.parse(saved)
       : {
