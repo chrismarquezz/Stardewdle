@@ -72,8 +72,8 @@ export default function CollectionsBox({ isMobilePortrait }) {
   return (
     <div
       className={`relative shadow-xl bg-no-repeat bg-center ${isMobilePortrait
-          ? "collections-box-mobile-layout"
-          : "relative flex flex-row mt-3 justify-between w-full pl-3"
+        ? "collections-box-mobile-layout"
+        : "relative flex flex-row mt-3 justify-between w-full pl-3"
         }`}
       style={{
         backgroundImage: "url('/images/collections/collectionsBG.webp')",
@@ -177,7 +177,9 @@ export default function CollectionsBox({ isMobilePortrait }) {
               </div>
             </>
           ) : (
-            ""
+            <div className="text-5xl text-center text-[#c9ba98]">
+              Select a crop to see its details
+            </div>
           )}
         </div>
       </div>
