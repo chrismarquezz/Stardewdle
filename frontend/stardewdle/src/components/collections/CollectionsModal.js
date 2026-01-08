@@ -51,7 +51,7 @@ export default function CollectionsModal({ isMuted, onClose, scaleFactor }) {
               <li>Seasons of growth</li>
             </ul>
             <p>
-              - You can also see how often a crop has been the Daily Crop
+              - You can also see how often a crop has been the daily crop
             </p>
             <p>
               - Use this page to prepare for your next guess
