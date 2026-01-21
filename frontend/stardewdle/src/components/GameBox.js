@@ -736,7 +736,7 @@ export default function GameBox({ isMobilePortrait }) {
           <img
             src={isMuted ? "/images/muted.webp" : "/images/unmuted.webp"}
             alt="Toggle Sound"
-            className="w-full h-full transition-opacity duration-200 group-hover:opacity-0"
+            className="w-full h-full transition-opacity duration-200"
           />
           <img
             src={
@@ -745,7 +745,7 @@ export default function GameBox({ isMobilePortrait }) {
                 : "/images/unmuted-hover.webp"
             }
             alt="Sound Hover"
-            className="absolute top-0 left-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+            className="absolute top-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
           />
           <div
             className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-lg font-medium text-[#BC6131] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
