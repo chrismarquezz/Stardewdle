@@ -166,31 +166,6 @@ export default function GameBox({ isMobilePortrait }) {
     });
   };
 
-  function getColor(key, guessValue, correctValue) {
-    if (key === "season") {
-      const g = guessValue[0] === "all" ? ["winter", "spring", "summer", "fall"] : guessValue;
-      const c = correctValue[0] === "all" ? ["winter", "spring", "summer", "fall"] : correctValue;
-      return (g.length === c.length && g.every((s) => c.includes(s))) ? "🟩" : g.some((s) => c.includes(s)) ? "🟨" : "🟥";
-    }
-
-    return guessValue === correctValue ? "🟩" : "🟥";
-  }
-
-  function generateShareText(resultGrid, win) {
-    const header = win
-      ? "I solved today's Stardewdle!"
-      : "I couldn't solve today's Stardewdle.";
-    const grid = resultGrid
-      .map((row) =>
-        ["growth_time", "base_price", "regrows", "type", "season"]
-          .map((key) => getColor(key, row.crop[key], correctCrop[key]))
-          .join("")
-      )
-      .join("\n");
-
-    return `${todaysDate()}\n${header}\n${grid}\nPlay at: https://stardewdle.com/`;
-  }
-
   useEffect(() => {
     const today = new Date().toISOString().split("T")[0];
     if (
@@ -302,6 +277,7 @@ export default function GameBox({ isMobilePortrait }) {
 
   useEffect(() => {
     if (!showShareModal) return;
+
     const updateGuessStats = async () => {
       try {
         const res = await fetch(process.env.REACT_APP_API_URL + "/word");
@@ -313,8 +289,35 @@ export default function GameBox({ isMobilePortrait }) {
       }
     };
 
+    function getColor(key, guessValue, correctValue) {
+      if (key === "season") {
+        const g = guessValue[0] === "all" ? ["winter", "spring", "summer", "fall"] : guessValue;
+        const c = correctValue[0] === "all" ? ["winter", "spring", "summer", "fall"] : correctValue;
+        return (g.length === c.length && g.every((s) => c.includes(s))) ? "🟩" : g.some((s) => c.includes(s)) ? "🟨" : "🟥";
+      }
+
+      return guessValue === correctValue ? "🟩" : "🟥";
+    }
+
+    function generateShareText(resultGrid, win) {
+      const header = win
+        ? "I solved today's Stardewdle!"
+        : "I couldn't solve today's Stardewdle.";
+      const grid = resultGrid
+        .map((row) =>
+          ["growth_time", "base_price", "regrows", "type", "season"]
+            .map((key) => getColor(key, row.crop[key], correctCrop[key]))
+            .join("")
+        )
+        .join("\n");
+
+      return `${todaysDate()}\n${header}\n${grid}\nPlay at: https://stardewdle.com/`;
+    }
+
+    setShareText(generateShareText(guesses, guesses[guesses.length-1].crop.name === correctCrop.name));
     updateGuessStats();
-  }, [showShareModal]);
+
+  }, [showShareModal, guesses, correctCrop,]);
 
   useEffect(() => {
     if (!DAILY_RESET_ENABLED) return;
@@ -438,8 +441,6 @@ export default function GameBox({ isMobilePortrait }) {
       }
 
       setGameOver(true);
-      const text = generateShareText(updatedGuesses, isWin);
-      setShareText(text);
       setShowShareModal(true);
 
     } catch (error) {
