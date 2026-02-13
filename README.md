@@ -18,6 +18,14 @@ After each guess, the game provides color-coded feedback based on five key attri
 
 ---
 
+## Press
+
+**Stardewdle** was featured on a Screen Rant article. Check out what they had to say below!
+
+"It's a great daily challenge for any fan of Stardew Valley" — [Screen Rant](https://screenrant.com/stardew-valley-wordle-stardewdle/)
+
+---
+
 ## Screenshots
 
 ![Game Screenshot 1](https://github.com/user-attachments/assets/b2aaffd4-cb23-4fb7-b491-64afa6862eee)
@@ -25,14 +33,6 @@ After each guess, the game provides color-coded feedback based on five key attri
 ![Game Screenshot 2](https://github.com/user-attachments/assets/88495f41-8df5-4283-bd3e-6d9d7db33899)
 
 ![Game Screenshot 3](https://github.com/user-attachments/assets/6f4f30cf-b60e-476f-90a2-70c63e266016)
-
----
-
-## Press
-
-**Stardewdle** was featured on a Screen Rant article. Check out what they had to say below!
-
-"It's a great daily challenge for any fan of Stardew Valley" — [Screen Rant](https://screenrant.com/stardew-valley-wordle-stardewdle/)
 
 ---
 
