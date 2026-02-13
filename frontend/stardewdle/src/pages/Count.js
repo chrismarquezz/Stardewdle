@@ -12,7 +12,7 @@ export default function Count() {
           try {
             const res = await fetch(process.env.REACT_APP_API_URL + "/word");
             const data = await res.json();
-            setTotalPlays(data.global_total_plays || 0);
+            setTotalPlays(data.global_total_plays+data.totalAttempts || 0);
           } catch (err) {
             console.error("Failed to fetch total plays", err);
           }
