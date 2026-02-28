@@ -25,14 +25,14 @@ export default function CollectionsCard({
       }}
     >
       <div
-        className={`absolute w-full h-full opacity-50 mix-blend-multiply ${isSelected ? "bg-green-400" : ""}`}
+        className={`absolute w-[60px] h-[60px] top-0 right-0 opacity-50 mix-blend-multiply ${isSelected ? "bg-green-400" : ""}`}
       />
 
       {/* Crop Image */}
       <img
         src={crop.image_url}
         alt={crop.name}
-        className="w-[80%] h-[80%] object-contain"
+        className={`object-contain w-full h-full p-[2px] pl-[6px] pb-[6px] z-10`}
       />
 
       {/* Custom Label Tooltip */}
