@@ -201,7 +201,7 @@ export default function GameBox({ isMobilePortrait }) {
       resetStored();
       return;
     }
-  }, []);
+  }, [correctCrop, storedDate]);
 
   useEffect(() => {
     const handleVisibilityChange = () => {

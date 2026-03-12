@@ -205,7 +205,7 @@ export default function GuessGrid({ guesses, answer, className }) {
                 {guessEntry ? (
                   key === "season" ? (
                     <div className="flex gap-1 items-center justify-center">
-                      {(value == "all"
+                      {(value === "all"
                         ? ["spring", "summer", "fall", "winter"]
                         : Array.isArray(value)
                           ? value.map((s) => s.toLowerCase())
