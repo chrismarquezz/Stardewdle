@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { formatName } from "../utils/formatString";
 
-const BUCKET_URL = process.env.REACT_APP_BUCKET_URL; 
-
 export default function CropCard({ crop, isSelected, onClick, isMuted, guessable, isMobilePortrait }) {
   const formattedName = formatName(crop.name);
   const [isHovering, setIsHovering] = useState(false);
@@ -12,13 +10,13 @@ export default function CropCard({ crop, isSelected, onClick, isMuted, guessable
     setIsHovering(false);
   };
 
-const x_pos = parseInt(crop.x_offset) / 32 * 48;
-  
+  const x_pos = parseInt(crop.crop_index) * 48;
+
   const spriteStyle = {
-    backgroundImage: `url('${BUCKET_URL}/sprites/crops.png')`,
+    backgroundImage: `url('${process.env.REACT_APP_BUCKET_URL}/sprites/crops.png')`,
     backgroundPosition: `-${x_pos}px 0px`,
-    backgroundSize: '3024px 48px', 
-    width: '42px',
+    backgroundSize: '3456px 48px',
+    width: '48px',
     height: '48px',
     imageRendering: 'pixelated',
   };
@@ -42,14 +40,14 @@ const x_pos = parseInt(crop.x_offset) / 32 * 48;
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => handleEndHover()}
     >
-      
+
       <div
         className={`absolute w-full h-full opacity-50 mix-blend-multiply ${isSelected ? "bg-green-400" : ""}`}
       />
 
-      <div 
-        style={spriteStyle} 
-        className="z-10 scale-[1.1]" 
+      <div
+        style={spriteStyle}
+        className="w-full h-full m-[2px] ml-[6px] mb-[6px] z-10"
         title={formattedName}
       />
 
@@ -65,7 +63,7 @@ const x_pos = parseInt(crop.x_offset) / 32 * 48;
           height: "28px",
         }}
       >
-        {formattedName} {x_pos}
+        {formattedName} ({crop.crop_index})
       </div>
     </div>
   );
