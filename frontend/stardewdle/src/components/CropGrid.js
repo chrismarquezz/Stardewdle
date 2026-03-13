@@ -68,7 +68,7 @@ export default function CropGrid({
 
           const cropList = await cropResponse.json();
           
-          setCrops(sortedCrops);
+          setCrops(cropList);
         } catch (error) {
           console.error("Failed to fetch crop data from R2:", error);
         }
