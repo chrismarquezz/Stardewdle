@@ -12,7 +12,7 @@ export default function CropCard({ crop, isSelected, onClick, isMuted, guessable
     setIsHovering(false);
   };
 
-const x_pos = parseInt(crop.x_offset) / 32 * 48
+const x_pos = parseInt(crop.x_offset) / 32 * 48;
   
   const spriteStyle = {
     backgroundImage: `url('${BUCKET_URL}/sprites/crops.png')`,
