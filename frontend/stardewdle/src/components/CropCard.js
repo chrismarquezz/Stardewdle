@@ -1,13 +1,24 @@
 import { useState } from "react";
 import { formatName } from "../utils/formatString";
 
+const BUCKET_URL = process.env.REACT_APP_BUCKET_URL; 
+
 export default function CropCard({ crop, isSelected, onClick, isMuted, guessable, isMobilePortrait }) {
   const formattedName = formatName(crop.name);
-  const [isHovering, setIsHovering] = useState(false)
+  const [isHovering, setIsHovering] = useState(false);
 
   async function handleEndHover() {
     await new Promise((resolve) => setTimeout(resolve, 100));
     setIsHovering(false);
+  };
+  
+  const spriteStyle = {
+    backgroundImage: `url('${BUCKET_URL}/sprites/crops-strip.png')`,
+    backgroundPosition: `-${crop.x_offset / 32 * 48}px 0px`,
+    backgroundSize: '3024px 48px', 
+    width: '42px',
+    height: '48px',
+    imageRendering: 'pixelated',
   };
 
   return (
@@ -34,10 +45,10 @@ export default function CropCard({ crop, isSelected, onClick, isMuted, guessable
         className={`absolute w-full h-full opacity-50 mix-blend-multiply ${isSelected ? "bg-green-400" : ""}`}
       />
 
-      <img
-        src={crop.image_url}
-        alt={crop.name}
-        className={`object-contain w-full h-full p-[2px] pl-[6px] pb-[6px] z-10`}
+      <div 
+        style={spriteStyle} 
+        className="z-10 scale-[1.1]" 
+        title={formattedName}
       />
 
       <div
@@ -51,7 +62,6 @@ export default function CropCard({ crop, isSelected, onClick, isMuted, guessable
           backgroundRepeat: "no-repeat",
           height: "28px",
         }}
-
       >
         {formattedName}
       </div>
