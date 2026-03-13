@@ -65,7 +65,7 @@ const x_pos = parseInt(crop.x_offset) / 32 * 48;
           height: "28px",
         }}
       >
-        {formattedName}
+        {formattedName} {x_pos}
       </div>
     </div>
   );
