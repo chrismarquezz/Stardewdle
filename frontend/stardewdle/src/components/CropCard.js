@@ -13,7 +13,7 @@ export default function CropCard({ crop, isSelected, onClick, isMuted, guessable
   };
   
   const spriteStyle = {
-    backgroundImage: `url('${BUCKET_URL}/sprites/crops-strip.png')`,
+    backgroundImage: `url('${BUCKET_URL}/sprites/crops.png')`,
     backgroundPosition: `-${crop.x_offset / 32 * 48}px 0px`,
     backgroundSize: '3024px 48px', 
     width: '42px',
