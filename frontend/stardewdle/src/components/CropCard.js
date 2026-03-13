@@ -11,10 +11,12 @@ export default function CropCard({ crop, isSelected, onClick, isMuted, guessable
     await new Promise((resolve) => setTimeout(resolve, 100));
     setIsHovering(false);
   };
+
+const x_pos = parseInt(crop.x_offset) / 32 * 48
   
   const spriteStyle = {
     backgroundImage: `url('${BUCKET_URL}/sprites/crops.png')`,
-    backgroundPosition: `-${crop.x_offset / 32 * 48}px 0px`,
+    backgroundPosition: `-${x_pos}px 0px`,
     backgroundSize: '3024px 48px', 
     width: '42px',
     height: '48px',
