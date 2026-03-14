@@ -63,7 +63,7 @@ export default function CropCard({ crop, isSelected, onClick, isMuted, guessable
           height: "28px",
         }}
       >
-        {formattedName} ({crop.crop_index})
+        {formattedName}
       </div>
     </div>
   );
