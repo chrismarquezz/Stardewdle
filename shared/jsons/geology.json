@@ -1,0 +1,382 @@
+[
+    {
+        "name": "Emerald",
+        "index": 0
+    },
+    {
+        "name": "Aquamarine",
+        "index": 1
+    },
+    {
+        "name": "Ruby",
+        "index": 2
+    },
+    {
+        "name": "Amethyst",
+        "index": 3
+    },
+    {
+        "name": "Topaz",
+        "index": 4
+    },
+    {
+        "name": "Jade",
+        "index": 5
+    },
+    {
+        "name": "Diamond",
+        "index": 6
+    },
+    {
+        "name": "Prismatic Shard",
+        "index": 7
+    },
+    {
+        "name": "Quartz",
+        "index": 8
+    },
+    {
+        "name": "Fire Quartz",
+        "index": 9
+    },
+    {
+        "name": "Frozen Tear",
+        "index": 10
+    },
+    {
+        "name": "Earth Crystal",
+        "index": 11
+    },
+    {
+        "name": "Alamite",
+        "index": 12
+    },
+    {
+        "name": "Bixite",
+        "index": 13
+    },
+    {
+        "name": "Baryte",
+        "index": 14
+    },
+    {
+        "name": "Aerinite",
+        "index": 15
+    },
+    {
+        "name": "Calcite",
+        "index": 16
+    },
+    {
+        "name": "Dolomite",
+        "index": 17
+    },
+    {
+        "name": "Esperite",
+        "index": 18
+    },
+    {
+        "name": "Fluorapatite",
+        "index": 19
+    },
+    {
+        "name": "Geminite",
+        "index": 20
+    },
+    {
+        "name": "Helvite",
+        "index": 21
+    },
+    {
+        "name": "Jamborite",
+        "index": 22
+    },
+    {
+        "name": "Jagoite",
+        "index": 23
+    },
+    {
+        "name": "Kyanite",
+        "index": 24
+    },
+    {
+        "name": "Lunarite",
+        "index": 25
+    },
+    {
+        "name": "Malachite",
+        "index": 26
+    },
+    {
+        "name": "Neptunite",
+        "index": 27
+    },
+    {
+        "name": "Lemon Stone",
+        "index": 28
+    },
+    {
+        "name": "Nekoite",
+        "index": 29
+    },
+    {
+        "name": "Orpiment",
+        "index": 30
+    },
+    {
+        "name": "Petrified Slime",
+        "index": 31
+    },
+    {
+        "name": "Thunder Egg",
+        "index": 32
+    },
+    {
+        "name": "Pyrite",
+        "index": 33
+    },
+    {
+        "name": "Ocean Stone",
+        "index": 34
+    },
+    {
+        "name": "Ghost Crystal",
+        "index": 35
+    },
+    {
+        "name": "Tigerseye",
+        "index": 36
+    },
+    {
+        "name": "Jasper",
+        "index": 37
+    },
+    {
+        "name": "Opal",
+        "index": 38
+    },
+    {
+        "name": "Fire Opal",
+        "index": 39
+    },
+    {
+        "name": "Celestine",
+        "index": 40
+    },
+    {
+        "name": "Marble",
+        "index": 41
+    },
+    {
+        "name": "Sandstone",
+        "index": 42
+    },
+    {
+        "name": "Granite",
+        "index": 43
+    },
+    {
+        "name": "Basalt",
+        "index": 44
+    },
+    {
+        "name": "Limestone",
+        "index": 45
+    },
+    {
+        "name": "Soapstone",
+        "index": 46
+    },
+    {
+        "name": "Hematite",
+        "index": 47
+    },
+    {
+        "name": "Mudstone",
+        "index": 48
+    },
+    {
+        "name": "Obsidian",
+        "index": 49
+    },
+    {
+        "name": "Slate",
+        "index": 50
+    },
+    {
+        "name": "Fairy Stone",
+        "index": 51
+    },
+    {
+        "name": "Star Shards",
+        "index": 52
+    },
+    {
+        "name": "Dwarf Scroll I",
+        "index": 53
+    },
+    {
+        "name": "Dwarf Scroll II",
+        "index": 54
+    },
+    {
+        "name": "Dwarf Scroll III",
+        "index": 55
+    },
+    {
+        "name": "Dwarf Scroll IV",
+        "index": 56
+    },
+    {
+        "name": "Chipped Amphora",
+        "index": 57
+    },
+    {
+        "name": "Arrowhead",
+        "index": 58
+    },
+    {
+        "name": "Ancient Doll",
+        "index": 59
+    },
+    {
+        "name": "Elvish Jewelry",
+        "index": 60
+    },
+    {
+        "name": "Chewing Stick",
+        "index": 61
+    },
+    {
+        "name": "Ornamental Fan",
+        "index": 62
+    },
+    {
+        "name": "Dinosaur Egg",
+        "index": 63
+    },
+    {
+        "name": "Rare Disc",
+        "index": 64
+    },
+    {
+        "name": "Ancient Sword",
+        "index": 65
+    },
+    {
+        "name": "Rusty Spoon",
+        "index": 66
+    },
+    {
+        "name": "Rusty Spur",
+        "index": 67
+    },
+    {
+        "name": "Rusty Cog",
+        "index": 68
+    },
+    {
+        "name": "Chicken Statue",
+        "index": 69
+    },
+    {
+        "name": "Ancient Seed",
+        "index": 70
+    },
+    {
+        "name": "Prehistoric Tool",
+        "index": 71
+    },
+    {
+        "name": "Dried Starfish",
+        "index": 72
+    },
+    {
+        "name": "Anchor",
+        "index": 73
+    },
+    {
+        "name": "Glass Shards",
+        "index": 74
+    },
+    {
+        "name": "Bone Flute",
+        "index": 75
+    },
+    {
+        "name": "Prehistoric Handaxe",
+        "index": 76
+    },
+    {
+        "name": "Dwarvish Helm",
+        "index": 77
+    },
+    {
+        "name": "Dwarf Gadget",
+        "index": 78
+    },
+    {
+        "name": "Ancient Drum",
+        "index": 79
+    },
+    {
+        "name": "Golden Mask",
+        "index": 80
+    },
+    {
+        "name": "Golden Relic",
+        "index": 81
+    },
+    {
+        "name": "Strange Doll",
+        "index": 82
+    },
+    {
+        "name": "Strange Doll",
+        "index": 83
+    },
+    {
+        "name": "Prehistoric Scapula",
+        "index": 84
+    },
+    {
+        "name": "Prehistoric Tibia",
+        "index": 85
+    },
+    {
+        "name": "Prehistoric Skull",
+        "index": 86
+    },
+    {
+        "name": "Skeletal Hand",
+        "index": 87
+    },
+    {
+        "name": "Prehistoric Rib",
+        "index": 88
+    },
+    {
+        "name": "Prehistoric Vertebra",
+        "index": 89
+    },
+    {
+        "name": "Skeletal Tail",
+        "index": 90
+    },
+    {
+        "name": "Nautilus Fossil",
+        "index": 91
+    },
+    {
+        "name": "Amphibian Fossil",
+        "index": 92
+    },
+    {
+        "name": "Palm Fossil",
+        "index": 93
+    },
+    {
+        "name": "Trilobite",
+        "index": 94
+    }
+]
