@@ -49,6 +49,13 @@ export default function Landing() {
               isMuted={isMuted}
               onClick={() => navigate("/collections")}
             />
+            <CustomButton
+              variant="menu"
+              icon="/images/collections-button.webp"
+              label="Minigames"
+              isMuted={isMuted}
+              onClick={() => navigate("/minigames")}
+            />
             <div className="flex gap-4">
               <CustomButton
                 variant="square"
@@ -64,6 +71,14 @@ export default function Landing() {
                 label="Discord"
                 isMuted={isMuted}
                 onClick={() => window.open("https://discord.gg/Fg56gpXXBK", "_blank")}
+              />
+
+              <CustomButton
+                variant="square"
+                icon="/images/kofi.webp"
+                label="Discord"
+                isMuted={isMuted}
+                onClick={() => window.open("https://ko-fi.com/stardewdlecom", "_blank")}
               />
 
               <CustomButton

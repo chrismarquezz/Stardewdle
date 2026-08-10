@@ -220,9 +220,7 @@ export default function CollectionsBox({ isMobilePortrait }) {
           icon={"/images/question-mark.webp"}
           label={"Help"}
           isMuted={isMuted}
-          onClick={() => {
-            setShowCollectionsModal(true);
-          }}
+          onClick={() =>  setShowCollectionsModal(true)}
           showLabel={true}
           soundPath={"/sounds/modal.mp3"}
         />

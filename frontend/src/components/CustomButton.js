@@ -43,7 +43,7 @@ const CustomButton = ({
         <div
             onClick={handleClick}
             className={`group relative clickable transition-transform duration-200 hover:scale-105 active:scale-95 
-        ${variantStyles[variant] || variantStyles.icon} 
+        ${variantStyles[variant] || variantStyles.icon}
         ${shouldPulse ? "animate-bounceHard" : ""} 
         ${className}`}
         >

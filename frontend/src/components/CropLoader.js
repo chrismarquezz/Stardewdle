@@ -30,7 +30,7 @@ export default function CropLoader({className}) {
       className="w-20 h-20 object-contain"
     />
     <p className="mt-4 text-[#2A0A84] text-5xl text-center">
-      Loading crop of the day...
+      Loading...
     </p>
   </div>
 </div>
