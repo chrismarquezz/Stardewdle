@@ -1,174 +1,94 @@
 import { useState, useEffect } from "react";
 import { useSound } from "../../context/SoundContext";
+import { useGameData } from "../../context/GameDataContext";
+import { getTimeUntilMidnightUTC } from "../../utils/dateUtils";
 import { formatName } from "../../utils/formatString";
 
 import CropLoader from "../CropLoader";
 import CustomButton from "../CustomButton";
-import HelpModal from "../HelpModal";
+import HelpModal from "../game/HelpModal";
 import UpdatesModal from "../UpdatesModal";
 import BundleButton from "./BundleButton";
 
-const DAILY_RESET_ENABLED = true;
-const MOST_RECENT_UPDATE = "2026-06-19T00:00:00Z";
-
-function todaysDate() {
-    const today = new Date(new Date().toUTCString());
-    return `${today.getUTCMonth() + 1
-        }/${today.getUTCDate()}/${today.getUTCFullYear()}`;
-}
-
-function getTimeUntilMidnightUTC() {
-    const now = new Date();
-    const utcNow = new Date(now.toUTCString());
-    const utcMidnight = new Date(
-        Date.UTC(
-            utcNow.getUTCFullYear(),
-            utcNow.getUTCMonth(),
-            utcNow.getUTCDate() + 1,
-            0,
-            0,
-            0
-        )
-    );
-    const diff = utcMidnight - utcNow;
-
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-    return { hours, minutes, seconds };
-}
+const staticGameData =
+    [
+        {
+            name: "food",
+            label: "Home Cook's",
+            bundleNum: 1,
+            imgPath: "homeCook",
+            pos: "top-[25%] left-[50%]",
+        },
+        {
+            name: "map",
+            label: "Treasure Hunter's",
+            bundleNum: 2,
+            imgPath: "treasureHunter",
+            pos: "top-[50%] left-[25%]",
+        },
+        {
+            name: "npc",
+            label: "Helper's",
+            bundleNum: 3,
+            imgPath: "helper",
+            pos: "top-[50%] left-[75%]",
+        },
+        {
+            name: "minerals",
+            label: "Geologist's",
+            bundleNum: 4,
+            imgPath: "geologist",
+            pos: "top-[75%] left-1/3",
+        },
+        {
+            name: "fish",
+            label: "Quality Fish",
+            bundleNum: 5,
+            imgPath: "qualityFish",
+            pos: "top-[75%] left-2/3",
+        }
+    ];
 
 export default function MinigamesBox({ isMobilePortrait }) {
-    const [storedDate, setStoredDate] = useState(() => {
-        const saved = localStorage.getItem("stardewdle-date");
-        return saved ? saved : new Date().toISOString().split("T")[0];
-    });
-    /*const [crops, setCrops] = useState(() => {
-        const saved = localStorage.getItem("stardewdle-crops");
+    const {
+        isReady,
+        showUpdates,
+        setShowUpdates,
+        shouldPulse,
+        handleOpenUpdates
+    } = useGameData();
 
-        if (saved) {
-            try {
-                const parsedCrops = JSON.parse(saved);
-
-                if (parsedCrops.length === 0) return [];
-
-                const hasCropIndex = Object.hasOwn(parsedCrops[0], 'crop_index');
-
-                if (!hasCropIndex || parsedCrops[22]["type"] !== "fruit") {
-                    console.log("Outdated crop data, resetting crops");
-                    localStorage.removeItem("stardewdle-crops");
-                    return [];
-                }
-
-                return parsedCrops;
-            } catch (e) {
-                console.error("Error parsing saved crops:", e);
-                return [];
-            }
-        }
-
-        return [];
-    });*/
+    const { isMuted, toggleMute } = useSound();
 
     const [showHelp, setShowHelp] = useState(false);
     const [timeLeft, setTimeLeft] = useState(getTimeUntilMidnightUTC());
-    const [showUpdates, setShowUpdates] = useState(false);
-    const [shouldPulse, setShouldPulse] = useState(false);
 
     const [selectedGame, setSelectedGame] = useState("map");
     const [selectedGameData, setSelectedGameData] = useState(null);
     const [isGameSelected, setIsGameSelected] = useState(false);
-    
+
+    const todayStr = new Date().toISOString().split("T")[0];
+    const isNewDay = localStorage.getItem("stardewdle-date") !== todayStr;
+
+    const [gameData, setGameData] = useState(() => {
+        const defaultGameData = {
+            food: { complete: false, win: false, guesses: [] },
+            map: { complete: false, win: false, guesses: [] },
+            npc: { complete: false, win: false, guesses: [], hints: 0 },
+            minerals: { complete: false, win: false, guesses: [], hints: 0 },
+            fish: { complete: false, win: false, guesses: [] }
+        };
+
+        if (isNewDay) return defaultGameData;
+
+        const saved = localStorage.getItem("stardewdle-game-data");
+        return saved ? JSON.parse(saved) : defaultGameData;
+    });
+
     useEffect(() => {
         setSelectedGameData(staticGameData.find(item => item.name === selectedGame) || null);
         setIsGameSelected(selectedGame !== "");
     }, [selectedGame]);
-
-    const { isMuted, toggleMute } = useSound();
-
-    const staticGameData =
-        [
-            {
-                name: "food",
-                label: "Home Cook's",
-                bundleNum: 1,
-                imgPath: "homeCook",
-                pos: "top-[25%] left-[50%]",
-            },
-            {
-                name: "map",
-                label: "Treasure Hunter's",
-                bundleNum: 2,
-                imgPath: "treasureHunter",
-                pos: "top-[50%] left-[25%]",
-            },
-            {
-                name: "npc",
-                label: "Helper's",
-                bundleNum: 3,
-                imgPath: "helper",
-                pos: "top-[50%] left-[75%]",
-            },
-            {
-                name: "minerals",
-                label: "Geologist's",
-                bundleNum: 4,
-                imgPath: "geologist",
-                pos: "top-[75%] left-1/3",
-            },
-            {
-                name: "fish",
-                label: "Quality Fish",
-                bundleNum: 5,
-                imgPath: "qualityFish",
-                pos: "top-[75%] left-2/3",
-            }
-        ];
-
-    const [gameData, setGameData] = useState(() => {
-        const saved = localStorage.getItem("stardewdle-game-data");
-        return saved
-            ? JSON.parse(saved)
-            : {
-                food: {
-                    complete: false,
-                    win: false,
-                    guesses: [],
-                },
-                map: {
-                    complete: false,
-                    win: false,
-                    guesses: [],
-                },
-                npc: {
-                    complete: false,
-                    win: false,
-                    guesses: [],
-                    hints: 0,
-                },
-                minerals: {
-                    complete: false,
-                    win: false,
-                    guesses: [],
-                    hints: 0,
-                },
-                fish: {
-                    complete: false,
-                    win: false,
-                    guesses: [],
-                }
-            };
-    });
-
-    useEffect(() => {
-        const today = new Date().toISOString().split("T")[0];
-        if (storedDate !== today) {
-            console.log("Resetting game due to date change");
-            resetStored();
-            return;
-        }
-    }, [storedDate]);
 
     useEffect(() => {
         const handleVisibilityChange = () => {
@@ -185,26 +105,8 @@ export default function MinigamesBox({ isMobilePortrait }) {
         };
     }, []);
 
-    // MAKE BOTH GAME PAGES SHARE UPDATEMODAL STATE
     useEffect(() => {
-        const lastSeen = localStorage.getItem("stardewdle-lastUpdateSeen");
-
-        if (!lastSeen) {
-            setShouldPulse(true);
-        } else {
-            const lastSeenDate = new Date(lastSeen);
-            const mostRecentDate = new Date(MOST_RECENT_UPDATE);
-
-            if (lastSeenDate < mostRecentDate) {
-                setShouldPulse(true);
-            }
-        }
-    }, []);
-
-    useEffect(() => {
-        const hasSeenHelpModal = localStorage.getItem(
-            "stardewdle-hasSeenHelpModal"
-        );
+        const hasSeenHelpModal = localStorage.getItem("stardewdle-hasSeenHelpModal");
         if (!hasSeenHelpModal) {
             setShowHelp(true);
             localStorage.setItem("stardewdle-hasSeenHelpModal", "true");
@@ -212,86 +114,12 @@ export default function MinigamesBox({ isMobilePortrait }) {
     }, []);
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            setTimeLeft(getTimeUntilMidnightUTC());
-        }, 1000);
-
+        const interval = setInterval(() => setTimeLeft(getTimeUntilMidnightUTC()), 1000);
         return () => clearInterval(interval);
     }, []);
 
-    useEffect(() => {
-        if (!DAILY_RESET_ENABLED) return;
-
-        localStorage.setItem("stardewdle-date", storedDate);
-    }, [storedDate]);
-
-    function resetStored(refresh = false) {
-        setStoredDate(new Date().toISOString().split("T")[0]);
-        if (refresh) {
-            window.location.reload();
-            console.log("Reloaded due to date change");
-        }
-    }
-
-    useEffect(() => {
-        if (!DAILY_RESET_ENABLED) return;
-
-        const fetchNewCrop = async () => {
-            try {
-                /*if (crops.length === 0) {
-                    const cropResponse = await fetch(
-                        `${import.meta.env.VITE_BUCKET_URL}/data/crops.json`
-                    );
-                    if (!cropResponse.ok) {
-                        throw new Error(`HTTP error! status: ${cropResponse.status}`);
-                    }
-                    const cropList = await cropResponse.json();
-                    setCrops(cropList);
-                }
-
-                if (crops.length === 0) return;
-
-                const response = await fetch(import.meta.env.VITE_API_URL + "/word");
-                const data = await response.json();
-                const word = data.word;
-                const cropDate = data.correct_date;
-
-                const cropData = crops.find(
-                    (crop) => crop.name.toLowerCase() === word.toLowerCase()
-                );
-
-                if (cropData) {
-                    const cropDataWithDate = { ...cropData, date: cropDate };
-                    setCorrectCrop(cropDataWithDate);
-                } else {
-                    console.warn("Crop not found for word:", word);
-                }*/
-            } catch (error) {
-                console.error("Failed to fetch crop data or word:", error);
-            }
-        };
-
-        const today = new Date().toISOString().split("T")[0];
-
-        if (
-            storedDate !== today
-        ) {
-            if (
-                storedDate !== today
-            ) {
-                resetStored();
-            }
-            fetchNewCrop();
-        }
-    }, [storedDate]);
-
-    // SET TO FETCHED DATA
-    if (!storedDate) {
-        return (
-            <CropLoader
-                className={isMobilePortrait ? "content-counter-rotate-mobile" : ""}
-            />
-        );
+    if (!isReady) {
+        return <CropLoader className={isMobilePortrait ? "content-counter-rotate-mobile" : ""} />;
     }
 
     return (
@@ -440,15 +268,7 @@ export default function MinigamesBox({ isMobilePortrait }) {
                     icon="/images/info.webp"
                     label="Updates"
                     isMuted={isMuted}
-                    onClick={() => {
-                        setShowUpdates(true);
-
-                        localStorage.setItem(
-                            "stardewdle-lastUpdateSeen",
-                            new Date().toISOString()
-                        );
-                        setShouldPulse(false);
-                    }}
+                    onClick={handleOpenUpdates}
                     shouldPulse={shouldPulse}
                     showLabel={true}
                     isMobilePortrait={isMobilePortrait}

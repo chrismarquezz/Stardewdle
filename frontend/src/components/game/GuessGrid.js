@@ -1,4 +1,4 @@
-import { formatName } from "../utils/formatString";
+import { formatName } from "../../utils/formatString";
 
 const ATTRIBUTE_KEYS = [
   "growth_time",
@@ -134,27 +134,13 @@ export default function GuessGrid({ guesses, answer, className }) {
         <div
           className="relative h-[60px] flex items-center justify-center"
           style={{
-            backgroundImage: "url('/images/boxSquare.webp')",
+            backgroundImage: "url('/images/game/boxSquare.webp')",
             backgroundSize: "100% 100%",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
           }}
         >
           {/* Color overlay */}
-          <div
-            className={`w-full h-full absolute inset-0 m-auto z-0 rounded-sm opacity-20 mix-blend-multiply`}
-            /*style={{
-              backgroundImage: `url('/images/colorblind/Square/${cropColor === "green"
-                ? "correct.webp"
-                : cropColor === "red"
-                  ? "wrong.webp"
-                  : ""
-                }')`,
-              backgroundSize: "100% 100%",
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-            }}*/
-          />
           <div
             className={`w-[75%] h-[75%] absolute inset-0 m-auto z-0 rounded-sm opacity-90 mix-blend-multiply ${cropColor === "green"
               ? "bg-cyan-500"
@@ -204,7 +190,7 @@ export default function GuessGrid({ guesses, answer, className }) {
               key={j}
               className="relative h-full flex items-center justify-center text-2xl leading-none"
               style={{
-                backgroundImage: `url('/images/box${BOX_IMAGE_MAP[key] || "Large"
+                backgroundImage: `url('/images/game/box${BOX_IMAGE_MAP[key] || "Large"
                   }.webp')`,
                 backgroundSize: "100% 100%",
                 backgroundPosition: "center",
@@ -212,22 +198,6 @@ export default function GuessGrid({ guesses, answer, className }) {
               }}
             >
               {/* Color Overlay */}
-              <div
-                className={`w-full h-full absolute inset-0 m-auto z-0 rounded-sm opacity-20 mix-blend-multiply`}
-                /*style={{
-                  backgroundImage: `url('/images/colorblind/${BOX_IMAGE_MAP[key]}/${color === "green"
-                    ? "" //"correct.webp"
-                    : color === "yellow"
-                      ? "" //"partial.webp"
-                      : color === "red"
-                        ? "wrong.webp"
-                        : ""
-                    }')`,
-                  backgroundSize: "100% 100%",
-                  backgroundPosition: "center",
-                  backgroundRepeat: "no-repeat",
-                }}*/
-              />
               <div
                 className={`w-[${W_STRETCH_MAP[key]
                   }%] h-[75%] absolute inset-0 m-auto z-0 rounded-sm opacity-90 mix-blend-multiply ${color === "green"
@@ -259,7 +229,7 @@ export default function GuessGrid({ guesses, answer, className }) {
                           className="relative group flex items-center justify-center"
                         >
                           <img
-                            src={`/images/${season}.webp`}
+                            src={`/images/game/${season}.webp`}
                             alt={season}
                             className="h-6 w-9"
                           />
@@ -288,7 +258,7 @@ export default function GuessGrid({ guesses, answer, className }) {
                       {value}g{" "}
                       {arrow ? (
                         <img
-                          src={`/images/${arrow}.webp`}
+                          src={`/images/game/${arrow}.webp`}
                           alt={arrow}
                           className="h-[6px] w-[10px] ml-1"
                         />
@@ -301,7 +271,7 @@ export default function GuessGrid({ guesses, answer, className }) {
                       {value} days{" "}
                       {arrow ? (
                         <img
-                          src={`/images/${arrow}.webp`}
+                          src={`/images/game/${arrow}.webp`}
                           alt={arrow}
                           className="h-[6px] w-[10px] ml-1"
                         />

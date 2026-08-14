@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { formatName } from "../utils/formatString";
+import { formatName } from "../../utils/formatString";
 
 export default function CropCard({ crop, isSelected, onClick, isMuted, guessable, isMobilePortrait }) {
   const formattedName = formatName(crop.name);
@@ -32,7 +32,7 @@ export default function CropCard({ crop, isSelected, onClick, isMuted, guessable
       }}
       className={`relative w-16 h-16 p-1 flex items-center justify-center group ${guessable ? "clickable" : ""} ${isHovering ? "z-10" : "z-0"}`}
       style={{
-        backgroundImage: "url('/images/tile-bg.webp')",
+        backgroundImage: "url('/images/game//tile-bg.webp')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         scale: isMobilePortrait ? "1.1" : "1",

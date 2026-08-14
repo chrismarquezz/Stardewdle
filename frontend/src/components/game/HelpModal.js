@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import { scrollbarStyles } from "../utils/scrollbarStyles";
+import { scrollbarStyles } from "../../utils/scrollbarStyles";
 
 export default function HelpModal({ isMuted, onClose, scaleFactor }) {
   const playCloseSound = () => {
@@ -67,7 +67,7 @@ export default function HelpModal({ isMuted, onClose, scaleFactor }) {
                 <div className="space-y-3 md:space-y-5">
                   <div className="flex items-center gap-2 md:gap-4">
                     <img
-                      src="/images/arrow4U.webp"
+                      src="/images/game/arrow4U.webp"
                       alt="Up Arrow"
                       className="w-4 h-2 md:w-8 md:h-4"
                     />
@@ -75,7 +75,7 @@ export default function HelpModal({ isMuted, onClose, scaleFactor }) {
                   </div>
                   <div className="flex items-center gap-2 md:gap-4">
                     <img
-                      src="/images/arrow4D.webp"
+                      src="/images/game/arrow4D.webp"
                       alt="Down Arrow"
                       className="w-4 h-2 md:w-8 md:h-4"
                     />

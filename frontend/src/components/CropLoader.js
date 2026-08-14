@@ -22,7 +22,7 @@ export default function CropLoader({className}) {
   }, []);
 
   return (
-<div className={`flex items-center justify-center ${className ? "h-full w-full" : "h-screen w-screen"}`}>
+<div className={`absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center h-full w-full`}>
   <div className={`flex flex-col items-center ${className}`}> 
     <img
       src={`/images/loading/${cropImages[index]}`}

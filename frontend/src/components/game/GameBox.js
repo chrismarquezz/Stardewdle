@@ -1,99 +1,56 @@
 import { useState, useEffect } from "react";
-import { useSound } from "../context/SoundContext";
-import { formatName } from "../utils/formatString";
+import { useSound } from "../../context/SoundContext";
+import { formatName } from "../../utils/formatString";
+import { useGameData } from "../../context/GameDataContext";
+import { todaysDate, getTimeUntilMidnightUTC } from "../../utils/dateUtils";
 
 import CropGrid from "./CropGrid";
 import GuessGrid from "./GuessGrid";
-import CropLoader from "../components/CropLoader";
+import CropLoader from "../CropLoader";
 import ShareModal from "./ShareModal";
 import HelpModal from "./HelpModal";
-import UpdatesModal from "./UpdatesModal";
+import UpdatesModal from "../UpdatesModal";
 import HintsModal from "./HintsModal";
-
-import CustomButton from "../components/CustomButton";
-
-const DAILY_RESET_ENABLED = true;
-const MOST_RECENT_UPDATE = "2026-06-19T00:00:00Z";
-
-function todaysDate() {
-  const today = new Date(new Date().toUTCString());
-  return `${today.getUTCMonth() + 1
-    }/${today.getUTCDate()}/${today.getUTCFullYear()}`;
-}
-
-function getTimeUntilMidnightUTC() {
-  const now = new Date();
-  const utcNow = new Date(now.toUTCString());
-  const utcMidnight = new Date(
-    Date.UTC(
-      utcNow.getUTCFullYear(),
-      utcNow.getUTCMonth(),
-      utcNow.getUTCDate() + 1,
-      0,
-      0,
-      0
-    )
-  );
-  const diff = utcMidnight - utcNow;
-
-  const hours = Math.floor(diff / (1000 * 60 * 60));
-  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-  return { hours, minutes, seconds };
-}
+import CustomButton from "../CustomButton";
 
 export default function GameBox({ isMobilePortrait }) {
-  const [correctCrop, setCorrectCrop] = useState(() => {
-    const saved = localStorage.getItem("stardewdle-correctCrop");
-    return saved ? JSON.parse(saved) : null;
-  });
+  const {
+    crops,
+    dailyData,
+    isReady,
+    showUpdates,
+    setShowUpdates,
+    shouldPulse,
+    handleOpenUpdates
+  } = useGameData();
+
+  const { isMuted, toggleMute } = useSound();
+
+  const correctCrop = dailyData?.correctCrop;
+
+  const todayStr = new Date().toISOString().split("T")[0];
+  const isNewDay = localStorage.getItem("stardewdle-date") !== todayStr;
+
   const [selectedCrop, setSelectedCrop] = useState(() => {
+    if (isNewDay) return null;
     const saved = localStorage.getItem("stardewdle-selectedCrop");
     return saved ? JSON.parse(saved) : null;
   });
+
   const [guesses, setGuesses] = useState(() => {
+    if (isNewDay) return [];
     const saved = localStorage.getItem("stardewdle-guesses");
     return saved ? JSON.parse(saved) : [];
   });
+
   const [gameOver, setGameOver] = useState(() => {
+    if (isNewDay) return false;
     const saved = localStorage.getItem("stardewdle-gameOver");
     return saved ? JSON.parse(saved) : false;
-  });
-  const [storedDate, setStoredDate] = useState(() => {
-    const saved = localStorage.getItem("stardewdle-date");
-    return saved ? saved : new Date().toISOString().split("T")[0];
-  });
-  const [crops, setCrops] = useState(() => {
-    const saved = localStorage.getItem("stardewdle-crops");
-
-    if (saved) {
-      try {
-        const parsedCrops = JSON.parse(saved);
-
-        if (parsedCrops.length === 0) return [];
-
-        const hasCropIndex = Object.hasOwn(parsedCrops[0], 'crop_index');
-
-        if (!hasCropIndex || parsedCrops[22]["type"] !== "fruit") {
-          console.log("Outdated crop data, resetting crops");
-          localStorage.removeItem("stardewdle-crops");
-          return [];
-        }
-
-        return parsedCrops;
-      } catch (e) {
-        console.error("Error parsing saved crops:", e);
-        return [];
-      }
-    }
-
-    return [];
   });
 
   const [storedStats, setStoredStats] = useState(() => {
     const saved = localStorage.getItem("stardewdle-stats");
-    const todayStr = new Date().toISOString().split("T")[0];
 
     let stats = {
       streak: 0,
@@ -129,66 +86,132 @@ export default function GameBox({ isMobilePortrait }) {
   const [timeLeft, setTimeLeft] = useState(getTimeUntilMidnightUTC());
   const [correctGuesses, setCorrectGuesses] = useState(null);
   const [totalGuesses, setTotalGuesses] = useState(null);
-  const [showUpdates, setShowUpdates] = useState(false);
-  const [shouldPulse, setShouldPulse] = useState(false);
 
   const [selectionOffset, setSelectionOffset] = useState(0);
   useEffect(() => {
     setSelectionOffset(parseInt(selectedCrop?.crop_index) / 71 * 100);
   }, [selectedCrop]);
 
-  const { isMuted, toggleMute } = useSound();
-
   const [hints, setHints] = useState(() => {
+    if (isNewDay) return { growth_time: false, base_price: false, regrows: false, type: false, season: false };
     const saved = localStorage.getItem("stardewdle-hints");
-    return saved
-      ? JSON.parse(saved)
-      : {
-        growth_time: false,
-        base_price: false,
-        regrows: false,
-        type: false,
-        season: false,
-      };
+    return saved ? JSON.parse(saved) : { growth_time: false, base_price: false, regrows: false, type: false, season: false };
   });
+
   const [constraints, setConstraints] = useState(() => {
+    const defaultConstraints = { name: [], growth_time: [0, 99], base_price: [0, 9999], regrows: [], type: [], season: [] };
+    if (isNewDay) return defaultConstraints;
+
     const saved = localStorage.getItem("stardewdle-constraints");
-    if (JSON.parse(saved)) {
-      if (JSON.parse(saved).growth_time.length !== 2) {
-        return {
-          name: [],
-          growth_time: [0, 99],
-          base_price: [0, 9999],
-          regrows: [],
-          type: [],
-          season: [],
-        };
-      }
+    if (JSON.parse(saved)?.growth_time?.length !== 2) {
+      return defaultConstraints;
     }
-    return saved
-      ? JSON.parse(saved)
-      : {
-        name: [],
-        growth_time: [0, 99],
-        base_price: [0, 9999],
-        regrows: [],
-        type: [],
-        season: [],
-      };
+    return saved ? JSON.parse(saved) : defaultConstraints;
   });
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        console.log("Tab is visible again, reloading...");
+        window.location.reload();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    const hasSeenHelpModal = localStorage.getItem(
+      "stardewdle-hasSeenHelpModal"
+    );
+    if (!hasSeenHelpModal) {
+      setShowHelp(true);
+      localStorage.setItem("stardewdle-hasSeenHelpModal", "true");
+    }
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeLeft(getTimeUntilMidnightUTC());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (gameOver && correctCrop) {
+      setSelectedCrop(correctCrop);
+    }
+  }, [gameOver, correctCrop]);
+
+  useEffect(() => {
+    localStorage.setItem("stardewdle-guesses", JSON.stringify(guesses));
+    localStorage.setItem("stardewdle-gameOver", JSON.stringify(gameOver));
+    localStorage.setItem("stardewdle-selectedCrop", JSON.stringify(selectedCrop));
+    localStorage.setItem("stardewdle-hints", JSON.stringify(hints));
+    localStorage.setItem("stardewdle-constraints", JSON.stringify(constraints));
+    localStorage.setItem("stardewdle-stats", JSON.stringify(storedStats));
+  }, [guesses, gameOver, selectedCrop, hints, constraints, storedStats]);
+
+  function resetStored(refresh = false) {
+    setGuesses([]);
+    setSelectedCrop(null);
+    setGameOver(false);
+    setStoredDate(new Date().toISOString().split("T")[0]);
+    setConstraints({
+      name: [],
+      growth_time: [0, 99],
+      base_price: [0, 9999],
+      regrows: [],
+      type: [],
+      season: [],
+    });
+    if (refresh) {
+      window.location.reload();
+      console.log("Reloaded due to date change");
+    }
+  }
+
+  useEffect(() => {
+    if (!showShareModal || !correctCrop) return;
+
+    function getColor(key, guessValue, correctValue) {
+      if (key === "season") {
+        const g = guessValue[0] === "all" ? ["winter", "spring", "summer", "fall"] : guessValue;
+        const c = correctValue[0] === "all" ? ["winter", "spring", "summer", "fall"] : correctValue;
+        return (g.length === c.length && g.every((s) => c.includes(s))) ? "🟩" : g.some((s) => c.includes(s)) ? "🟨" : "🟥";
+      }
+      return guessValue === correctValue ? "🟩" : "🟥";
+    }
+
+    const win = guesses[guesses.length - 1]?.crop?.name === correctCrop.name;
+    const header = win ? "I solved today's Stardewdle!" : "I couldn't solve today's Stardewdle.";
+    const streak = storedStats.streak > 1 ? `I'm on a ${storedStats.streak} streak!\n` : ""
+    const grid = guesses.map((row) =>
+      ["growth_time", "base_price", "regrows", "type", "season"]
+        .map((key) => getColor(key, row.crop[key], correctCrop[key]))
+        .join("")
+    ).join("\n");
+
+    setShareText(`${todaysDate()}\n${header}\n${streak}${grid}\nPlay at: https://stardewdle.com/`);
+  }, [showShareModal, guesses, correctCrop, storedStats.streak]);
 
   const addConstraints = (crop) => {
+    if (!correctCrop) return;
     setConstraints((prevConstraints) => {
       const newConstraints = { ...prevConstraints };
-
       for (const key in newConstraints) {
         if (Object.hasOwn(crop, key)) {
           const prevArray = prevConstraints[key];
           if (key === "growth_time" || key === "base_price") {
-            newConstraints[key] =
-              crop[key] === correctCrop[key] ? [correctCrop[key] - 1, correctCrop[key] + 1] :
-                [correctCrop[key] > crop[key] && crop[key] > prevArray[0] ? crop[key] : prevArray[0],
-                correctCrop[key] < crop[key] && crop[key] < prevArray[1] ? crop[key] : prevArray[1]]
+            newConstraints[key] = crop[key] === correctCrop[key]
+              ? [correctCrop[key] - 1, correctCrop[key] + 1]
+              : [correctCrop[key] > crop[key] && crop[key] > prevArray[0] ? crop[key] : prevArray[0],
+              correctCrop[key] < crop[key] && crop[key] < prevArray[1] ? crop[key] : prevArray[1]]
             continue;
           }
           const newValue =
@@ -228,238 +251,8 @@ export default function GameBox({ isMobilePortrait }) {
     });
   };
 
-  useEffect(() => {
-    const today = new Date().toISOString().split("T")[0];
-    if (
-      storedDate !== today ||
-      (correctCrop != null &&
-        correctCrop.date !== undefined &&
-        correctCrop.date !== today)
-    ) {
-      console.log("Resetting game due to date change");
-      resetStored();
-      return;
-    }
-  }, [correctCrop, storedDate]);
-
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (!document.hidden) {
-        console.log("Tab is visible again, reloading...");
-        window.location.reload();
-      }
-    };
-
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-  }, []);
-
-  useEffect(() => {
-    const lastSeen = localStorage.getItem("stardewdle-lastUpdateSeen");
-
-    if (!lastSeen) {
-      setShouldPulse(true);
-    } else {
-      const lastSeenDate = new Date(lastSeen);
-      const mostRecentDate = new Date(MOST_RECENT_UPDATE);
-
-      if (lastSeenDate < mostRecentDate) {
-        setShouldPulse(true);
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    const hasSeenHelpModal = localStorage.getItem(
-      "stardewdle-hasSeenHelpModal"
-    );
-    if (!hasSeenHelpModal) {
-      setShowHelp(true);
-      localStorage.setItem("stardewdle-hasSeenHelpModal", "true");
-    }
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeLeft(getTimeUntilMidnightUTC());
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    if (gameOver) {
-      setSelectedCrop(correctCrop);
-    }
-  }, [gameOver, correctCrop]);
-
-  useEffect(() => {
-    if (!DAILY_RESET_ENABLED) return;
-
-    localStorage.setItem("stardewdle-guesses", JSON.stringify(guesses));
-    localStorage.setItem("stardewdle-correctCrop", JSON.stringify(correctCrop));
-    localStorage.setItem("stardewdle-gameOver", JSON.stringify(gameOver));
-    localStorage.setItem("stardewdle-selectedCrop", JSON.stringify(selectedCrop));
-    localStorage.setItem("stardewdle-date", storedDate);
-    localStorage.setItem("stardewdle-crops", JSON.stringify(crops));
-    localStorage.setItem("stardewdle-hints", JSON.stringify(hints));
-    localStorage.setItem("stardewdle-constraints", JSON.stringify(constraints));
-    localStorage.setItem("stardewdle-stats", JSON.stringify(storedStats));
-  }, [
-    guesses,
-    correctCrop,
-    gameOver,
-    selectedCrop,
-    storedDate,
-    crops,
-    hints,
-    constraints,
-    storedStats
-  ]);
-
-  function resetStored(refresh = false) {
-    setGuesses([]);
-    setSelectedCrop(null);
-    setGameOver(false);
-    setStoredDate(new Date().toISOString().split("T")[0]);
-    setConstraints({
-      name: [],
-      growth_time: [0, 99],
-      base_price: [0, 9999],
-      regrows: [],
-      type: [],
-      season: [],
-    });
-    if (refresh) {
-      window.location.reload();
-      console.log("Reloaded due to date change");
-    }
-  }
-
-  useEffect(() => {
-    if (!showShareModal) return;
-
-    const updateGuessStats = async () => {
-      try {
-        const res = await fetch(import.meta.env.VITE_API_URL + "/word");
-        const data = await res.json();
-        setCorrectGuesses(data.correct_guesses);
-        setTotalGuesses(data.total_guesses);
-      } catch (err) {
-        console.error("Failed to fetch win stats:", err);
-      }
-    };
-
-    function getColor(key, guessValue, correctValue) {
-      if (key === "season") {
-        const g = guessValue[0] === "all" ? ["winter", "spring", "summer", "fall"] : guessValue;
-        const c = correctValue[0] === "all" ? ["winter", "spring", "summer", "fall"] : correctValue;
-        return (g.length === c.length && g.every((s) => c.includes(s))) ? "🟩" : g.some((s) => c.includes(s)) ? "🟨" : "🟥";
-      }
-
-      return guessValue === correctValue ? "🟩" : "🟥";
-    }
-
-    function generateShareText(resultGrid, win) {
-      const header = win
-        ? "I solved today's Stardewdle!"
-        : "I couldn't solve today's Stardewdle.";
-      const streak = storedStats.streak > 1 ? `I'm on a ${storedStats.streak} streak!\n` : ""
-      const grid = resultGrid
-        .map((row) =>
-          ["growth_time", "base_price", "regrows", "type", "season"]
-            .map((key) => getColor(key, row.crop[key], correctCrop[key]))
-            .join("")
-        )
-        .join("\n");
-
-      return `${todaysDate()}\n${header}\n${streak}${grid}\nPlay at: https://stardewdle.com/`;
-    }
-
-    setShareText(generateShareText(guesses, guesses[guesses.length - 1].crop.name === correctCrop.name));
-    updateGuessStats();
-
-  }, [showShareModal, guesses, correctCrop,]);
-
-  useEffect(() => {
-    if (!DAILY_RESET_ENABLED) return;
-
-    const fetchNewCrop = async () => {
-      try {
-        if (crops.length === 0) {
-          const cropResponse = await fetch(
-            `${import.meta.env.VITE_BUCKET_URL}/data/crops.json`
-          );
-          if (!cropResponse.ok) {
-            throw new Error(`HTTP error! status: ${cropResponse.status}`);
-          }
-          const cropList = await cropResponse.json();
-          setCrops(cropList);
-        }
-
-        if (crops.length === 0) return;
-
-        const response = await fetch(import.meta.env.VITE_API_URL + "/word");
-        const data = await response.json();
-        const word = data.word;
-        const cropDate = data.correct_date;
-
-        const cropData = crops.find(
-          (crop) => crop.name.toLowerCase() === word.toLowerCase()
-        );
-
-        if (cropData) {
-          const cropDataWithDate = { ...cropData, date: cropDate };
-          setCorrectCrop(cropDataWithDate);
-        } else {
-          console.warn("Crop not found for word:", word);
-        }
-      } catch (error) {
-        console.error("Failed to fetch crop data or word:", error);
-      }
-    };
-
-    const today = new Date().toISOString().split("T")[0];
-
-    if (
-      !correctCrop ||
-      crops.length === 0 ||
-      storedDate !== today ||
-      (correctCrop != null &&
-        correctCrop.date !== undefined &&
-        correctCrop.date !== today)
-    ) {
-      if (
-        storedDate !== today ||
-        (correctCrop != null &&
-          correctCrop.date !== undefined &&
-          correctCrop.date !== today)
-      ) {
-        resetStored();
-      }
-      fetchNewCrop();
-    }
-  }, [storedDate, correctCrop, crops]);
-
   const handleSubmit = async () => {
-    if (!selectedCrop || guesses.length >= 6 || gameOver) return;
-
-    const today = new Date().toISOString().split("T")[0];
-    if (
-      storedDate !== today ||
-      (correctCrop != null &&
-        correctCrop.date === undefined) ||
-      (correctCrop != null &&
-        correctCrop.date !== undefined &&
-        correctCrop.date !== today)
-    ) {
-      console.log("Resetting game due to date change"); // make message visible to user
-      resetStored(true);
-      return;
-    }
+    if (!selectedCrop || guesses.length >= 6 || gameOver || !correctCrop) return;
 
     const updatedGuesses = [...guesses, { crop: selectedCrop }];
     setGuesses(updatedGuesses);
@@ -470,13 +263,11 @@ export default function GameBox({ isMobilePortrait }) {
     const isFullMatch = ["growth_time", "base_price", "regrows", "type", "season"].every((key) => {
       const guessVal = selectedCrop?.[key];
       const answerVal = correctCrop?.[key];
-
       if (key === "season") {
         const g = Array.isArray(guessVal) ? guessVal : [];
         const a = Array.isArray(answerVal) ? answerVal : [];
         return g.length === a.length && g.every((s) => a.includes(s));
       }
-
       return guessVal === answerVal;
     });
 
@@ -486,53 +277,28 @@ export default function GameBox({ isMobilePortrait }) {
     }
 
     try {
+      // Assuming you still want to send the guess to Lambda for analytics
       const response = await fetch(import.meta.env.VITE_API_URL + "/guess", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          guess: selectedCrop.name,
-          guessNum: updatedGuesses.length,
-        }),
+        body: JSON.stringify({ guess: selectedCrop.name, guessNum: updatedGuesses.length }),
       });
 
-      const data = await response.json();
-      const result = data.result;
-
-      const isWin = result && Object.values(result).every((val) => val === "match");
-
+      const isWin = isFullMatch;
       const guessCount = isWin ? updatedGuesses.length : 0;
       const todayStr = new Date().toISOString().split("T")[0];
 
       setStoredStats((prev) => {
-        let currentStreak = prev.streak;
-
-        if (prev.lastPlayedDate) {
-          const lastDate = new Date(prev.lastPlayedDate + "T00:00:00Z");
-          const todayDate = new Date(todayStr + "T00:00:00Z");
-          const diffDays = Math.round((todayDate - lastDate) / (1000 * 60 * 60 * 24));
-
-          if (diffDays > 1) {
-            currentStreak = 0;
-          }
-        }
-
         return {
           ...prev,
           lastPlayedDate: todayStr,
-          streak: isWin ? currentStreak + 1 : 0,
+          streak: isWin ? prev.streak + 1 : 0,
           total: prev.total + 1,
-          accuracy: {
-            ...prev.accuracy,
-            [guessCount]: prev.accuracy[guessCount] + 1,
-          },
+          accuracy: { ...prev.accuracy, [guessCount]: prev.accuracy[guessCount] + 1 },
         };
       });
 
-      if (isWin) {
-        if (!isMuted) new Audio("/sounds/reward.mp3").play();
-      } else {
-        if (!isMuted) new Audio("/sounds/lose.mp3").play();
-      }
+      if (!isMuted) new Audio(isWin ? "/sounds/reward.mp3" : "/sounds/lose.mp3").play();
 
       setGameOver(true);
       setShowShareModal(true);
@@ -542,12 +308,8 @@ export default function GameBox({ isMobilePortrait }) {
     }
   };
 
-  if (!correctCrop || crops.length === 0) {
-    return (
-      <CropLoader
-        className={isMobilePortrait ? "content-counter-rotate-mobile" : ""}
-      />
-    );
+  if (!isReady || !correctCrop || crops.length === 0) {
+    return <CropLoader className={isMobilePortrait ? "content-counter-rotate-mobile" : ""} />;
   }
 
   const spriteStyle = {
@@ -565,8 +327,8 @@ export default function GameBox({ isMobilePortrait }) {
         }`}
       style={{
         backgroundImage: isMobilePortrait
-          ? "url('/images/box-bg-sm.webp')"
-          : "url('/images/box-bg.webp')",
+          ? "url('/images/game/box-bg-sm.webp')"
+          : "url('/images/game//box-bg.webp')",
         backgroundSize: "100% 100%",
         width: isMobilePortrait ? "1500px" : "1600px",
         height: isMobilePortrait ? "940px" : "800px",
@@ -643,7 +405,7 @@ export default function GameBox({ isMobilePortrait }) {
                 )}
                 <CustomButton
                   variant="share"
-                  icon={"/images/share-button.webp"}
+                  icon={"/images/game//share-button.webp"}
                   label={"Share"}
                   soundPath={"/sounds/modal.mp3"}
                   isMuted={isMuted}
@@ -676,7 +438,7 @@ export default function GameBox({ isMobilePortrait }) {
           className={`${isMobilePortrait ? "ml-2 pl-6 pb-2" : "pl-9 mr-[78px]"
             } mb-[84px] bg-center bg-no-repeat bg-contain min-h-[440px]`}
           style={{
-            backgroundImage: "url('/images/guesses.webp')",
+            backgroundImage: "url('/images/game//guesses.webp')",
             width: isMobilePortrait ? "750px" : "772px",
             height: "456px",
           }}
@@ -707,7 +469,7 @@ export default function GameBox({ isMobilePortrait }) {
 
         <CustomButton
           variant="icon"
-          icon={Object.values(hints).some((value) => value) ? "/images/hint-on.webp" : "/images/hint-off.webp"}
+          icon={Object.values(hints).some((value) => value) ? "/images/game//hint-on.webp" : "/images/game//hint-off.webp"}
           label="View Hints"
           isMuted={isMuted}
           onClick={() => {
@@ -736,15 +498,7 @@ export default function GameBox({ isMobilePortrait }) {
           icon="/images/info.webp"
           label="Updates"
           isMuted={isMuted}
-          onClick={() => {
-            setShowUpdates(true);
-
-            localStorage.setItem(
-              "stardewdle-lastUpdateSeen",
-              new Date().toISOString()
-            );
-            setShouldPulse(false);
-          }}
+          onClick={handleOpenUpdates}
           shouldPulse={shouldPulse}
           showLabel={true}
           isMobilePortrait={isMobilePortrait}
@@ -772,8 +526,8 @@ export default function GameBox({ isMobilePortrait }) {
       {showShareModal && (
         <ShareModal
           shareText={shareText}
-          correctGuesses={correctGuesses}
-          totalGuesses={totalGuesses}
+          correctGuesses={dailyData?.stats?.correctGuesses}
+          totalGuesses={dailyData?.stats?.totalGuesses}
           timeLeft={timeLeft}
           onClose={() => setShowShareModal(false)}
           isMuted={isMuted}

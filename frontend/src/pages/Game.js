@@ -3,7 +3,7 @@ import { useSound } from "../context/SoundContext";
 import { useState, useEffect } from "react";
 import { useResponsiveScale } from "../hooks/useResponsiveScale";
 
-import GameBox from "../components/GameBox";
+import GameBox from "../components/game/GameBox";
 import CustomButton from "../components/CustomButton";
 
 export default function Game() {

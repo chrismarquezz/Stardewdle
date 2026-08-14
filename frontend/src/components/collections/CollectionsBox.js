@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSound } from "../../context/SoundContext";
+import { useGameData } from "../../context/GameDataContext"; // Import the hook
 import { formatName } from "../../utils/formatString";
 
 import CollectionsGrid from "./CollectionsGrid";
@@ -9,10 +10,10 @@ import CustomButton from "../CustomButton";
 
 export default function CollectionsBox({ isMobilePortrait }) {
   const [selectedCrop, setSelectedCrop] = useState(null);
-
-  const [crops, setCrops] = useState([]);
   const [cropCount, setCropCount] = useState([]);
+
   const { isMuted, toggleMute } = useSound();
+  const { crops, isReady } = useGameData();
   const [showCollectionsModal, setShowCollectionsModal] = useState(false);
 
   useEffect(() => {
@@ -26,49 +27,16 @@ export default function CollectionsBox({ isMobilePortrait }) {
   }, []);
 
   useEffect(() => {
-    if (crops.length === 0) {
-      const fetchInitialData = async () => {
-        try {
-          const cropResponse = await fetch(
-            `${import.meta.env.VITE_BUCKET_URL}/data/crops.json?v=20260612`
-          );
+    const fetchCount = async () => {
+      const res = await fetch(import.meta.env.VITE_API_URL + "/count");
+      const countList = await res.json();
+      setCropCount(countList);
+    };
+    fetchCount();
+  }, []);
 
-          if (!cropResponse.ok) {
-            throw new Error(`HTTP error! status: ${cropResponse.status}`);
-          }
-
-          const cropList = await cropResponse.json();
-          setCrops(cropList);
-        } catch (error) {
-          console.error("Failed to fetch crop data from R2:", error);
-        }
-
-        try {
-          const countResponse = await fetch(
-            import.meta.env.VITE_API_URL + "/count"
-          );
-
-          if (!countResponse.ok) {
-            throw new Error(`HTTP error! status: ${countResponse.status}`);
-          }
-
-          const countList = await countResponse.json();
-          setCropCount(countList);
-        } catch (error) {
-          console.error("Failed to fetch crop data from Lambda /count:", error);
-        }
-      };
-
-      fetchInitialData();
-    }
-  }, [crops]);
-
-  if (crops.length === 0) {
-    return (
-      <CropLoader
-        className={isMobilePortrait ? "content-counter-rotate-mobile" : ""}
-      />
-    );
+  if (!isReady || crops.length === 0) {
+    return <CropLoader className={isMobilePortrait ? "content-counter-rotate-mobile" : ""} />;
   }
 
   const x_pos = parseInt(selectedCrop?.crop_index) / 71 * 100;

@@ -66,7 +66,7 @@ export default function CropGrid({
     <div
       className={`flex justify-center items-center h-full w-[90%] mt-[2px]`}
       style={{
-        backgroundImage: "url('/images/cropgrid-bg.webp')",
+        backgroundImage: "url('/images/game/cropgrid-bg.webp')",
         backgroundSize: isMobilePortrait ? "100% 100%" : "90% 80%",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",

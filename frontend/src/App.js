@@ -1,12 +1,8 @@
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-} from "react-router-dom";
-
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
 
 import { SoundProvider } from "./context/SoundContext";
+import { GameDataProvider } from "./context/GameDataContext";
 
 import './App.css';
 
@@ -19,7 +15,6 @@ import Minigames from "./pages/Minigames";
 export default function App() {
   useEffect(() => {
     const spriteUrl = import.meta.env.VITE_BUCKET_URL + "/sprites/crops.png";
-
     if (spriteUrl) {
       document.documentElement.style.setProperty('--sprite-url', `url(${spriteUrl})`);
     }
@@ -27,15 +22,17 @@ export default function App() {
 
   return (
     <SoundProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/game" element={<Game />} />
-          <Route path="/collections" element={<Collections />} />
-          <Route path="/count" element={<Count />} />
-          <Route path="/minigames" element={<Minigames />} />
-        </Routes>
-      </Router>
+      <GameDataProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/game" element={<Game />} />
+            <Route path="/collections" element={<Collections />} />
+            <Route path="/count" element={<Count />} />
+            <Route path="/minigames" element={<Minigames />} />
+          </Routes>
+        </Router>
+      </GameDataProvider>
     </SoundProvider>
   );
 }

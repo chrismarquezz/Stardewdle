@@ -1,8 +1,8 @@
 import ReactDOM from "react-dom";
-import { formatName } from "../utils/formatString";
-import { scrollbarStyles } from "../utils/scrollbarStyles";
+import { formatName } from "../../utils/formatString";
+import { scrollbarStyles } from "../../utils/scrollbarStyles";
 
-import CustomButton from "./CustomButton";
+import CustomButton from "../CustomButton";
 
 function ToggleHint({ hintName, hintValue, setHints, isMuted }) {
     let displayName = formatName(hintName);
@@ -15,7 +15,7 @@ function ToggleHint({ hintName, hintValue, setHints, isMuted }) {
             <p className="text-center">{formatName(displayName)}</p>
             <CustomButton
                 variant="toggle"
-                icon={hintValue ? "/images/toggle-on.webp" : "/images/toggle-off.webp"}
+                icon={hintValue ? "/images/game/toggle-on.webp" : "/images/game/toggle-off.webp"}
                 label={`Toggle ${hintName} Hint`}
                 isMuted={isMuted}
                 onClick={() => {
