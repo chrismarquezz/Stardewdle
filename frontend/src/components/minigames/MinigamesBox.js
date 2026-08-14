@@ -4,6 +4,11 @@ import { useGameData } from "../../context/GameDataContext";
 import { getTimeUntilMidnightUTC } from "../../utils/dateUtils";
 import { formatName } from "../../utils/formatString";
 
+import CookingGame from "./CookingGame";
+import FishingGame from "./FishingGame";
+import QuotesGame from "./QuotesGame";
+import GeologyGame from "./GeologyGame";
+
 import CropLoader from "../CropLoader";
 import CustomButton from "../CustomButton";
 import HelpModal from "../game/HelpModal";
@@ -63,7 +68,7 @@ export default function MinigamesBox({ isMobilePortrait }) {
     const [showHelp, setShowHelp] = useState(false);
     const [timeLeft, setTimeLeft] = useState(getTimeUntilMidnightUTC());
 
-    const [selectedGame, setSelectedGame] = useState("map");
+    const [selectedGame, setSelectedGame] = useState("");
     const [selectedGameData, setSelectedGameData] = useState(null);
     const [isGameSelected, setIsGameSelected] = useState(false);
 
@@ -85,10 +90,45 @@ export default function MinigamesBox({ isMobilePortrait }) {
         return saved ? JSON.parse(saved) : defaultGameData;
     });
 
+    const allBundlesComplete = ['food', 'map', 'npc', 'minerals', 'fish'].every(key => gameData[key]?.complete);
+
+    const [globalCompletions, setGlobalCompletions] = useState(0);
+
     useEffect(() => {
         setSelectedGameData(staticGameData.find(item => item.name === selectedGame) || null);
         setIsGameSelected(selectedGame !== "");
     }, [selectedGame]);
+
+    useEffect(() => {
+        // Only fire if everything is complete AND we haven't already synced it today
+        if (allBundlesComplete && !gameData.apiSynced) {
+
+            const recordCompletion = async () => {
+                try {
+                    // You will need to create this endpoint in your backend!
+                    const response = await fetch(import.meta.env.VITE_API_URL + "/bundle-complete", {
+                        method: "POST"
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        setGlobalCompletions(data.newTotal); // Assuming API returns the updated count
+
+                        // Mark as synced so we don't spam the database
+                        setGameData(prev => {
+                            const updated = { ...prev, apiSynced: true };
+                            localStorage.setItem("stardewdle-game-data", JSON.stringify(updated));
+                            return updated;
+                        });
+                    }
+                } catch (error) {
+                    console.error("Failed to sync bundle completion:", error);
+                }
+            };
+
+            recordCompletion();
+        }
+    }, [allBundlesComplete, gameData.apiSynced]);
 
     useEffect(() => {
         const handleVisibilityChange = () => {
@@ -118,6 +158,72 @@ export default function MinigamesBox({ isMobilePortrait }) {
         return () => clearInterval(interval);
     }, []);
 
+    const updateGameState = (gameName, newState) => {
+        setGameData(prev => {
+            const updated = { ...prev, [gameName]: newState };
+            localStorage.setItem("stardewdle-game-data", JSON.stringify(updated));
+            return updated;
+        });
+    };
+
+    const markAnimationSeen = (gameName) => {
+        setGameData(prev => {
+            const updated = {
+                ...prev,
+                [gameName]: { ...prev[gameName], animationSeen: true }
+            };
+            localStorage.setItem("stardewdle-game-data", JSON.stringify(updated));
+            return updated;
+        });
+    };
+
+    const renderMinigame = () => {
+        switch (selectedGame) {
+            case "food":
+                return (
+                    <CookingGame
+                        gameState={gameData.food}
+                        updateGameState={(newState) => updateGameState("food", newState)}
+                        isMobilePortrait={isMobilePortrait}
+                        isMuted={isMuted}
+                    />
+                );
+            case "fish":
+                return (
+                    <FishingGame
+                        gameState={gameData.fish}
+                        updateGameState={(newState) => updateGameState("fish", newState)}
+                        isMobilePortrait={isMobilePortrait}
+                        isMuted={isMuted}
+                    />
+                );
+            case "npc":
+                return (
+                    <QuotesGame
+                        gameState={gameData.npc}
+                        updateGameState={(newState) => updateGameState("npc", newState)}
+                        isMobilePortrait={isMobilePortrait}
+                        isMuted={isMuted}
+                    />
+                );
+            case "minerals":
+                return (
+                    <GeologyGame
+                        gameState={gameData.minerals}
+                        updateGameState={(newState) => updateGameState("minerals", newState)}
+                        isMobilePortrait={isMobilePortrait}
+                        isMuted={isMuted}
+                    />
+                );
+            default:
+                return (
+                    <div className="flex h-full w-full items-center justify-center text-4xl text-[#BC6131]">
+                        Coming Soon!
+                    </div>
+                );
+        }
+    };
+
     if (!isReady) {
         return <CropLoader className={isMobilePortrait ? "content-counter-rotate-mobile" : ""} />;
     }
@@ -141,12 +247,32 @@ export default function MinigamesBox({ isMobilePortrait }) {
                 {isGameSelected ? selectedGameData.label + " Bundle" : "Minigame Bundles"}
             </h2>
 
+            <h2 className="w-full flex flex-col justify-center items-center text-[#BC6131] text-center pt-2">
+
+                {/* --- COMPLETION UI --- */}
+                {allBundlesComplete && !isGameSelected && (
+                    <div className="flex items-center gap-3 mt-4 bg-[#ffdfa6] border-4 border-[#d5a05a] px-6 py-2 rounded-xl">
+                        {/* Stardew Star / Junimo Icon */}
+                        <div
+                            className="w-12 h-12 bg-no-repeat bg-contain"
+                            style={{ backgroundImage: "url('/images/stardrop.webp')" }}
+                        />
+                        <div className="flex flex-col text-left">
+                            <span className="text-xl font-bold text-[#1E9365]">Community Center Restored!</span>
+                            <span className="text-md text-[#BC6131] font-medium">
+                                Total Restorations Today: {globalCompletions}
+                            </span>
+                        </div>
+                    </div>
+                )}
+            </h2>
+
             {isGameSelected ?
                 (
                     <div
                         className={`relative bg-no-repeat bg-center ${isMobilePortrait
                             ? "gamebox-mobile-layout"
-                            : "mt-[23px] ml-[103px]"
+                            : "mt-[16px] ml-[103px]"
                             }`}
                         style={{
                             backgroundImage: isMobilePortrait
@@ -157,23 +283,27 @@ export default function MinigamesBox({ isMobilePortrait }) {
                             height: isMobilePortrait ? "940px" : "603px",
                         }}
                     >
-                        <CustomButton
-                            variant="share"
-                            icon="/images/minigames/arrowBack.webp"
-                            label="Return"
-                            isMuted={isMuted}
-                            onClick={() => {
-                                setSelectedGame("");
-                            }}
-                            isMobilePortrait={isMobilePortrait}
-                            className="left-2 top-2"
-                        />
+                        <div
+                            className={`absolute flex top-2 left-2 `}
+                        >
+                            <CustomButton
+                                variant="share"
+                                icon="/images/minigames/arrowBack.webp"
+                                label="Return"
+                                isMuted={isMuted}
+                                onClick={() => {
+                                    setSelectedGame("");
+                                }}
+                                isMobilePortrait={isMobilePortrait}
+                            />
+                        </div>
+                        
 
                         <div
-                            className={`flex flex-row items-center h-full ${isMobilePortrait ? "mr-6 mt-[96px]" : "mr-24 mt-[80px]"}  gap-4`}
+                            className={`flex flex-row items-center h-full gap-4`}
                         >
                             <div
-                                className="relative bg-no-repeat bg-contain"
+                                className="relative bg-no-repeat bg-contain flex justify-center items-center"
                                 style={{
                                     backgroundImage: "url('/images/selected-frame.webp')",
                                     width: "240px",
@@ -186,11 +316,12 @@ export default function MinigamesBox({ isMobilePortrait }) {
                                             backgroundImage: `url('/images/minigames/bundleIcons/${selectedGameData.imgPath}.webp')`,
                                             imageRendering: 'pixelated',
                                         }}
-                                        className="absolute top-4 left-14 h-32 w-32 bg-no-repeat bg-cover"
+                                        className="absolute h-[108px] w-[176px] bg-no-repeat bg-contain bg-center"
                                         title={selectedGameData.label+" Bundle"}
                                     />
                                 )}
                             </div>
+                            {renderMinigame()}
                             {/*<div className="flex flex-col items-center">
                                 <div
                                     className="flex items-center justify-center bg-center bg-no-repeat bg-contain"
@@ -219,7 +350,7 @@ export default function MinigamesBox({ isMobilePortrait }) {
                                 key={bundle.name}
                                 variant={bundle.bundleNum}
                                 label={bundle.label}
-                                onClick={() => { setSelectedGame(bundle.name) }} //gameData[bundle.name].complete = true
+                                onClick={() => { setSelectedGame(bundle.name) }}
                                 isMuted={isMuted}
                                 positionClass={bundle.pos}
                                 isAnimated={gameData[bundle.name].complete}

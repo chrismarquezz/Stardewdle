@@ -5,18 +5,21 @@ export default function BundleButton({
     label,
     onClick,
     isMuted,
+    isAnimated = false,
+    skipAnimation = false, // Instantly jump to the end
+    onAnimationComplete,    // Callback to tell the parent it finished
     positionClass = "",
-    isAnimated = false
 }) {
     const bundleScale = 4;
     const baseSpriteWidth = 16;
     const totalFrames = 16;
     const frameRateMs = 100;
 
-    const [currentFrame, setCurrentFrame] = useState(0);
+    // If skipAnimation is true, start at the last frame
+    const [currentFrame, setCurrentFrame] = useState(skipAnimation && isAnimated ? totalFrames - 1 : 0);
 
     const xPos = -(currentFrame * baseSpriteWidth * bundleScale);
-    const yPos = (variant - 1) * 32 * bundleScale;
+    const yPos = -((variant - 1) * 32 * bundleScale);
     const iconSize = baseSpriteWidth * bundleScale;
 
     useEffect(() => {
@@ -27,13 +30,15 @@ export default function BundleButton({
                 if (prevFrame < totalFrames - 1) {
                     return prevFrame + 1;
                 }
+
                 clearInterval(timer);
+                if (onAnimationComplete) onAnimationComplete(); // Fire callback
                 return prevFrame;
             });
         }, frameRateMs);
 
         return () => clearInterval(timer);
-    }, [isAnimated, currentFrame]);
+    }, [isAnimated, currentFrame, onAnimationComplete]);
 
     const handleClick = () => {
         if (!isMuted) {
@@ -45,7 +50,7 @@ export default function BundleButton({
     return (
         <div
             onClick={handleClick}
-            className={"group absolute clickable transition-transform duration-200 hover:scale-105 active:scale-95 -translate-y-1/2 -translate-x-1/2 "+positionClass}
+            className={"group absolute clickable transition-transform duration-200 hover:scale-105 active:scale-95 -translate-y-1/2 -translate-x-1/2 " + positionClass}
         >
             <div
                 className="transition-transform duration-200 hover:scale-105 active:scale-95"
