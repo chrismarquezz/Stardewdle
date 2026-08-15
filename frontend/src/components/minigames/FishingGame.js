@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useGameData } from "../../context/GameDataContext";
 import { formatName } from "../../utils/formatString";
+import { getSpriteStyle } from "../../utils/spriteUtils";
+
 import CustomButton from "../CustomButton";
 
 export default function FishingGame({ gameState, updateGameState, isMobilePortrait, isMuted }) {
@@ -70,9 +72,16 @@ export default function FishingGame({ gameState, updateGameState, isMobilePortra
 
                 <div className="flex items-center gap-4">
                     {gameState.hintUsed ? (
-                        <div className="bg-[#ffdfa6] border-4 border-[#d5a05a] rounded-xl p-2 w-20 h-20 flex justify-center items-center">
-                            {/* Placeholder for the sprite. brightness(0) creates the silhouette */}
-                            <div className="w-12 h-12 bg-black/80 rounded" style={{ filter: gameState.win ? 'none' : 'brightness(0)' }} />
+                        <div className="bg-[#ffdfa6] border-4 border-[#d5a05a] rounded-xl p-2 w-20 h-20 flex justify-center items-center overflow-hidden">
+
+                            <div
+                                style={{
+                                    ...getSpriteStyle("fish", targetFish.index, 0),
+                                    filter: gameState.win ? 'none' : 'brightness(0)'
+                                }}
+                                className="scale-125 transition-all duration-300"
+                            />
+
                         </div>
                     ) : (
                         <button
@@ -140,7 +149,8 @@ export default function FishingGame({ gameState, updateGameState, isMobilePortra
             {!gameState.complete ? (
                 <CustomButton
                     variant="submit"
-                    label="Submit Guess"
+                    label="Submit"
+                    icon={"/images/submit-button.webp"}
                     onClick={handleSubmit}
                     isMuted={isMuted}
                     className={!selectedLetter ? "opacity-50 pointer-events-none" : ""}

@@ -78,7 +78,7 @@ export default function MinigamesBox({ isMobilePortrait }) {
     const [gameData, setGameData] = useState(() => {
         const defaultGameData = {
             food: { complete: false, win: false, guesses: [] },
-            map: { complete: false, win: false, guesses: [] },
+            map: { complete: true, win: false, guesses: [] },
             npc: { complete: false, win: false, guesses: [], hints: 0 },
             minerals: { complete: false, win: false, guesses: [], hints: 0 },
             fish: { complete: false, win: false, guesses: [] }
@@ -247,11 +247,10 @@ export default function MinigamesBox({ isMobilePortrait }) {
                 {isGameSelected ? selectedGameData.label + " Bundle" : "Minigame Bundles"}
             </h2>
 
-            <h2 className="w-full flex flex-col justify-center items-center text-[#BC6131] text-center pt-2">
 
                 {/* --- COMPLETION UI --- */}
                 {allBundlesComplete && !isGameSelected && (
-                    <div className="flex items-center gap-3 mt-4 bg-[#ffdfa6] border-4 border-[#d5a05a] px-6 py-2 rounded-xl">
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-3 bg-[#ffdfa6] border-4 border-[#d5a05a] px-6 py-2 rounded-xl">
                         {/* Stardew Star / Junimo Icon */}
                         <div
                             className="w-12 h-12 bg-no-repeat bg-contain"
@@ -265,7 +264,6 @@ export default function MinigamesBox({ isMobilePortrait }) {
                         </div>
                     </div>
                 )}
-            </h2>
 
             {isGameSelected ?
                 (

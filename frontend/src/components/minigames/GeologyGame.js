@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useGameData } from "../../context/GameDataContext";
 import { formatName } from "../../utils/formatString";
+import { getSpriteStyle } from "../../utils/spriteUtils";
+
 import CustomButton from "../CustomButton";
 
 export default function GeologyGame({ gameState, updateGameState, isMobilePortrait, isMuted }) {
@@ -90,12 +92,13 @@ export default function GeologyGame({ gameState, updateGameState, isMobilePortra
             <div className="w-full max-w-md bg-[#fcedd2] border-4 border-[#d5a05a] rounded-xl p-6 mb-4 shadow-sm flex flex-col items-center justify-center">
                 <h3 className="text-2xl font-bold text-[#BC6131] mb-4 text-center">What is this item?</h3>
 
-                {/* The Overflow Hidden container keeps the zoomed image contained */}
                 <div className="w-48 h-48 border-4 border-[#BC6131] rounded-lg overflow-hidden bg-black/5 flex items-center justify-center relative">
+                    {/* The new dynamic sprite div */}
                     <div
-                        className="w-24 h-24 transition-all duration-700 ease-out"
+                        className="transition-all duration-700 ease-out"
                         style={{
-                            ...spriteStyle,
+                            // Assuming your spritesheet is named "geology.png" or "minerals.png"
+                            ...getSpriteStyle("geology", targetItem.index, 0),
                             transform: `scale(${currentStage.scale})`,
                             filter: `blur(${currentStage.blur}px)`,
                         }}
@@ -134,6 +137,7 @@ export default function GeologyGame({ gameState, updateGameState, isMobilePortra
                         <CustomButton
                             variant="submit"
                             label="Submit"
+                            icon={"/images/submit-button.webp"}
                             onClick={handleGuess}
                             isMuted={isMuted}
                             className={!selectedItem ? "opacity-50 pointer-events-none" : ""}
@@ -171,7 +175,13 @@ export default function GeologyGame({ gameState, updateGameState, isMobilePortra
                                             className={`p-2 border-2 rounded font-bold text-[#BC6131] hover:bg-[#ffecc2] transition-colors flex flex-col items-center
                                                 ${selectedItem?.name === item.name ? "bg-[#ffecc2] border-[#BC6131]" : "bg-white border-[#d5a05a]"}`}
                                         >
-                                            <div className="w-8 h-8 bg-black/10 mb-1 rounded-sm" /> {/* Sprite placeholder */}
+
+                                            {/* THE NEW SPRITE DIV */}
+                                            <div
+                                                style={getSpriteStyle("geology", item.index, 0)}
+                                                className="scale-75 mb-1"
+                                            />
+
                                             <span className="text-xs text-center leading-tight">{formatName(item.name)}</span>
                                         </button>
                                     ))}

@@ -1,6 +1,6 @@
 export const getSpriteStyle = (sheetName, colIndex, rowIndex = 0, spriteSize = 48) => {
     return {
-        backgroundImage: `url(${import.meta.env.VITE_BUCKET_URL}/sprites/${sheetName}.webp)`,
+        backgroundImage: `url(${import.meta.env.VITE_BUCKET_URL}/sprites/${sheetName}.webp?v=20260814)`,
         backgroundPosition: `-${colIndex * spriteSize}px -${rowIndex * spriteSize}px`,
         width: `${spriteSize}px`,
         height: `${spriteSize}px`,

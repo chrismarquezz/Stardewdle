@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useGameData } from "../../context/GameDataContext";
 import { formatName } from "../../utils/formatString";
+import { getSpriteStyle } from "../../utils/spriteUtils";
+
 import CustomButton from "../CustomButton";
 
 export default function QuotesGame({ gameState, updateGameState, isMobilePortrait, isMuted }) {
@@ -103,6 +105,7 @@ export default function QuotesGame({ gameState, updateGameState, isMobilePortrai
                         <CustomButton
                             variant="submit"
                             label="Submit"
+                            icon={"/images/submit-button.webp"}
                             onClick={() => handleGuess(false)}
                             isMuted={isMuted}
                             className={!selectedVillager ? "opacity-50 pointer-events-none" : ""}
@@ -154,11 +157,22 @@ export default function QuotesGame({ gameState, updateGameState, isMobilePortrai
                                         >
                                             {viewMode === "grid" ? (
                                                 <div className="flex flex-col items-center">
-                                                    <div className="w-10 h-10 bg-black/10 mb-1 rounded-full" /> {/* Sprite placeholder */}
+
+                                                    {/* THE NEW SPRITE DIV */}
+                                                    <div
+                                                        // Assuming your spritesheet is named "villagers.png"
+                                                        style={getSpriteStyle("villagers", villager.index, 0, 128)}
+                                                        className="scale-75 mb-1"
+                                                    />
+
                                                     <span className="text-sm">{formatName(villager.name)}</span>
                                                 </div>
                                             ) : (
-                                                <div className="text-left text-lg">{formatName(villager.name)}</div>
+                                                <div className="flex items-center gap-3">
+                                                    {/* Optional list-view sprite */}
+                                                        <div style={getSpriteStyle("villagers", villager.index, 0, 128)} className="scale-50 -ml-2" />
+                                                    <div className="text-left text-lg">{formatName(villager.name)}</div>
+                                                </div>
                                             )}
                                         </button>
                                     ))}
