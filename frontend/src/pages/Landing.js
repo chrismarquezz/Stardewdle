@@ -44,17 +44,17 @@ export default function Landing() {
             />
             <CustomButton
               variant="menu"
-              icon="/images/landing/collections-button.webp"
-              label="Collections"
-              isMuted={isMuted}
-              onClick={() => navigate("/collections")}
-            />
-            <CustomButton
-              variant="menu"
               icon="/images/landing/minigames-button.webp"
               label="Minigames"
               isMuted={isMuted}
               onClick={() => navigate("/minigames")}
+            />
+            <CustomButton
+              variant="menu"
+              icon="/images/landing/collections-button.webp"
+              label="Collections"
+              isMuted={isMuted}
+              onClick={() => navigate("/collections")}
             />
             <div className="flex gap-4">
               <CustomButton

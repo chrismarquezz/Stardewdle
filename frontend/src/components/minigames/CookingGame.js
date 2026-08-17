@@ -89,7 +89,7 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
             </div>
 
             {/* --- ANSWER HISTORY SECTION --- */}
-            <div className="w-full max-w-xl mb-4 flex flex-col gap-2">
+            <div className="w-full max-w-xl mb-4 flex flex-row gap-2">
                 {gameState.guesses.map((guess, idx) => {
                     const isCorrect = guess === targetFood.name;
                     return (
@@ -145,7 +145,8 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
 
                             {/* Scrollable Options */}
                             <div className={`overflow-y-auto flex-1 p-2 ${scrollbarStyles}`}>
-                                <div className={viewMode === "grid" ? `grid gap-2 grid-cols-${cols}` : "flex flex-col gap-2"}>
+                                <div className={viewMode === "grid" ? `grid gap-2 grid-cols-${cols}` : "flex flex-col gap-2"}
+                                    style={{ columns: viewMode === "grid" ? cols : 1 }}>
                                     {cooking?.foods?.map(food => (
                                         <button
                                             key={food.name}
@@ -169,6 +170,17 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
                                                     <div className="text-left text-lg">{formatName(food.name)}</div>
                                                 </div>
                                             )}
+                                            <div
+                                                className="absolute -top-5 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-medium text-[#BC6131] text-center transition-opacity duration-300 opacity-0 group-hover:opacity-100 pointer-events-none z-50 whitespace-nowrap"
+                                                style={{
+                                                    backgroundImage: "url('/images/label.webp')",
+                                                    backgroundSize: "100% 100%",
+                                                    backgroundRepeat: "no-repeat",
+                                                    height: "28px",
+                                                }}
+                                            >
+                                                {formatName(food.name)}
+                                            </div>
                                         </button>
                                     ))}
                                 </div>
