@@ -277,7 +277,6 @@ export default function GameBox({ isMobilePortrait }) {
     }
 
     try {
-      // Assuming you still want to send the guess to Lambda for analytics
       const response = await fetch(import.meta.env.VITE_API_URL + "/guess", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -328,7 +327,7 @@ export default function GameBox({ isMobilePortrait }) {
       style={{
         backgroundImage: isMobilePortrait
           ? "url('/images/game/box-bg-sm.webp')"
-          : "url('/images/game//box-bg.webp')",
+          : "url('/images/game/box-bg.webp')",
         backgroundSize: "100% 100%",
         width: isMobilePortrait ? "1500px" : "1600px",
         height: isMobilePortrait ? "940px" : "800px",
@@ -405,7 +404,7 @@ export default function GameBox({ isMobilePortrait }) {
                 )}
                 <CustomButton
                   variant="share"
-                  icon={"/images/game//share-button.webp"}
+                  icon={"/images/game/share-button.webp"}
                   label={"Share"}
                   soundPath={"/sounds/modal.mp3"}
                   isMuted={isMuted}
@@ -438,7 +437,7 @@ export default function GameBox({ isMobilePortrait }) {
           className={`${isMobilePortrait ? "ml-2 pl-6 pb-2" : "pl-9 mr-[78px]"
             } mb-[84px] bg-center bg-no-repeat bg-contain min-h-[440px]`}
           style={{
-            backgroundImage: "url('/images/game//guesses.webp')",
+            backgroundImage: "url('/images/game/guesses.webp')",
             width: isMobilePortrait ? "750px" : "772px",
             height: "456px",
           }}
@@ -469,7 +468,7 @@ export default function GameBox({ isMobilePortrait }) {
 
         <CustomButton
           variant="icon"
-          icon={Object.values(hints).some((value) => value) ? "/images/game//hint-on.webp" : "/images/game//hint-off.webp"}
+          icon={Object.values(hints).some((value) => value) ? "/images/game/hint-on.webp" : "/images/game/hint-off.webp"}
           label="View Hints"
           isMuted={isMuted}
           onClick={() => {

@@ -21,7 +21,6 @@ const staticGameData =
             name: "food",
             label: "Home Cook's",
             bundleNum: 1,
-            imgPath: "homeCook",
             pos: "top-[25%] left-[50%]",
         },
         {
@@ -68,7 +67,7 @@ export default function MinigamesBox({ isMobilePortrait }) {
     const [showHelp, setShowHelp] = useState(false);
     const [timeLeft, setTimeLeft] = useState(getTimeUntilMidnightUTC());
 
-    const [selectedGame, setSelectedGame] = useState("");
+    const [selectedGame, setSelectedGame] = useState("food");
     const [selectedGameData, setSelectedGameData] = useState(null);
     const [isGameSelected, setIsGameSelected] = useState(false);
 
@@ -248,29 +247,29 @@ export default function MinigamesBox({ isMobilePortrait }) {
             </h2>
 
 
-                {/* --- COMPLETION UI --- */}
-                {allBundlesComplete && !isGameSelected && (
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-3 bg-[#ffdfa6] border-4 border-[#d5a05a] px-6 py-2 rounded-xl">
-                        {/* Stardew Star / Junimo Icon */}
-                        <div
-                            className="w-12 h-12 bg-no-repeat bg-contain"
-                            style={{ backgroundImage: "url('/images/stardrop.webp')" }}
-                        />
-                        <div className="flex flex-col text-left">
-                            <span className="text-xl font-bold text-[#1E9365]">Community Center Restored!</span>
-                            <span className="text-md text-[#BC6131] font-medium">
-                                Total Restorations Today: {globalCompletions}
-                            </span>
-                        </div>
+            {/* --- COMPLETION UI --- */}
+            {allBundlesComplete && !isGameSelected && (
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-3 bg-[#ffdfa6] border-4 border-[#d5a05a] px-6 py-2 rounded-xl">
+                    {/* Stardew Star / Junimo Icon */}
+                    <div
+                        className="w-12 h-12 bg-no-repeat bg-contain"
+                        style={{ backgroundImage: "url('/images/stardrop.webp')" }}
+                    />
+                    <div className="flex flex-col text-left">
+                        <span className="text-xl font-bold text-[#1E9365]">Community Center Restored!</span>
+                        <span className="text-md text-[#BC6131] font-medium">
+                            Total Restorations Today: {globalCompletions}
+                        </span>
                     </div>
-                )}
+                </div>
+            )}
 
             {isGameSelected ?
                 (
                     <div
                         className={`relative bg-no-repeat bg-center ${isMobilePortrait
                             ? "gamebox-mobile-layout"
-                            : "mt-[16px] ml-[103px]"
+                            : "mt-[24px] ml-[103px]"
                             }`}
                         style={{
                             backgroundImage: isMobilePortrait
@@ -295,48 +294,8 @@ export default function MinigamesBox({ isMobilePortrait }) {
                                 isMobilePortrait={isMobilePortrait}
                             />
                         </div>
-                        
 
-                        <div
-                            className={`flex flex-row items-center h-full gap-4`}
-                        >
-                            <div
-                                className="relative bg-no-repeat bg-contain flex justify-center items-center"
-                                style={{
-                                    backgroundImage: "url('/images/selected-frame.webp')",
-                                    width: "240px",
-                                    height: "164px",
-                                }}
-                            >
-                                {isGameSelected && (
-                                    <div
-                                        style={{
-                                            backgroundImage: `url('/images/minigames/bundleIcons/${selectedGameData.imgPath}.webp')`,
-                                            imageRendering: 'pixelated',
-                                        }}
-                                        className="absolute h-[108px] w-[176px] bg-no-repeat bg-contain bg-center"
-                                        title={selectedGameData.label+" Bundle"}
-                                    />
-                                )}
-                            </div>
-                            {renderMinigame()}
-                            {/*<div className="flex flex-col items-center">
-                                <div
-                                    className="flex items-center justify-center bg-center bg-no-repeat bg-contain"
-                                    style={{
-                                        backgroundImage: "url('/images/name-banner.webp')",
-                                        width: "416px",
-                                        height: "76px",
-                                    }}
-                                >
-                                    <p className="text-5xl text-center text-[#BC6131] tracking-wide">
-                                        {isGameSelected ? selectedGameData.label+" Bundle" : ""}
-                                    </p>
-                                </div>
-                                
-                            </div>*/}
-                        </div>
-
+                        {renderMinigame()}
 
                     </div>
                 ) : (

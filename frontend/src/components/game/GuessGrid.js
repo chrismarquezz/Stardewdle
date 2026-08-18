@@ -142,10 +142,11 @@ export default function GuessGrid({ guesses, answer, className }) {
         >
           {/* Color overlay */}
           <div
-            className={`w-[75%] h-[75%] absolute inset-0 m-auto z-0 rounded-sm opacity-90 mix-blend-multiply ${cropColor === "green"
-              ? "bg-cyan-500"
+            className={`w-[75%] h-[75%] absolute z-0 opacity-90 mix-blend-multiply 
+               ${cropColor === "green"
+                ? "bg-cyan-500"
                 : cropColor === "red"
-                ? "bg-red-700"
+                  ? "bg-red-700"
                   : "bg-white"
               }`}
           />
