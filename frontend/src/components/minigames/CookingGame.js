@@ -9,14 +9,13 @@ import CustomButton from "../CustomButton";
 export default function CookingGame({ gameState, updateGameState, isMobilePortrait, isMuted }) {
     const { cooking, dailyData } = useGameData();
 
-    // Extract today's target food from the daily index
     const targetFoodIndex = dailyData?.dailyItems?.cooking;
     const targetFood = cooking?.foods?.[targetFoodIndex];
 
     const [selectedFood, setSelectedFood] = useState(null);
     const [showPicker, setShowPicker] = useState(false);
-    const [viewMode, setViewMode] = useState("grid"); // 'grid' or 'list'
-    const [cols, setCols] = useState(4); // Toggle column count
+    const [viewMode, setViewMode] = useState("grid");
+    const [cols, setCols] = useState(4);
 
     if (!targetFood) {
         console.log("NO FOOD");
@@ -25,11 +24,9 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
         return null;
     }
 
-    // Dynamically build an alphabetical list of all unique ingredients
     const masterIngredientList = useMemo(() => {
         if (!cooking) return [];
 
-        // Handle both flat arrays and dictionary wrappers just in case
         const foodsArray = Array.isArray(cooking) ? cooking : cooking.foods || [];
 
         const uniqueIngredients = new Set();
@@ -39,7 +36,6 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
             }
         });
 
-        // Sort alphabetically to perfectly match your Row 1 spritesheet indices
         return Array.from(uniqueIngredients).sort((a, b) => a.localeCompare(b));
     }, [cooking]);
 
@@ -49,12 +45,11 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
         const isCorrect = selectedFood.name === targetFood.name;
         const newGuesses = [...gameState.guesses, selectedFood.name];
 
-        // Frontend Validation Update
         updateGameState({
             ...gameState,
             guesses: newGuesses,
             win: gameState.win || isCorrect,
-            complete: gameState.complete || isCorrect || newGuesses.length >= 9 // Assuming 6 max guesses
+            complete: gameState.complete || isCorrect || newGuesses.length >= 9
         });
 
         setSelectedFood(null);
@@ -62,13 +57,9 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
         if (!isMuted) new Audio(isCorrect ? "/sounds/reward.mp3" : "/sounds/sell.mp3").play();
     };
     return (
-        <div
-            className={`flex flex-row items-center h-full gap-4`}
-        >
+        <div className={`flex flex-row items-center h-full gap-4`}>
             <div className="flex flex-col justify-center items-center w-1/2 h-full p-4 relative gap-4">
-                <div
-                    className="relative bg-no-repeat bg-cover w-[240px] aspect-[60/41] bg-[url('/images/selected-frame.webp')]"
-                >
+                <div className="relative bg-no-repeat bg-cover w-[240px] aspect-[60/41] bg-[url('/images/selected-frame.webp')]">
                     <div
                         style={{
                             backgroundImage: `url('/images/minigames/bundleIcons/homeCook.webp')`,
@@ -233,7 +224,7 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
                         </div>
 
                         {showPicker && (
-                            <div className="absolute top-0 bg-[#fcedd2] border-4 border-[#d5a05a] rounded-xl w-full h-[350px] p-4 z-50 flex flex-col shadow-2xl">
+                            <div className="absolute top-0 bg-[#fcedd2] border-4 border-[#d5a05a] rounded-xl w-full h-full p-4 z-50 flex flex-col shadow-2xl">
 
                                 <div className="flex justify-between mb-4 pb-2 border-b-2 border-[#d5a05a]">
                                     <button onClick={() => setViewMode(v => v === "grid" ? "list" : "grid")} className="bg-[#d5a05a] text-white px-3 py-1 rounded font-bold">
@@ -298,6 +289,5 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
                 )}
             </div>
         </div>
-
     );
 }

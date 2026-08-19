@@ -67,7 +67,7 @@ export default function MinigamesBox({ isMobilePortrait }) {
     const [showHelp, setShowHelp] = useState(false);
     const [timeLeft, setTimeLeft] = useState(getTimeUntilMidnightUTC());
 
-    const [selectedGame, setSelectedGame] = useState("food");
+    const [selectedGame, setSelectedGame] = useState("npc");
     const [selectedGameData, setSelectedGameData] = useState(null);
     const [isGameSelected, setIsGameSelected] = useState(false);
 
@@ -281,7 +281,7 @@ export default function MinigamesBox({ isMobilePortrait }) {
                         }}
                     >
                         <div
-                            className={`absolute flex top-2 left-2 `}
+                            className={`absolute flex top-2 left-2 z-10`}
                         >
                             <CustomButton
                                 variant="share"

@@ -8,19 +8,17 @@ import CustomButton from "../CustomButton";
 export default function QuotesGame({ gameState, updateGameState, isMobilePortrait, isMuted }) {
     const { quotes, dailyData } = useGameData();
 
-    // Extract today's target villager and their 5 daily quotes
     const targetVillagerIndex = dailyData?.dailyItems?.villager?.index;
     const targetVillager = quotes?.[targetVillagerIndex];
     const quoteIndices = dailyData?.dailyItems?.villager?.quotes || [];
 
     const [selectedVillager, setSelectedVillager] = useState(null);
     const [showPicker, setShowPicker] = useState(false);
-    const [viewMode, setViewMode] = useState("grid"); // 'grid' or 'list'
-    const [cols, setCols] = useState(4); // Toggle column count
+    const [viewMode, setViewMode] = useState("grid");
+    const [cols, setCols] = useState(4);
 
     if (!targetVillager) return null;
 
-    // Retrieve the actual text for the 5 selected quotes
     const dailyQuotes = quoteIndices.map(qIdx => {
         const qObj = targetVillager.quotes.find(q => q.index === qIdx);
         return qObj ? qObj.quote : "???";
@@ -29,10 +27,9 @@ export default function QuotesGame({ gameState, updateGameState, isMobilePortrai
     const maxGuesses = 5;
     const currentGuesses = gameState.guesses || [];
 
-    // 1st quote is free. Each wrong guess unlocks the next quote.
     const revealedCount = Math.min(currentGuesses.length + 1, maxGuesses);
 
-    const handleGuess = (isSkip = false) => {
+    const handleSubmit = (isSkip = false) => {
         if (gameState.complete) return;
         if (!isSkip && !selectedVillager) return;
 
@@ -58,141 +55,203 @@ export default function QuotesGame({ gameState, updateGameState, isMobilePortrai
     };
 
     return (
-        <div className="flex flex-col items-center w-full h-full p-4 pl-32 relative">
+        <div className={`flex flex-row items-center h-full gap-4`}>
+            <div className="flex flex-col justify-center items-center w-1/2 h-full p-4 relative gap-4">
+                <div className="relative bg-no-repeat bg-cover w-[240px] aspect-[60/41] bg-[url('/images/selected-frame.webp')]">
+                    <div
+                        style={{
+                            backgroundImage: `url('/images/minigames/bundleIcons/helpher.webp')`,
+                            imageRendering: 'pixelated',
+                        }}
+                        className="absolute top-[16px] left-1/2 -translate-x-1/2 bg-cover h-[128px] w-[128px] bg-no-repeat"
+                    />
+                </div>
+                <div className="flex flex-col gap-1 justify-center items-center bg-[url('/images/game/guesses.webp')] bg-no-repeat p-4 bg-contain bg-center aspect-[5/3]">
+                    <h3 className="text-5xl text-[#BC6131]">Who said this?</h3>
 
-            {/* --- CLUES SECTION --- */}
-            <div className="w-full max-w-2xl bg-[#fcedd2] border-4 border-[#d5a05a] rounded-xl p-4 mb-4 flex flex-col gap-2 shadow-sm">
-                <h3 className="text-2xl font-bold text-[#BC6131] mb-2 text-center">Who said this?</h3>
-
-                {dailyQuotes.map((quoteText, idx) => {
-                    const isRevealed = idx < revealedCount || gameState.complete;
-                    return (
-                        <div key={idx} className={`p-3 border-2 rounded ${isRevealed ? 'bg-[#ffdfa6] border-[#d5a05a]' : 'bg-[#e5cfa8] border-[#c4a97e] opacity-60'}`}>
-                            {isRevealed ? (
-                                <p className="text-[#BC6131] font-bold italic text-lg">"{quoteText}"</p>
-                            ) : (
-                                <p className="text-[#a88a5e] font-bold text-center">Locked (Incorrect guess to reveal)</p>
-                            )}
-                        </div>
-                    );
-                })}
+                    {dailyQuotes.map((quoteText, idx) => {
+                        const isRevealed = idx < revealedCount || gameState.complete;
+                        if (idx >= revealedCount + 1 && !gameState.complete) return <></>;
+                        return (
+                            <div key={idx} className={`w-[90%] px-1 bg-white ${isRevealed ? 'bg-opacity-30' : 'opacity-80'}`}>
+                                {isRevealed ? (
+                                    <p className="text-[#BC6131] italic text-2xl text-center">{quoteText}</p>
+                                ) : (
+                                    <p className="text-[#a88a5e] font-bold text-center">Locked (Incorrect guess to reveal)</p>
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
+            <div className="flex flex-col justify-center items-center w-1/2 h-full p-4 relative gap-4"
+                style={{
+                    backgroundImage: "url('/images/game/cropgrid-bg.webp')",
+                    backgroundSize: "90% 90%",
+                    backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat",
+                }}>
+                <div className={`grid grid-cols-3 gap-2 items-center justify-center max-h-1/2`}>
+                    {currentGuesses.map((guess, idx) => {
+                        const isCorrect = guess === targetVillager.name;
 
-            {/* --- ANSWER HISTORY SECTION --- */}
-            <div className="w-full max-w-xl mb-4 flex flex-col gap-2">
-                {currentGuesses.map((guess, idx) => {
-                    const isCorrect = guess === targetVillager.name;
-                    return (
-                        <div key={idx} className={`p-2 border-2 rounded text-center text-xl font-bold text-white
-                            ${isCorrect ? "bg-green-600 border-green-800" : "bg-red-500 border-red-700"}`}>
-                            {formatName(guess)}
-                        </div>
-                    );
-                })}
-            </div>
+                        const villagerArray = Array.isArray(quotes) ? quotes : quotes || [];
 
-            {/* --- INPUT & SELECTION SECTION --- */}
-            {!gameState.complete && (
-                <div className="flex flex-col items-center w-full max-w-2xl relative">
-                    <div className="flex gap-4 items-center">
-                        <button
-                            onClick={() => setShowPicker(!showPicker)}
-                            className="bg-[#ffdfa6] border-4 border-[#d5a05a] px-6 py-3 rounded-xl text-2xl font-bold text-[#BC6131] hover:bg-[#ffecc2] active:scale-95 transition-transform"
-                        >
-                            {selectedVillager ? formatName(selectedVillager.name) : "Select a Villager..."}
-                        </button>
+                        const guessedVillagerObj = villagerArray.find(item => item.name === guess);
+                        const spriteIndex = guessedVillagerObj?.index ?? 0;
+                        return (
+                            <div
+                                className="relative h-[72px] w-[72px] flex items-center justify-center"
+                                style={{
+                                    backgroundImage: "url('/images/game/boxSquare.webp')",
+                                    backgroundSize: "100% 100%",
+                                    backgroundPosition: "center",
+                                    backgroundRepeat: "no-repeat",
+                                }}
+                            >
+                                <div
+                                    className={`w-[75%] h-[75%] absolute z-0 opacity-90 mix-blend-multiply ${isCorrect ? "bg-cyan-500" : "bg-red-700"}`}
+                                />
+                                <div className="group w-[63px] h-[63px] flex items-center justify-center">
+                                    <div
+                                        style={getSpriteStyle("npc", spriteIndex, 1)}
+                                        className="z-10 scale-[87.5%]"
+                                        title={formatName(guess)}
+                                    />
+                                    <div
+                                        className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-medium text-[#BC6131] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
+                                        style={{
+                                            backgroundImage: "url('/images/label.webp')",
+                                            backgroundSize: "100% 100%",
+                                            backgroundRepeat: "no-repeat",
+                                            height: "28px",
+                                        }}
+                                    >
+                                        {formatName(guess)}
+                                    </div>
+                                </div>
 
-                        <CustomButton
-                            variant="submit"
-                            label="Submit"
-                            icon={"/images/submit-button.webp"}
-                            onClick={() => handleGuess(false)}
-                            isMuted={isMuted}
-                            className={!selectedVillager ? "opacity-50 pointer-events-none" : ""}
-                        />
-
-                        {/* Skip Button */}
-                        <button
-                            onClick={() => handleGuess(true)}
-                            className="bg-gray-400 border-4 border-gray-500 px-4 py-3 rounded-xl text-xl font-bold text-white hover:bg-gray-500 active:scale-95 transition-transform"
-                        >
-                            Skip
-                        </button>
+                            </div>
+                        );
+                    })}
+                </div>
+                <div
+                    className="flex items-center justify-center bg-center bg-no-repeat bg-contain"
+                    style={{
+                        backgroundImage: "url('/images/name-banner.webp')",
+                        width: "416px",
+                        height: "76px",
+                    }}
+                >
+                    <p className="text-5xl text-center text-[#BC6131] tracking-wide">
+                        {gameState.complete
+                            ? formatName(targetVillager.name)
+                            : selectedVillager
+                                ? formatName(selectedVillager.name)
+                                : "Select a Villager..."
+                        }
+                    </p>
+                </div>
+                {gameState.complete ? (
+                    <div className="text-3xl font-bold">
+                        {gameState.win ? (
+                            <span className="text-[#1E9365]">Bundle Completed!</span>
+                        ) : (
+                            <span className="text-[#BE2617]">Out of guesses!</span>
+                        )}
                     </div>
+                ) : (
+                    <>
+                        <div className="flex gap-4 items-center">
+                            <button
+                                onClick={() => setShowPicker(!showPicker)}
+                                className="group relative h-[72px] w-[72px] flex items-center justify-center clickable"
+                                style={{
+                                    backgroundImage: "url('/images/game/boxSquare.webp')",
+                                    backgroundSize: "100% 100%",
+                                    backgroundPosition: "center",
+                                    backgroundRepeat: "no-repeat",
+                                }}
+                            >
+                                {selectedVillager ?
+                                    <div
+                                        style={getSpriteStyle("villagers", selectedVillager.index)}
+                                        className="z-10 scale-[87.5%] clickable"
+                                        title={formatName(selectedVillager.name)}
+                                    />
+                                    : <></>
+                                }
+                                <div className="absolute inset-0 bg-white/50 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none rounded-[12px]"
+                                />
 
-                    {/* Word Bank / Picker Modal */}
-                    {showPicker && (
-                        // Placed to open upwards (bottom-[120%]) to avoid colliding with the bottom of the screen
-                        <div className="absolute bottom-[120%] bg-[#fcedd2] border-4 border-[#d5a05a] rounded-xl w-full h-[350px] p-4 z-50 flex flex-col shadow-2xl">
+                            </button>
 
-                            {/* Picker Controls */}
-                            <div className="flex justify-between mb-4 pb-2 border-b-2 border-[#d5a05a]">
-                                <button onClick={() => setViewMode(v => v === "grid" ? "list" : "grid")} className="bg-[#d5a05a] text-white px-3 py-1 rounded font-bold hover:bg-[#c98a42]">
-                                    Toggle {viewMode === "grid" ? "List" : "Grid"}
-                                </button>
-                                {viewMode === "grid" && (
-                                    <div className="flex gap-2 items-center text-[#BC6131] font-bold">
-                                        Cols:
-                                        {[3, 4, 5, 6].map(num => (
-                                            <button key={num} onClick={() => setCols(num)} className={`px-2 py-1 rounded ${cols === num ? 'bg-[#BC6131] text-white' : 'bg-white/50 hover:bg-white/80'}`}>
-                                                {num}
+                            <CustomButton
+                                variant="submit"
+                                label="Submit"
+                                icon={"/images/submit-button.webp"}
+                                onClick={handleSubmit}
+                                isMuted={isMuted}
+                                className={!selectedVillager ? "opacity-50 pointer-events-none" : ""}
+                            />
+                        </div>
+
+                        {showPicker && (
+                            <div className="absolute top-0 bg-[#fcedd2] border-4 border-[#d5a05a] rounded-xl w-full h-full p-4 z-50 flex flex-col shadow-2xl">
+
+                                <div className="flex justify-between mb-4 pb-2 border-b-2 border-[#d5a05a]">
+                                    <button onClick={() => setViewMode(v => v === "grid" ? "list" : "grid")} className="bg-[#d5a05a] text-white px-3 py-1 rounded font-bold hover:bg-[#c98a42]">
+                                        Toggle {viewMode === "grid" ? "List" : "Grid"}
+                                    </button>
+                                    {viewMode === "grid" && (
+                                        <div className="flex gap-2 items-center text-[#BC6131] font-bold">
+                                            Cols:
+                                            {[3, 4, 5, 6].map(num => (
+                                                <button key={num} onClick={() => setCols(num)} className={`px-2 py-1 rounded ${cols === num ? 'bg-[#BC6131] text-white' : 'bg-white/50 hover:bg-white/80'}`}>
+                                                    {num}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="overflow-y-auto flex-1 p-2">
+                                    <div className={viewMode === "grid" ? `grid gap-2 grid-cols-${cols}` : "flex flex-col gap-2"}>
+                                        {quotes.map(villager => (
+                                            <button
+                                                key={villager.name}
+                                                onClick={() => {
+                                                    setSelectedVillager(villager);
+                                                    setShowPicker(false);
+                                                }}
+                                                className={`p-2 border-2 rounded font-bold text-[#BC6131] hover:bg-[#ffecc2] transition-colors
+                                            ${selectedVillager?.name === villager.name ? "bg-[#ffecc2] border-[#BC6131]" : "bg-white border-[#d5a05a]"}`}
+                                            >
+                                                {viewMode === "grid" ? (
+                                                    <div className="flex flex-col items-center">
+
+                                                        <div
+                                                            style={getSpriteStyle("villagers", villager.index, 0, 128)}
+                                                            className="scale-75 mb-1"
+                                                        />
+
+                                                        <span className="text-sm">{formatName(villager.name)}</span>
+                                                    </div>
+                                                ) : (
+                                                    <div className="flex items-center gap-3">
+                                                        <div style={getSpriteStyle("villagers", villager.index, 0, 128)} className="scale-50 -ml-2" />
+                                                        <div className="text-left text-lg">{formatName(villager.name)}</div>
+                                                    </div>
+                                                )}
                                             </button>
                                         ))}
                                     </div>
-                                )}
-                            </div>
-
-                            {/* Scrollable Options */}
-                            <div className="overflow-y-auto flex-1 p-2">
-                                <div className={viewMode === "grid" ? `grid gap-2 grid-cols-${cols}` : "flex flex-col gap-2"}>
-                                    {quotes.map(villager => (
-                                        <button
-                                            key={villager.name}
-                                            onClick={() => {
-                                                setSelectedVillager(villager);
-                                                setShowPicker(false);
-                                            }}
-                                            className={`p-2 border-2 rounded font-bold text-[#BC6131] hover:bg-[#ffecc2] transition-colors
-                                                ${selectedVillager?.name === villager.name ? "bg-[#ffecc2] border-[#BC6131]" : "bg-white border-[#d5a05a]"}`}
-                                        >
-                                            {viewMode === "grid" ? (
-                                                <div className="flex flex-col items-center">
-
-                                                    {/* THE NEW SPRITE DIV */}
-                                                    <div
-                                                        // Assuming your spritesheet is named "villagers.png"
-                                                        style={getSpriteStyle("villagers", villager.index, 0, 128)}
-                                                        className="scale-75 mb-1"
-                                                    />
-
-                                                    <span className="text-sm">{formatName(villager.name)}</span>
-                                                </div>
-                                            ) : (
-                                                <div className="flex items-center gap-3">
-                                                    {/* Optional list-view sprite */}
-                                                        <div style={getSpriteStyle("villagers", villager.index, 0, 128)} className="scale-50 -ml-2" />
-                                                    <div className="text-left text-lg">{formatName(villager.name)}</div>
-                                                </div>
-                                            )}
-                                        </button>
-                                    ))}
                                 </div>
                             </div>
-                        </div>
-                    )}
-                </div>
-            )}
-
-            {/* Game Over Message */}
-            {gameState.complete && (
-                <div className="mt-4 text-3xl font-bold">
-                    {gameState.win ? (
-                        <span className="text-green-600">You guessed it!</span>
-                    ) : (
-                        <span className="text-red-500">Out of guesses! The villager was {formatName(targetVillager.name)}.</span>
-                    )}
-                </div>
-            )}
-        </div>
+                        )}
+                    </>
+                )}
+            </div>
+        </div >
     );
 }
