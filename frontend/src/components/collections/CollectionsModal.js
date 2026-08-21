@@ -32,16 +32,16 @@ export default function CollectionsModal({ isMuted, onClose, scaleFactor }) {
         >
           <button
             onClick={playCloseSound}
-            className="clickable absolute top-0 text-[#BC6131] text-4xl md:text-6xl hover:text-red-500"
+            className="clickable absolute top-0 text-main text-4xl md:text-6xl hover:text-red-500"
           >
             x
           </button>
 
-          <h2 className="text-[#BC6131] text-center text-2xl md:text-5xl font-semibold mb-2">
+          <h2 className="text-main text-center text-2xl md:text-5xl font-semibold mb-2">
             Collections Page
           </h2>
 
-          <div className={`space-y-2 md:space-y-4 text-[#BC6131] text-left text-md sm:text-2xl md:text-3xl leading-none overflow-y-auto max-h-[70vh] pr-2 mb-4 ${scrollbarStyles}`}>
+          <div className={`space-y-2 md:space-y-4 text-main text-left text-md sm:text-2xl md:text-3xl leading-none overflow-y-auto max-h-[70vh] pr-2 mb-4 ${scrollbarStyles}`}>
             <p>- Browse through all the crops from Stardew Valley</p>
             <p>- Click on any crop to view information such as:</p>
             <ul className="list-disc ml-6 md:ml-10">

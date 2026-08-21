@@ -31,16 +31,16 @@ export default function UpdatesModal({ isMuted, onClose, scaleFactor }) {
         >
           <button
             onClick={playCloseSound}
-            className="clickable absolute top-0 left-3 md:left-6 text-[#BC6131] text-4xl md:text-7xl hover:text-red-500"
+            className="clickable absolute top-0 left-3 md:left-6 text-main text-4xl md:text-7xl hover:text-red-500"
           >
             x
           </button>
 
-          <h2 className="text-[#BC6131] text-center text-2xl md:text-5xl font-semibold mb-2">
+          <h2 className="text-main text-center text-2xl md:text-5xl font-semibold mb-2">
             What's New
           </h2>
 
-          <div className={`space-y-2 md:space-y-4 text-[#BC6131] text-left text-md sm:text-2xl md:text-3xl leading-none overflow-y-auto max-h-[70vh] pr-2 ${scrollbarStyles}`}>
+          <div className={`space-y-2 md:space-y-4 text-main text-left text-md sm:text-2xl md:text-3xl leading-none overflow-y-auto max-h-[70vh] pr-2 ${scrollbarStyles}`}>
             <div>
               <p className="font-semibold">v2.0 — August 2026</p>
               <ul className="list-disc ml-6 md:ml-10">
@@ -145,7 +145,7 @@ export default function UpdatesModal({ isMuted, onClose, scaleFactor }) {
               </ul>
             </div>
           </div>
-          <div className="space-y-2 md:space-y-4 text-[#BC6131] text-left text-md sm:text-2xl md:text-3xl leading-none mt-4 italic ">
+          <div className="space-y-2 md:space-y-4 text-main text-left text-md sm:text-2xl md:text-3xl leading-none mt-4 italic ">
             <p>
               Future updates will appear here as new changes are made!
             </p>

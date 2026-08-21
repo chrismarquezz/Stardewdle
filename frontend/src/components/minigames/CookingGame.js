@@ -69,7 +69,7 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
                     />
                 </div>
                 <div className="flex flex-col justify-center items-center bg-[url('/images/game/guesses.webp')] bg-no-repeat p-4 bg-contain bg-center aspect-[5/3]">
-                    <h3 className="text-5xl text-[#BC6131] pb-4">Ingredients Needed:</h3>
+                    <h3 className="text-5xl text-main pb-4">Ingredients Needed:</h3>
 
                     <div className="flex gap-4 pb-8">
                         {Object.entries(targetFood.ingredients).map(([ingName, count]) => {
@@ -78,9 +78,9 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
                             return (
                                 <div className="flex flex-col justify-center items-center gap-2 p-2">
                                     <div
-                                        className={`w-16 h-16 p-1 flex items-center justify-center`}
+                                        className={`w-18 h-18 p-1 flex items-center justify-center`}
                                         style={{
-                                            backgroundImage: "url('/images/game/tile-bg.webp')",
+                                            backgroundImage: "url('/images/minigames/minigameCard.webp')",
                                             backgroundSize: "cover",
                                             backgroundPosition: "center",
                                             scale: isMobilePortrait ? "1.1" : "1",
@@ -88,12 +88,12 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
                                     >
                                         <div
                                             style={getSpriteStyle("cooking", ingredientIndex, 0)}
-                                            className="w-full h-full m-[2px] ml-[6px] mb-[6px] z-10"
+                                            className="w-full h-full m-2 z-10"
                                         />
                                     </div>
 
                                     <div
-                                        className="relative -bottom-1 px-3 py-1 flex items-center justify-center text-xl font-medium text-[#BC6131] text-center whitespace-nowrap"
+                                        className="relative -bottom-1 px-3 py-1 flex items-center justify-center text-xl font-medium text-main text-center whitespace-nowrap"
                                         style={{
                                             backgroundImage: "url('/images/label.webp')",
                                             backgroundSize: "100% 100%",
@@ -142,10 +142,9 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
                                     <div
                                         style={getSpriteStyle("cooking", spriteIndex, 1)}
                                         className="z-10 scale-[87.5%]"
-                                        title={formatName(guess)}
                                     />
                                     <div
-                                        className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-medium text-[#BC6131] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
+                                        className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-medium text-main text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
                                         style={{
                                             backgroundImage: "url('/images/label.webp')",
                                             backgroundSize: "100% 100%",
@@ -170,7 +169,7 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
                         height: "76px",
                     }}
                 >
-                    <p className="text-5xl text-center text-[#BC6131] tracking-wide">
+                    <p className="text-5xl text-center text-main tracking-wide">
                         {gameState.complete
                             ? formatName(targetFood.name)
                             : selectedFood
@@ -182,9 +181,9 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
                 {gameState.complete ? (
                     <div className="text-3xl font-bold">
                         {gameState.win ? (
-                            <span className="text-[#1E9365]">Bundle Completed!</span>
+                            <span className="text-correct">Bundle Completed!</span>
                         ) : (
-                            <span className="text-[#BE2617]">Out of guesses!</span>
+                            <span className="text-wrong">Out of guesses!</span>
                         )}
                     </div>
                 ) : (
@@ -231,10 +230,10 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
                                         Toggle {viewMode === "grid" ? "List" : "Grid"}
                                     </button>
                                     {viewMode === "grid" && (
-                                        <div className="flex gap-2 items-center text-[#BC6131] font-bold">
+                                        <div className="flex gap-2 items-center text-main font-bold">
                                             Cols:
                                             {[3, 4, 5].map(num => (
-                                                <button key={num} onClick={() => setCols(num)} className={`px-2 py-1 rounded ${cols === num ? 'bg-[#BC6131] text-white' : 'bg-white/50'}`}>
+                                                <button key={num} onClick={() => setCols(num)} className={`px-2 py-1 rounded ${cols === num ? 'bg-main text-white' : 'bg-white/50'}`}>
                                                     {num}
                                                 </button>
                                             ))}
@@ -252,8 +251,8 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
                                                     setSelectedFood(food);
                                                     setShowPicker(false);
                                                 }}
-                                                className={`p-2 border-2 rounded font-bold text-[#BC6131] hover:bg-[#ffecc2] transition-colors
-                                            ${selectedFood?.name === food.name ? "bg-[#ffecc2] border-[#BC6131]" : "bg-white border-[#d5a05a]"}`}
+                                                className={`p-2 border-2 rounded font-bold text-main hover:bg-[#ffecc2] transition-colors
+                                            ${selectedFood?.name === food.name ? "bg-[#ffecc2] border-main" : "bg-white border-[#d5a05a]"}`}
                                             >
                                                 {viewMode === "grid" ? (
                                                     <div className="flex flex-col items-center">
@@ -269,7 +268,7 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
                                                     </div>
                                                 )}
                                                 <div
-                                                    className="absolute -top-5 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-medium text-[#BC6131] text-center transition-opacity duration-300 opacity-0 group-hover:opacity-100 pointer-events-none z-50 whitespace-nowrap"
+                                                    className="absolute -top-5 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-medium text-main text-center transition-opacity duration-300 opacity-0 group-hover:opacity-100 pointer-events-none z-50 whitespace-nowrap"
                                                     style={{
                                                         backgroundImage: "url('/images/label.webp')",
                                                         backgroundSize: "100% 100%",

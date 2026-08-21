@@ -386,7 +386,7 @@ export default function GameBox({ isMobilePortrait }) {
                 height: "76px",
               }}
             >
-              <p className="text-5xl text-center text-[#BC6131] tracking-wide">
+              <p className="text-5xl text-center text-main tracking-wide">
                 {selectedCrop ? formatName(selectedCrop.name) : ""}
               </p>
             </div>
@@ -394,11 +394,11 @@ export default function GameBox({ isMobilePortrait }) {
             {gameOver ? (
               <div className="mt-4 flex items-center justify-center gap-4">
                 {(guesses[5] ? guesses[5].crop.name === correctCrop.name : true) ? (
-                  <p className="text-[#1E9365] text-5xl font-bold whitespace-nowrap">
+                  <p className="text-correct text-5xl font-bold whitespace-nowrap">
                     You guessed it!
                   </p>
                 ) : (
-                  <p className="text-[#BE2617] text-5xl font-bold whitespace-nowrap">
+                  <p className="text-wrong text-5xl font-bold whitespace-nowrap">
                     Better luck next time!
                   </p>
                 )}

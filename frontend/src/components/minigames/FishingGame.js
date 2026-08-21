@@ -8,7 +8,6 @@ import CustomButton from "../CustomButton";
 export default function FishingGame({ gameState, updateGameState, isMobilePortrait, isMuted }) {
     const { fish, dailyData } = useGameData();
 
-    // Extract today's target fish
     const targetFishIndex = dailyData?.dailyItems?.fish;
     const targetFish = fish?.[targetFishIndex];
 
@@ -16,14 +15,22 @@ export default function FishingGame({ gameState, updateGameState, isMobilePortra
 
     if (!targetFish) return null;
 
-    const targetName = targetFish.name.toLowerCase();
+    const targetName = targetFish.name.replace(/[^a-zA-Z\s]/g, "").replace(/\s+/g, " ").trim().toLowerCase();
     const guessedLetters = gameState.guesses || [];
 
-    // Calculate lives based on incorrect guesses
     const incorrectGuesses = guessedLetters.filter(char => !targetName.includes(char));
     const livesLost = incorrectGuesses.length;
     const maxLives = 5;
     const livesRemaining = maxLives - livesLost;
+
+    const ROD_STYLES = [
+        { color: 'bg-[#00ff00] h-[504px]', rod_pos: 'top-[20%]', fish_pos: 'top-[20%]' },
+        { color: 'bg-[#deff00] h-[378px]', rod_pos: 'top-[33%]', fish_pos: 'top-[43%]' },
+        { color: 'bg-[#ffbe00] h-[252px]', rod_pos: 'top-[48%]', fish_pos: 'top-[28%]' },
+        { color: 'bg-[#ff7900] h-[126px]', rod_pos: 'top-[17%]', fish_pos: 'top-[57%]' },
+        { color: 'bg-[#ff0300] h-[28px]', rod_pos: 'top-[22%]', fish_pos: 'top-[82%]' },
+        { color: 'bg-black h-[0px]', rod_pos: 'bottom-[8%]', fish_pos: 'top-[0%] opacity-0' }
+    ];
 
     const KEYBOARD = [
         ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
@@ -37,10 +44,8 @@ export default function FishingGame({ gameState, updateGameState, isMobilePortra
         const newGuesses = [...guessedLetters, selectedLetter];
         const isCorrectGuess = targetName.includes(selectedLetter);
 
-        // Check win/loss conditions
         const newLivesLost = isCorrectGuess ? livesLost : livesLost + 1;
 
-        // Remove spaces to check if all actual letters are guessed
         const uniqueLettersInName = new Set(targetName.replace(/\s/g, '').split(''));
         const hasWon = [...uniqueLettersInName].every(char => newGuesses.includes(char));
         const hasLost = newLivesLost >= maxLives;
@@ -62,59 +67,66 @@ export default function FishingGame({ gameState, updateGameState, isMobilePortra
     };
 
     return (
-        <div className="flex flex-col items-center w-full h-full p-4 pl-32 relative">
-
-            {/* --- LIVES & HINT SECTION --- */}
-            <div className="w-full flex justify-between items-center mb-6 max-w-2xl">
-                <div className="text-2xl font-bold text-[#BC6131] bg-[#fcedd2] border-4 border-[#d5a05a] rounded-xl px-4 py-2 shadow-sm">
-                    Lives: <span className={livesRemaining <= 1 ? "text-red-500" : ""}>{livesRemaining} / {maxLives}</span>
+        <div className={`flex flex-row justify-center items-center h-full gap-4`}>
+            <div className="flex w-1/4 justify-center items-center">
+                <div className="relative bg-no-repeat bg-contain w-[240px] aspect-[60/41] bg-[url('/images/selected-frame.webp')] justify-center items-center">
+                    <div
+                        style={{
+                            backgroundImage: `url('/images/minigames/bundleIcons/qualityFish.webp')`,
+                            imageRendering: 'pixelated',
+                        }}
+                        className="absolute top-[16px] left-1/2 -translate-x-1/2 bg-cover h-[128px] w-[128px] bg-no-repeat"
+                    />
+                </div>
+                <div className="absolute bottom-10 flex w-40 h-40 items-center justify-center bg-[url('/images/minigames/fishCloud.webp')] bg-contain bg-center bg-no-repeat">
+                    <div className="group mt-4 flex w-28 h-28 items-center justify-center bg-[url('/images/minigames/fishFrame.webp')] bg-contain bg-center bg-no-repeat">
+                        {gameState.complete || gameState.hintUsed ? (
+                            <div className="w-20 h-20 flex justify-center items-center overflow-hidden">
+                                <div
+                                    style={{
+                                        ...getSpriteStyle("fish", targetFish.index, 0),
+                                        filter: gameState.complete || gameState.win ? 'none' : 'brightness(0)'
+                                    }}
+                                    className="scale-100 transition-all duration-300"
+                                />
+                            </div>
+                        ) : (
+                            <button
+                                onClick={() => updateGameState({ ...gameState, hintUsed: true })}
+                                className="text-main text-3xl font-bold text-center w-full h-full clickable flex justify-center items-center"
+                            >
+                                <div className="absolute bg-white/50 mix-blend-overlay opacity-0 hover:opacity-100 transition-opacity duration-200 pointer-events-auto w-28 h-28" />
+                                Hint
+                            </button>
+                        )}
+                    </div>
                 </div>
 
-                <div className="flex items-center gap-4">
-                    {gameState.hintUsed ? (
-                        <div className="bg-[#ffdfa6] border-4 border-[#d5a05a] rounded-xl p-2 w-20 h-20 flex justify-center items-center overflow-hidden">
+            </div>
+            <div className={`flex flex-col items-center justify-center h-[95%] w-[44%] gap-16 bg-[url('/images/game/cropgrid-bg.webp')] bg-no-repeat bg-contain bg-center `}>
+                <div className="flex flex-row justify-center items-center w-full px-4 relative gap-4">
+                    <div className="w-full px-6 flex flex-wrap justify-center items-center gap-x-8">
+                        {targetName.split(' ').map((word, wordIndex) => (
+                            <div key={wordIndex} className="flex gap-x-2">
 
-                            <div
-                                style={{
-                                    ...getSpriteStyle("fish", targetFish.index, 0),
-                                    filter: gameState.win ? 'none' : 'brightness(0)'
-                                }}
-                                className="scale-125 transition-all duration-300"
-                            />
+                                {word.split('').map((char, charIndex) => {
+                                    const isRevealed = guessedLetters.includes(char) || gameState.complete;
+                                    const isMissed = gameState.complete && !gameState.win && !guessedLetters.includes(char);
 
-                        </div>
-                    ) : (
-                        <button
-                            onClick={() => updateGameState({ ...gameState, hintUsed: true })}
-                            className="bg-[#d5a05a] text-white font-bold px-4 py-2 rounded-xl border-b-4 border-[#BC6131] active:translate-y-1 active:border-b-0"
-                        >
-                            Reveal Silhouette Hint
-                        </button>
-                    )}
+                                    return (
+                                        <div key={charIndex} className="flex items-center justify-center w-8 h-12 border-b-4 border-main">
+                                            <span className={`text-5xl font-bold uppercase ${isMissed ? 'text-wrong' : 'text-main'}`}>
+                                                {isRevealed ? char : ''}
+                                            </span>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        ))}
+                    </div>
                 </div>
-            </div>
 
-            {/* --- HANGMAN WORD DISPLAY --- */}
-            <div className="w-full max-w-2xl bg-[#fcedd2] border-4 border-[#d5a05a] rounded-xl p-8 mb-8 flex flex-wrap justify-center gap-x-4 gap-y-6 shadow-sm">
-                {targetName.split('').map((char, index) => {
-                    if (char === ' ') return <div key={index} className="w-8" />; // Space between words
-
-                    const isRevealed = guessedLetters.includes(char) || gameState.complete;
-                    const isMissed = gameState.complete && !gameState.win && !guessedLetters.includes(char);
-
-                    return (
-                        <div key={index} className="flex flex-col items-center justify-end w-10 h-12 border-b-4 border-[#BC6131]">
-                            <span className={`text-4xl font-bold uppercase ${isMissed ? 'text-red-500' : 'text-[#BC6131]'}`}>
-                                {isRevealed ? char : ''}
-                            </span>
-                        </div>
-                    );
-                })}
-            </div>
-
-            {/* --- KEYBOARD SECTION --- */}
-            {!gameState.complete && (
-                <div className="flex flex-col items-center gap-2 mb-6">
+                <div className="flex flex-col items-center gap-2">
                     {KEYBOARD.map((row, rowIndex) => (
                         <div key={rowIndex} className="flex gap-2">
                             {row.map(key => {
@@ -124,18 +136,21 @@ export default function FishingGame({ gameState, updateGameState, isMobilePortra
                                 const isWrong = isGuessed && !targetName.includes(letter);
                                 const isSelected = selectedLetter === letter;
 
-                                let keyColors = "bg-[#ffdfa6] text-[#BC6131] border-[#d5a05a] hover:bg-[#ffecc2]";
-                                if (isCorrect) keyColors = "bg-green-500 text-white border-green-700 opacity-80 cursor-default";
-                                else if (isWrong) keyColors = "bg-gray-400 text-white border-gray-600 opacity-50 cursor-default";
-                                else if (isSelected) keyColors = "bg-[#BC6131] text-white border-[#8c431e]";
-
                                 return (
                                     <button
                                         key={key}
-                                        disabled={isGuessed}
+                                        disabled={gameState.complete || isGuessed}
                                         onClick={() => setSelectedLetter(letter)}
-                                        className={`w-10 h-12 sm:w-12 sm:h-14 rounded-lg border-b-4 text-xl sm:text-2xl font-bold transition-colors active:translate-y-1 active:border-b-0 ${keyColors}`}
+                                        className={`w-10 h-10 text-3xl font-bold clickable bg-[url('/images/game/tile-bg.webp')] bg-no-repeat bg-contain bg-center text-main`}
                                     >
+                                        <div
+                                            className={`absolute -translate-y-[2px] w-10 h-10 z-0 
+                                                    ${isCorrect ? "bg-cyan-500 opacity-40 mix-blend-multiply"
+                                                    : isWrong ? "bg-red-700 opacity-40 mix-blend-multiply"
+                                                        : isSelected ? "bg-yellow-100 mix-blend-screen opacity-60"
+                                                            : ""}`
+                                            }
+                                        />
                                         {key}
                                     </button>
                                 );
@@ -143,27 +158,33 @@ export default function FishingGame({ gameState, updateGameState, isMobilePortra
                         </div>
                     ))}
                 </div>
-            )}
 
-            {/* --- SUBMISSION / GAME OVER MESSAGE --- */}
-            {!gameState.complete ? (
-                <CustomButton
-                    variant="submit"
-                    label="Submit"
-                    icon={"/images/submit-button.webp"}
-                    onClick={handleSubmit}
-                    isMuted={isMuted}
-                    className={!selectedLetter ? "opacity-50 pointer-events-none" : ""}
-                />
-            ) : (
-                <div className="mt-2 text-4xl font-bold">
-                    {gameState.win ? (
-                        <span className="text-green-600">Great Catch!</span>
-                    ) : (
-                        <span className="text-red-500">It got away! The fish was {formatName(targetFish.name)}.</span>
-                    )}
+                {!gameState.complete ? (
+                    <CustomButton
+                        variant="submit"
+                        label="Submit"
+                        icon={"/images/submit-button.webp"}
+                        onClick={handleSubmit}
+                        isMuted={isMuted}
+                        className={!selectedLetter ? "opacity-50 pointer-events-none" : ""}
+                    />
+                ) : (
+                    <div className="text-4xl font-bold">
+                        {gameState.win ? (
+                            <span className="text-correct">Bundle Completed!</span>
+                        ) : (
+                            <span className="text-wrong">Out of guesses!</span>
+                        )}
+                    </div>
+                )}
+            </div>
+            <div className='flex flex-col gap-4 h-full w-1/4 justify-center items-center '>
+                <div className={`relative w-[133px] h-[525px] bg-[url('/images/minigames/fishingRod.webp')] bg-contain bg-no-repeat bg-center`}>
+                    <img className={`absolute scale-[3.5] translate-x-1/2 -translate-y-1/2 right-[43%] ${ROD_STYLES[livesLost].rod_pos}`} src="/images/minigames/fishBar.webp" />
+                    <img className={`absolute scale-[2] translate-x-1/2 -translate-y-1/2 right-[43%] ${ROD_STYLES[livesLost].fish_pos}`} src="/images/minigames/fishIcon.webp" />
+                    <div className={`absolute w-[14px] bottom-[14px] right-[7px] ${ROD_STYLES[livesLost].color}`} src="/images/minigames/fishIcon.webp" />
                 </div>
-            )}
+            </div>
         </div>
     );
 }

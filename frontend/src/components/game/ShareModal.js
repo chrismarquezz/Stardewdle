@@ -71,35 +71,35 @@ export default function ShareModal({
         >
           <button
             onClick={playCloseSound}
-            className="clickable absolute left-4 md:left-6 top-1 text-[#BC6131] text-4xl md:text-6xl hover:text-red-500 z-20"
+            className="clickable absolute left-4 md:left-6 top-1 text-main text-4xl md:text-6xl hover:text-red-500 z-20"
           >
             x
           </button>
 
           <div className="flex-1 flex flex-col justify-center min-w-0 md:min-w-[400px] h-full">
-            <p className="text-[#BC6131] text-center text-2xl md:text-5xl font-bold md:mb-1">
+            <p className="text-main text-center text-2xl md:text-5xl font-bold md:mb-1">
               Next crop in: {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s
             </p>
 
-            <p className="text-center text-[#BC6131] text-md md:text-3xl mb-2">
+            <p className="text-center text-main text-md md:text-3xl mb-2">
               {correctGuesses ?? 0} out of {totalGuesses ?? 0} people have solved today's puzzle!
             </p>
 
-            <p className="min-h-40 bg-[#FFD789] mx-auto bg-opacity-60 border-2 border-[#BC6131] p-4 text-[#BC6131] text-md md:text-xl whitespace-pre text-center flex-wrap overflow-y-auto w-full">
+            <p className="min-h-40 bg-[#FFD789] mx-auto bg-opacity-60 border-2 border-main p-4 text-main text-md md:text-xl whitespace-pre text-center flex-wrap overflow-y-auto w-full">
               {shareText}
             </p>
 
             <div className="md:mt-1 w-[80%] mx-auto flex items-center justify-center gap-2">
               <button
                 onClick={handleCopy}
-                className="mt-4 clickable w-[75%] bg-[#BC6131] text-white text-2xl md:text-4xl py-2 hover:bg-[#9c4f26] transition"
+                className="mt-4 clickable w-[75%] bg-main text-white text-2xl md:text-4xl py-2 hover:bg-[#9c4f26] transition"
               >
                 {copied ? "Copied to Clipboard!" : "Share"}
               </button>
 
               <button
                 onClick={() => {setShowStats(!showStats)}}
-                className="mt-4 clickable w-[25%] bg-[#BC6131] text-white text-2xl md:text-4xl py-2 hover:bg-[#9c4f26] transition"
+                className="mt-4 clickable w-[25%] bg-main text-white text-2xl md:text-4xl py-2 hover:bg-[#9c4f26] transition"
               >
                 {showStats ? "Hide" : "Stats"}
               </button>
@@ -116,11 +116,11 @@ export default function ShareModal({
             }}
           >
             <div className="flex-1 flex flex-col justify-center min-w-0 md:min-w-[400px]">
-              <h2 className="text-[#BC6131] text-center text-2xl md:text-5xl font-bold md:mb-1">
+              <h2 className="text-main text-center text-2xl md:text-5xl font-bold md:mb-1">
                 Statistics
               </h2>
 
-              <div className="grid grid-cols-4 gap-2 mb-3 text-[#BC6131]">
+              <div className="grid grid-cols-4 gap-2 mb-3 text-main">
                 <div className="text-center">
                   <div className={statStyle}>{storedStats.total}</div>
                   <div className={statLabel}>Played</div>
@@ -139,7 +139,7 @@ export default function ShareModal({
                 </div>
               </div>
 
-              <h2 className="text-[#BC6131] text-center text-2xl md:text-4xl font-bold md:mb-1 pt-1 border-t-2 border-[#BC6131]">
+              <h2 className="text-main text-center text-2xl md:text-4xl font-bold md:mb-1 pt-1 border-t-2 border-main">
                 Guess Distribution
               </h2>
 
@@ -149,11 +149,11 @@ export default function ShareModal({
                   const widthPct = Math.max((count / maxGuesses) * 100, 8);
 
                   return (
-                    <div key={num} className="flex items-center text-[#BC6131] text-base md:text-xl">
+                    <div key={num} className="flex items-center text-main text-base md:text-xl">
                       <span className="w-4 font-bold">{num}</span>
                       <div className="flex-1 ml-3 bg-[#FFD789] bg-opacity-40">
                         <div
-                          className="bg-[#BC6131] text-white text-right px-2 py-[2px] font-bold transition-all duration-500 ease-out"
+                          className="bg-main text-white text-right px-2 py-[2px] font-bold transition-all duration-500 ease-out"
                           style={{ width: `${widthPct}%` }}
                         >
                           {count}

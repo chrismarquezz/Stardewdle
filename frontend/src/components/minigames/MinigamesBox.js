@@ -67,7 +67,7 @@ export default function MinigamesBox({ isMobilePortrait }) {
     const [showHelp, setShowHelp] = useState(false);
     const [timeLeft, setTimeLeft] = useState(getTimeUntilMidnightUTC());
 
-    const [selectedGame, setSelectedGame] = useState("npc");
+    const [selectedGame, setSelectedGame] = useState("fish");
     const [selectedGameData, setSelectedGameData] = useState(null);
     const [isGameSelected, setIsGameSelected] = useState(false);
 
@@ -216,7 +216,7 @@ export default function MinigamesBox({ isMobilePortrait }) {
                 );
             default:
                 return (
-                    <div className="flex h-full w-full items-center justify-center text-4xl text-[#BC6131]">
+                    <div className="flex h-full w-full items-center justify-center text-4xl text-main">
                         Coming Soon!
                     </div>
                 );
@@ -242,7 +242,7 @@ export default function MinigamesBox({ isMobilePortrait }) {
                 height: isMobilePortrait ? "940px" : "810px",
             }}
         >
-            <h2 className="w-full justify-center items-center text-[#BC6131] text-center text-2xl md:text-7xl font-semibold pt-2">
+            <h2 className="w-full justify-center items-center text-main text-center text-2xl md:text-7xl font-semibold pt-2">
                 {isGameSelected ? selectedGameData.label + " Bundle" : "Minigame Bundles"}
             </h2>
 
@@ -256,8 +256,8 @@ export default function MinigamesBox({ isMobilePortrait }) {
                         style={{ backgroundImage: "url('/images/stardrop.webp')" }}
                     />
                     <div className="flex flex-col text-left">
-                        <span className="text-xl font-bold text-[#1E9365]">Community Center Restored!</span>
-                        <span className="text-md text-[#BC6131] font-medium">
+                        <span className="text-xl font-bold text-correct">Community Center Restored!</span>
+                        <span className="text-md text-main font-medium">
                             Total Restorations Today: {globalCompletions}
                         </span>
                     </div>

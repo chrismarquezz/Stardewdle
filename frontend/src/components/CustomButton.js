@@ -70,7 +70,7 @@ const CustomButton = ({
             {/* Optional Tooltip Label */}
             {showLabel && (
                 <div
-                    className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-lg font-medium text-[#BC6131] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
+                    className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-lg font-medium text-main text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
                     style={{
                         backgroundImage: "url('/images/label.webp')",
                         backgroundSize: "100% 100%",

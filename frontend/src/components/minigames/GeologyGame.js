@@ -90,9 +90,9 @@ export default function GeologyGame({ gameState, updateGameState, isMobilePortra
 
             {/* --- IMAGE CLUE SECTION --- */}
             <div className="w-full max-w-md bg-[#fcedd2] border-4 border-[#d5a05a] rounded-xl p-6 mb-4 shadow-sm flex flex-col items-center justify-center">
-                <h3 className="text-2xl font-bold text-[#BC6131] mb-4 text-center">What is this item?</h3>
+                <h3 className="text-2xl font-bold text-main mb-4 text-center">What is this item?</h3>
 
-                <div className="w-48 h-48 border-4 border-[#BC6131] rounded-lg overflow-hidden bg-black/5 flex items-center justify-center relative">
+                <div className="w-48 h-48 border-4 border-main rounded-lg overflow-hidden bg-black/5 flex items-center justify-center relative">
                     {/* The new dynamic sprite div */}
                     <div
                         className="transition-all duration-700 ease-out"
@@ -105,7 +105,7 @@ export default function GeologyGame({ gameState, updateGameState, isMobilePortra
                     />
                 </div>
 
-                <p className="mt-4 text-[#BC6131] font-bold">
+                <p className="mt-4 text-main font-bold">
                     Guesses left: {maxGuesses - guessesMade}
                 </p>
             </div>
@@ -129,7 +129,7 @@ export default function GeologyGame({ gameState, updateGameState, isMobilePortra
                     <div className="flex gap-4 items-center">
                         <button
                             onClick={() => setShowPicker(!showPicker)}
-                            className="bg-[#ffdfa6] border-4 border-[#d5a05a] px-6 py-3 rounded-xl text-2xl font-bold text-[#BC6131] hover:bg-[#ffecc2] active:scale-95 transition-transform"
+                            className="bg-[#ffdfa6] border-4 border-[#d5a05a] px-6 py-3 rounded-xl text-2xl font-bold text-main hover:bg-[#ffecc2] active:scale-95 transition-transform"
                         >
                             {selectedItem ? formatName(selectedItem.name) : "Select an Item..."}
                         </button>
@@ -155,7 +155,7 @@ export default function GeologyGame({ gameState, updateGameState, isMobilePortra
                                         key={group.label}
                                         onClick={() => setActiveTab(group.label)}
                                         className={`px-3 py-2 rounded-lg font-bold flex-1 whitespace-nowrap transition-colors
-                                            ${activeTab === group.label ? "bg-[#BC6131] text-white" : "bg-[#ffdfa6] text-[#BC6131] hover:bg-[#ffecc2]"}`}
+                                            ${activeTab === group.label ? "bg-main text-white" : "bg-[#ffdfa6] text-main hover:bg-[#ffecc2]"}`}
                                     >
                                         {group.label}
                                     </button>
@@ -172,8 +172,8 @@ export default function GeologyGame({ gameState, updateGameState, isMobilePortra
                                                 setSelectedItem(item);
                                                 setShowPicker(false);
                                             }}
-                                            className={`p-2 border-2 rounded font-bold text-[#BC6131] hover:bg-[#ffecc2] transition-colors flex flex-col items-center
-                                                ${selectedItem?.name === item.name ? "bg-[#ffecc2] border-[#BC6131]" : "bg-white border-[#d5a05a]"}`}
+                                            className={`p-2 border-2 rounded font-bold text-main hover:bg-[#ffecc2] transition-colors flex flex-col items-center
+                                                ${selectedItem?.name === item.name ? "bg-[#ffecc2] border-main" : "bg-white border-[#d5a05a]"}`}
                                         >
 
                                             {/* THE NEW SPRITE DIV */}
@@ -187,7 +187,7 @@ export default function GeologyGame({ gameState, updateGameState, isMobilePortra
                                     ))}
 
                                     {filteredMinerals.length === 0 && (
-                                        <div className="col-span-full text-center text-[#BC6131] opacity-50 mt-4">
+                                        <div className="col-span-full text-center text-main opacity-50 mt-4">
                                             No items found in this category.
                                         </div>
                                     )}

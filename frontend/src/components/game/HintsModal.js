@@ -60,16 +60,16 @@ export default function HintsModal({ isMuted, onClose, scaleFactor, setHints, hi
                 >
                     <button
                         onClick={playCloseSound}
-                        className="clickable absolute top-0 left-3 md:left-6 text-[#BC6131] text-4xl md:text-7xl hover:text-red-500"
+                        className="clickable absolute top-0 left-3 md:left-6 text-main text-4xl md:text-7xl hover:text-red-500"
                     >
                         x
                     </button>
 
-                    <h2 className="text-[#BC6131] text-center text-2xl md:text-5xl font-semibold mb-2">
+                    <h2 className="text-main text-center text-2xl md:text-5xl font-semibold mb-2">
                         Hints
                     </h2>
 
-                    <div className={`space-y-2 md:space-y-4 text-[#BC6131] text-left text-md sm:text-2xl md:text-3xl leading-none overflow-y-auto max-h-[70vh] pr-2 mb-4 ${scrollbarStyles}`}>
+                    <div className={`space-y-2 md:space-y-4 text-main text-left text-md sm:text-2xl md:text-3xl leading-none overflow-y-auto max-h-[70vh] pr-2 mb-4 ${scrollbarStyles}`}>
                         <p>- Feeling stuck? Hints can help!</p>
                         <p>- Hints narrow down the possibilities based on your previous guesses</p>
                         <p>- If you get something wrong, the hints will eliminate those options</p>
