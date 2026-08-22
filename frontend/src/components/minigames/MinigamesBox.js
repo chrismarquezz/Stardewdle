@@ -53,7 +53,16 @@ const staticGameData =
         }
     ];
 
+import CompareReveal from "./CompareReveal";
+
+
 export default function MinigamesBox({ isMobilePortrait }) {
+
+
+    return (
+        <CompareReveal />
+    );
+    
     const {
         isReady,
         showUpdates,
@@ -67,7 +76,7 @@ export default function MinigamesBox({ isMobilePortrait }) {
     const [showHelp, setShowHelp] = useState(false);
     const [timeLeft, setTimeLeft] = useState(getTimeUntilMidnightUTC());
 
-    const [selectedGame, setSelectedGame] = useState("fish");
+    const [selectedGame, setSelectedGame] = useState("minerals");
     const [selectedGameData, setSelectedGameData] = useState(null);
     const [isGameSelected, setIsGameSelected] = useState(false);
 

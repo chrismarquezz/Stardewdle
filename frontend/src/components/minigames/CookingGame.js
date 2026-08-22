@@ -49,7 +49,7 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
             ...gameState,
             guesses: newGuesses,
             win: gameState.win || isCorrect,
-            complete: gameState.complete || isCorrect || newGuesses.length >= 9
+            complete: gameState.complete || isCorrect || newGuesses.length >= 80
         });
 
         setSelectedFood(null);
@@ -117,7 +117,7 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
                     backgroundPosition: "center",
                     backgroundRepeat: "no-repeat",
                 }}>
-                <div className={`grid grid-cols-3 gap-2 items-center justify-center max-h-1/2`}>
+                <div className={`flex flex-wrap gap-2 items-center justify-center max-h-[60%] max-w-[80%] overflow-y-auto overflow-x-hidden ${scrollbarStyles} pb-8`}>
                     {gameState.guesses.map((guess, idx) => {
                         const isCorrect = guess === targetFood.name;
 
@@ -144,7 +144,7 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
                                         className="z-10 scale-[87.5%]"
                                     />
                                     <div
-                                        className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-medium text-main text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
+                                        className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-medium text-main text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
                                         style={{
                                             backgroundImage: "url('/images/label.webp')",
                                             backgroundSize: "100% 100%",
@@ -244,7 +244,7 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
                                 <div className={`overflow-y-auto flex-1 p-2 ${scrollbarStyles}`}>
                                     <div className={viewMode === "grid" ? `grid gap-2 grid-cols-${cols}` : "flex flex-col gap-2"}
                                         style={{ columns: viewMode === "grid" ? cols : 1 }}>
-                                        {cooking?.foods?.map(food => (
+                                        {cooking?.foods?.filter(food => !gameState.guesses.includes(food.name)).map(food => (
                                             <button
                                                 key={food.name}
                                                 onClick={() => {

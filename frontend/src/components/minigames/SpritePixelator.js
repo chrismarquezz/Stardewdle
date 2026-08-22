@@ -1,0 +1,56 @@
+import React, { useRef, useEffect } from 'react';
+
+export default function SpritePixelator({
+    sheetName,
+    colIndex,
+    rowIndex = 0,
+    spriteSize = 48,
+    pixelBlockLevel = 1
+}) {
+    const canvasRef = useRef(null);
+    const bucketUrl = import.meta.env.VITE_BUCKET_URL;
+
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        const img = new Image();
+
+        // Prevents the Tainted Canvas CORS error
+        img.crossOrigin = "anonymous";
+        img.src = `${bucketUrl}/sprites/${sheetName}.webp?v=20260821`;
+
+        img.onload = () => {
+            // Locate the exact coordinates on your sheet
+            const sourceX = colIndex * spriteSize;
+            const sourceY = rowIndex * spriteSize;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw only that specific slice onto the canvas
+            ctx.drawImage(
+                img,
+                sourceX, sourceY, spriteSize, spriteSize,
+                0, 0, canvas.width, canvas.height
+            );
+        };
+    }, [sheetName, colIndex, rowIndex, spriteSize, pixelBlockLevel, bucketUrl]);
+
+    // Calculate the internal resolution of the canvas. 
+    // Higher block level = lower resolution = chunkier pixels.
+    const internalResolution = Math.max(1, Math.floor(spriteSize / pixelBlockLevel));
+
+    return (
+        <canvas
+            ref={canvasRef}
+            width={internalResolution}
+            height={internalResolution}
+            className="rounded-lg bg-black/5"
+            style={{
+                width: '192px',
+                height: '192px',
+                imageRendering: 'pixelated',
+                transition: 'width 0.3s, height 0.3s'
+            }}
+        />
+    );
+}

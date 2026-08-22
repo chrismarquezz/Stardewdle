@@ -3,6 +3,7 @@ import { useGameData } from "../../context/GameDataContext";
 import { formatName } from "../../utils/formatString";
 import { getSpriteStyle } from "../../utils/spriteUtils";
 
+import SpritePixelator from "./SpritePixelator";
 import CustomButton from "../CustomButton";
 
 export default function GeologyGame({ gameState, updateGameState, isMobilePortrait, isMuted }) {
@@ -26,20 +27,19 @@ export default function GeologyGame({ gameState, updateGameState, isMobilePortra
     const guessesMade = currentGuesses.length;
     const isRevealed = gameState.complete;
 
-    // Array of distortion states: [Scale, Blur(px)]
-    const distortionStages = [
-        { scale: 5, blur: 8 },   // 0 Guesses (Hardest)
-        { scale: 3.5, blur: 5 }, // 1 Guess
-        { scale: 2.5, blur: 3 }, // 2 Guesses
-        { scale: 1.8, blur: 1.5 }, // 3 Guesses
-        { scale: 1.2, blur: 0.5 }, // 4 Guesses
-        { scale: 1, blur: 0 }    // 5 Guesses or Win (Revealed)
-    ];
+    const getPixelLevel = () => {
+        if (gameState.complete) return 1; // 1 = Perfect 48x48 clarity
 
-    // Lock to the final stage if the game is over, otherwise match the guess count
-    const currentStage = isRevealed
-        ? distortionStages[5]
-        : distortionStages[Math.min(guessesMade, 5)];
+        switch (guessesMade) {
+            case 0: return 12; // Massive 4x4 resolution
+            case 1: return 8;  // 6x6 resolution
+            case 2: return 6;  // 8x8 resolution
+            case 3: return 4;  // 12x12 resolution
+            case 4: return 2;  // 24x24 resolution
+            default: return 1;
+        }
+    };
+
 
     // --- ALPHABETICAL FILTERING ---
     const ALPHABET_GROUPS = [
@@ -92,16 +92,11 @@ export default function GeologyGame({ gameState, updateGameState, isMobilePortra
             <div className="w-full max-w-md bg-[#fcedd2] border-4 border-[#d5a05a] rounded-xl p-6 mb-4 shadow-sm flex flex-col items-center justify-center">
                 <h3 className="text-2xl font-bold text-main mb-4 text-center">What is this item?</h3>
 
-                <div className="w-48 h-48 border-4 border-main rounded-lg overflow-hidden bg-black/5 flex items-center justify-center relative">
-                    {/* The new dynamic sprite div */}
-                    <div
-                        className="transition-all duration-700 ease-out"
-                        style={{
-                            // Assuming your spritesheet is named "geology.png" or "minerals.png"
-                            ...getSpriteStyle("geology", targetItem.index, 0),
-                            transform: `scale(${currentStage.scale})`,
-                            filter: `blur(${currentStage.blur}px)`,
-                        }}
+                <div className="w-48 h-48 border-4 border-[#BC6131] rounded-lg overflow-hidden flex items-center justify-center relative">
+                    <SpritePixelator
+                        sheetName="geology"
+                        colIndex={targetItem.index}
+                        pixelBlockLevel={getPixelLevel()}
                     />
                 </div>
 

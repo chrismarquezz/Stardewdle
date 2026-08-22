@@ -57,7 +57,7 @@ export default function QuotesGame({ gameState, updateGameState, isMobilePortrai
 
     return (
         <div className={`flex flex-row items-center h-full gap-4`}>
-            <div className="flex flex-col justify-center items-center w-1/2 h-full p-4 relative gap-4">
+            <div className="flex flex-col justify-center items-center w-1/2 h-full p-4 relative gap-2">
                 <div className="relative bg-no-repeat bg-cover w-[240px] aspect-[60/41] bg-[url('/images/selected-frame.webp')]">
                     <div
                         style={{
@@ -86,14 +86,14 @@ export default function QuotesGame({ gameState, updateGameState, isMobilePortrai
                     </div>
                 </div>
             </div>
-            <div className="flex flex-col justify-center items-center w-1/2 h-full p-4 relative gap-4"
+            <div className="flex flex-col justify-center items-center w-1/2 h-full p-4 relative"
                 style={{
                     backgroundImage: "url('/images/game/cropgrid-bg.webp')",
                     backgroundSize: "90% 90%",
                     backgroundPosition: "center",
                     backgroundRepeat: "no-repeat",
                 }}>
-                <div className={`grid grid-cols-3 gap-2 items-center justify-center max-h-1/2`}>
+                <div className={`flex flex-wrap gap-2 items-center justify-center max-h-[50%] max-w-[75%] overflow-y-auto overflow-x-hidden ${scrollbarStyles} pb-8`}>
                     {currentGuesses.map((guess, idx) => {
                         const isCorrect = guess === targetVillager.name;
 
@@ -120,7 +120,7 @@ export default function QuotesGame({ gameState, updateGameState, isMobilePortrai
                                         className="z-10 scale-[78%]"
                                     />
                                     <div
-                                        className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-medium text-main text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
+                                        className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-medium text-main text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
                                         style={{
                                             backgroundImage: "url('/images/label.webp')",
                                             backgroundSize: "100% 100%",
@@ -137,7 +137,7 @@ export default function QuotesGame({ gameState, updateGameState, isMobilePortrai
                     })}
                 </div>
                 <div
-                    className="flex items-center justify-center bg-center bg-no-repeat bg-contain"
+                    className="flex items-center justify-center bg-center bg-no-repeat bg-contain mb-4"
                     style={{
                         backgroundImage: "url('/images/name-banner.webp')",
                         width: "416px",
@@ -179,7 +179,6 @@ export default function QuotesGame({ gameState, updateGameState, isMobilePortrai
                                         <div
                                             style={getSpriteStyle("villagers", selectedVillager.index, 0, 128)}
                                             className="z-10 scale-[78%] clickable"
-                                            title={formatName(selectedVillager.name)}
                                         />
                                     </div> : <></>
                                 }
@@ -218,7 +217,7 @@ export default function QuotesGame({ gameState, updateGameState, isMobilePortrai
 
                                 <div className="overflow-y-auto flex-1 p-2">
                                     <div className={viewMode === "grid" ? `grid gap-2 grid-cols-${cols}` : "flex flex-col gap-2"}>
-                                        {quotes.map(villager => (
+                                        {quotes.filter(villager => !gameState.guesses.includes(villager.name)).map(villager => (
                                             <button
                                                 key={villager.name}
                                                 onClick={() => {
@@ -226,7 +225,7 @@ export default function QuotesGame({ gameState, updateGameState, isMobilePortrai
                                                     setShowPicker(false);
                                                 }}
                                                 className={`p-2 border-2 rounded font-bold text-main hover:bg-[#ffecc2] transition-colors
-                                            ${selectedVillager?.name === villager.name ? "bg-[#ffecc2] border-main" : "bg-white border-[#d5a05a]"}`}
+                                                ${selectedVillager?.name === villager.name ? "bg-[#ffecc2] border-main" : "bg-white border-[#d5a05a]"}`}
                                             >
                                                 {viewMode === "grid" ? (
                                                     <div className="flex flex-col items-center">
