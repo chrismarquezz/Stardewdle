@@ -181,7 +181,10 @@ export default function GameBox({ isMobilePortrait }) {
     const saved = localStorage.getItem("stardewdle-manualDisables");
     return saved ? JSON.parse(saved) : [];
   });
-  const [disableMode, setDisableMode] = useState(false);
+  const [disableMode, setDisableMode] = useState(() => {
+    const saved = localStorage.getItem("stardewdle-disableMode");
+    return saved ? JSON.parse(saved) : false;
+  });
 
   const toggleManualDisable = (crop) => {
     setManualDisables((prev) =>
@@ -323,6 +326,7 @@ export default function GameBox({ isMobilePortrait }) {
     localStorage.setItem("stardewdle-constraints", JSON.stringify(constraints));
     localStorage.setItem("stardewdle-stats", JSON.stringify(storedStats));
     localStorage.setItem("stardewdle-manualDisables", JSON.stringify(manualDisables));
+    localStorage.setItem("stardewdle-disableMode", JSON.stringify(disableMode));
   }, [
     guesses,
     correctCrop,
@@ -333,7 +337,8 @@ export default function GameBox({ isMobilePortrait }) {
     hints,
     constraints,
     storedStats,
-    manualDisables
+    manualDisables,
+    disableMode
   ]);
 
   function resetStored(refresh = false) {
@@ -350,6 +355,7 @@ export default function GameBox({ isMobilePortrait }) {
       season: [],
     });
     setManualDisables([]);
+    setDisableMode(false);
     if (refresh) {
       window.location.reload();
       console.log("Reloaded due to date change");
