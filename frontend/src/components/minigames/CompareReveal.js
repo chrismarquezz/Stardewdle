@@ -6,7 +6,7 @@ export default function CompareReveal() {
     // State to track which sprite on the sheet we are looking at
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    const pixelLevels = [12, 8, 6, 4, 2, 1];
+    const pixelLevels = [24, 12, 8, 6, 4, 1];
     // 2x2, 4x4, 6x6, 8x8, 12x12, and finally the full 16x16 sprite
     const zoomLevels = [2, 4, 6, 8, 12, 16];
     const handlePrev = () => setCurrentIndex(prev => Math.max(0, prev - 1));
