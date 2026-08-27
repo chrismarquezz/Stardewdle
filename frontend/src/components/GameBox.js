@@ -177,6 +177,20 @@ export default function GameBox({ isMobilePortrait }) {
       };
   });
 
+  const [manualDisables, setManualDisables] = useState(() => {
+    const saved = localStorage.getItem("stardewdle-manualDisables");
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [disableMode, setDisableMode] = useState(false);
+
+  const toggleManualDisable = (crop) => {
+    setManualDisables((prev) =>
+      prev.includes(crop.name)
+        ? prev.filter((name) => name !== crop.name)
+        : [...prev, crop.name]
+    );
+  };
+
   const addConstraints = (crop) => {
     setConstraints((prevConstraints) => {
       const newConstraints = { ...prevConstraints };
@@ -308,6 +322,7 @@ export default function GameBox({ isMobilePortrait }) {
     localStorage.setItem("stardewdle-hints", JSON.stringify(hints));
     localStorage.setItem("stardewdle-constraints", JSON.stringify(constraints));
     localStorage.setItem("stardewdle-stats", JSON.stringify(storedStats));
+    localStorage.setItem("stardewdle-manualDisables", JSON.stringify(manualDisables));
   }, [
     guesses,
     correctCrop,
@@ -317,7 +332,8 @@ export default function GameBox({ isMobilePortrait }) {
     crops,
     hints,
     constraints,
-    storedStats
+    storedStats,
+    manualDisables
   ]);
 
   function resetStored(refresh = false) {
@@ -333,6 +349,7 @@ export default function GameBox({ isMobilePortrait }) {
       type: [],
       season: [],
     });
+    setManualDisables([]);
     if (refresh) {
       window.location.reload();
       console.log("Reloaded due to date change");
@@ -589,6 +606,11 @@ export default function GameBox({ isMobilePortrait }) {
           isMobilePortrait={isMobilePortrait}
           constraints={constraints}
           hints={hints}
+          disableMode={!gameOver && guesses.length < 6 ? disableMode : false}
+          manualDisables={manualDisables}
+          onToggleDisable={
+            !gameOver && guesses.length < 6 ? toggleManualDisable : () => { }
+          }
         />
       </div>
 
@@ -699,6 +721,18 @@ export default function GameBox({ isMobilePortrait }) {
               new Audio("/sounds/pluck.mp3").play();
             }
             toggleMute();
+          }}
+          showLabel={true}
+          isMobilePortrait={isMobilePortrait}
+        />
+
+        <CustomButton
+          variant="icon"
+          icon={disableMode ? "/images/toggle-on.webp" : "/images/toggle-off.webp"}
+          label={disableMode ? "Custom Disable: On" : "Custom Disable: Off"}
+          isMuted={isMuted}
+          onClick={() => {
+            setDisableMode((prev) => !prev);
           }}
           showLabel={true}
           isMobilePortrait={isMobilePortrait}
