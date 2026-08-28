@@ -735,7 +735,7 @@ export default function GameBox({ isMobilePortrait }) {
 
         <CustomButton
           variant="icon"
-          icon="/images/pencil.webp"
+          icon={disableMode ? "/images/pencil.webp" : "/images/pencil-off.webp"}
           label={disableMode ? "Custom Disable: On" : "Custom Disable: Off"}
           isMuted={isMuted}
           onClick={() => {
