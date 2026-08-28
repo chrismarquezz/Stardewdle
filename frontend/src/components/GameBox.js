@@ -13,7 +13,7 @@ import HintsModal from "./HintsModal";
 import CustomButton from "../components/CustomButton";
 
 const DAILY_RESET_ENABLED = true;
-const MOST_RECENT_UPDATE = "2026-06-19T00:00:00Z";
+const MOST_RECENT_UPDATE = "2026-08-28T00:00:00Z";
 
 function todaysDate() {
   const today = new Date(new Date().toUTCString());

@@ -58,11 +58,10 @@ export default function CropCard({
       <div
         style={spriteStyle}
         className="w-full h-full m-[2px] ml-[6px] mb-[6px] z-10"
-        title={formattedName}
       />
 
       <div
-        className={`absolute w-full h-full opacity-70 mix-blend-multiply ${guessable ? "" : manuallyDisabled ? "bg-gray-800" : "bg-gray-500"}`}
+        className={`absolute w-full h-full opacity-70 mix-blend-multiply ${guessable ? "" : manuallyDisabled ? "bg-gray-800" : "bg-gray-400"}`}
       />
       <div
         className="absolute -top-5 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-medium text-[#BC6131] text-center transition-opacity duration-300 opacity-0 group-hover:opacity-100 pointer-events-none z-50 whitespace-nowrap"
