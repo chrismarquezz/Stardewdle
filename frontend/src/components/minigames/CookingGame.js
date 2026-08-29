@@ -134,6 +134,7 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
                                     backgroundPosition: "center",
                                     backgroundRepeat: "no-repeat",
                                 }}
+                                key={idx}
                             >
                                 <div
                                     className={`w-[75%] h-[75%] absolute z-0 opacity-90 mix-blend-multiply ${isCorrect ? "bg-cyan-500" : "bg-red-700"}`}
@@ -155,7 +156,6 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
                                         {formatName(guess)}
                                     </div>
                                 </div>
-
                             </div>
                         );
                     })}
@@ -178,6 +178,7 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
                         }
                     </p>
                 </div>
+
                 {gameState.complete ? (
                     <div className="text-3xl font-bold">
                         {gameState.win ? (
@@ -205,7 +206,7 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
                                         className="z-10 scale-[87.5%] clickable"
                                         title={formatName(selectedFood.name)}
                                     />
-                                    : <></>
+                                    : <img src="images/minigames/search.webp" className="scale-[2.5]" />
                                 }
                                 <div className="absolute inset-0 bg-white/50 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none rounded-[12px]"
                                 />
@@ -252,7 +253,7 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
                                                     setShowPicker(false);
                                                 }}
                                                 className={`p-2 border-2 rounded font-bold text-main hover:bg-[#ffecc2] transition-colors
-                                            ${selectedFood?.name === food.name ? "bg-[#ffecc2] border-main" : "bg-white border-[#d5a05a]"}`}
+                                                ${selectedFood?.name === food.name ? "bg-[#ffecc2] border-main" : "bg-white border-[#d5a05a]"}`}
                                             >
                                                 {viewMode === "grid" ? (
                                                     <div className="flex flex-col items-center">

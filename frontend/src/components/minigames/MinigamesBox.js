@@ -53,16 +53,7 @@ const staticGameData =
         }
     ];
 
-import CompareReveal from "./CompareReveal";
-
-
 export default function MinigamesBox({ isMobilePortrait }) {
-
-
-    return (
-        <CompareReveal />
-    );
-    
     const {
         isReady,
         showUpdates,

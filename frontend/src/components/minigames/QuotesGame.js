@@ -110,6 +110,7 @@ export default function QuotesGame({ gameState, updateGameState, isMobilePortrai
                                     backgroundPosition: "center",
                                     backgroundRepeat: "no-repeat",
                                 }}
+                                key={idx}
                             >
                                 <div
                                     className={`w-[100px] h-[100px] absolute z-0 opacity-90 mix-blend-multiply ${isCorrect ? "bg-cyan-500" : "bg-red-700"}`}
@@ -180,7 +181,9 @@ export default function QuotesGame({ gameState, updateGameState, isMobilePortrai
                                             style={getSpriteStyle("villagers", selectedVillager.index, 0, 128)}
                                             className="z-10 scale-[78%] clickable"
                                         />
-                                    </div> : <></>
+                                    </div>
+                                    : <img src="images/minigames/search.webp" className="scale-[4]" />
+
                                 }
                                 <div className="absolute inset-0 bg-white/50 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none rounded-[12px]" />
 
