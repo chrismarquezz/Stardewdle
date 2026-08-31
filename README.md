@@ -12,7 +12,7 @@ After each guess, the game provides color-coded feedback based on five key attri
 
 <img src="https://img.shields.io/badge/-%23538D4E?style=for-the-badge&labelColor=538D4E" alt="Green Tile" width="10" height="18" /> **Green** indicates a **Perfect Match**: your value for the attribute is **exactly correct**. This applies to all five attributes.
 
-<img src="https://img.shields.io/badge/-%23B59F3B?style=for-the-badge&labelColor=B59F3B" alt="Yellow Tile" width="10" height="18" /> **Yellow** indicates a **Partial Season Match** and **appears exclusively for the Season attribute**. If the season you guessed is one of the crop's growing seasons, but the crop also grows in at least one other season, the tile will be yellow.
+<img src="https://img.shields.io/badge/-%23B59F3B?style=for-the-badge&labelColor=B59F3B" alt="Yellow Tile" width="10" height="18" /> **Yellow** indicates a **Partial Season Match** and **appears exclusively for the Season attribute**. If the season you guessed is one of the crop's growing seasons, but the crop also grows in at least one other season; or, if you guessed multiple seasons, and one of them is the crop's growing seasons, the tile will be yellow.
 
 <img src="https://img.shields.io/badge/-%23FF4136?style=for-the-badge&labelColor=FF4136" alt="Red Tile" width="10" height="18" /> **Red** indicates the value is **Incorrect**. For the numerical attributes (**Growth Time** and **Sell Price**), a directional arrow will accompany the red tile to help you: $\bigtriangleup$ means the correct value is higher, and $\bigtriangledown$ means the correct value is lower.
 
