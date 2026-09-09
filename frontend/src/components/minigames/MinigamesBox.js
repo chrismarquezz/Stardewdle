@@ -76,11 +76,11 @@ export default function MinigamesBox({ isMobilePortrait }) {
 
     const [gameData, setGameData] = useState(() => {
         const defaultGameData = {
-            food: { complete: false, win: false, guesses: [] },
-            map: { complete: true, win: false, guesses: [] },
-            npc: { complete: false, win: false, guesses: [], hints: 0 },
-            minerals: { complete: false, win: false, guesses: [], hints: 0 },
-            fish: { complete: false, win: false, guesses: [] }
+            food: { complete: false, win: false, guesses: [], seenAnimation: false },
+            map: { complete: true, win: false, guesses: [], seenAnimation: false },
+            npc: { complete: false, win: false, guesses: [], hints: 0, seenAnimation: false },
+            minerals: { complete: false, win: false, guesses: [], hints: 0, seenAnimation: false },
+            fish: { complete: false, win: false, guesses: [], seenAnimation: false }
         };
 
         if (isNewDay) return defaultGameData;
@@ -289,6 +289,7 @@ export default function MinigamesBox({ isMobilePortrait }) {
                                 label="Return"
                                 isMuted={isMuted}
                                 onClick={() => {
+                                    if (gameData[selectedGame].complete) markAnimationSeen(selectedGame);
                                     setSelectedGame("");
                                 }}
                                 isMobilePortrait={isMobilePortrait}
@@ -311,6 +312,7 @@ export default function MinigamesBox({ isMobilePortrait }) {
                                 isMuted={isMuted}
                                 positionClass={bundle.pos}
                                 isAnimated={gameData[bundle.name].complete}
+                                skipAnimation={gameData[bundle.name].seenAnimation}
                             />
                         ))}
                     </div>

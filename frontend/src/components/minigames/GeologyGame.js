@@ -15,7 +15,9 @@ export default function GeologyGame({ gameState, updateGameState, isMobilePortra
 
     const [selectedItem, setSelectedItem] = useState(null);
     const [showPicker, setShowPicker] = useState(false);
-    const [activeTab, setActiveTab] = useState('A-D');
+    const [showIcons, setShowIcons] = useState(false);
+    const [activeTab, setActiveTab] = useState('A-C');
+
 
     if (!targetItem) return null;
 
@@ -40,11 +42,11 @@ export default function GeologyGame({ gameState, updateGameState, isMobilePortra
     };
 
     const ALPHABET_GROUPS = [
-        { label: 'A-D', regex: /^[A-D]/i },
-        { label: 'E-H', regex: /^[E-H]/i },
-        { label: 'I-M', regex: /^[I-M]/i },
-        { label: 'N-S', regex: /^[N-S]/i },
-        { label: 'T-Z', regex: /^[T-Z]/i },
+        { label: 'A-C', regex: /^[A-C]/i },
+        { label: 'D-F', regex: /^[D-F]/i },
+        { label: 'G-M', regex: /^[G-M]/i },
+        { label: 'N-Q', regex: /^[N-Q]/i },
+        { label: 'R-Z', regex: /^[R-Z]/i },
     ];
 
     const filteredMinerals = minerals.filter(item => {
@@ -88,7 +90,7 @@ export default function GeologyGame({ gameState, updateGameState, isMobilePortra
                 </div>
                 <div className="flex flex-col justify-center items-center bg-[url('/images/game/guesses.webp')] bg-no-repeat p-4 bg-contain bg-center aspect-[5/3]">
                     <h3 className="text-5xl text-main pb-2">What is this item?</h3>
-                    <div className="relative h-[192px] w-[192px] flex items-center justify-center mb-4"
+                    <div className="relative h-[242px] w-[242px] flex items-center justify-center mb-4"
                         style={{
                             backgroundImage: "url('/images/minigames/boxMedium.webp')",
                             backgroundSize: "100% 100%",
@@ -136,7 +138,7 @@ export default function GeologyGame({ gameState, updateGameState, isMobilePortra
                                 <div className="group w-[108px] h-[108px] flex items-center justify-center">
                                     <div
                                         style={getSpriteStyle("geology", spriteIndex)}
-                                        className="z-10 scale-[150%]"
+                                        className="z-10 scale-[130%]"
                                     />
                                     <div
                                         className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-medium text-main text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
@@ -205,27 +207,56 @@ export default function GeologyGame({ gameState, updateGameState, isMobilePortra
                                 onClick={handleSubmit}
                                 isMuted={isMuted}
                                 className={!selectedItem ? "opacity-50 pointer-events-none" : ""}
-                            />
+                                >
+                                    <p className="text-main text-center text-xl italic">Guesses left: {maxGuesses - currentGuesses.length}/{maxGuesses}</p>
+                                </CustomButton>
                         </div>
 
                         {showPicker && (
-                            <div className="absolute top-0 bg-[#fcedd2] border-4 border-[#d5a05a] rounded-xl w-full h-full p-4 z-50 flex flex-col shadow-2xl">
-
-                                <div className="flex justify-between gap-1 mb-4 pb-2 border-b-2 border-[#d5a05a] overflow-x-auto">
+                            <div className="absolute w-[90%] h-[90%] p-8 z-50 flex flex-col"
+                                style={{
+                                    backgroundImage: "url('/images/game/cropgrid-bg.webp')",
+                                    backgroundSize: "100% 100%",
+                                    backgroundPosition: "center",
+                                    backgroundRepeat: "no-repeat",
+                                }}
+                            >
+                                <div className="flex justify-between mb-2 pb-2 border-b-2 border-main">
+                                    <CustomButton
+                                        variant="share"
+                                        icon="/images/minigames/arrowBack.webp"
+                                        label="Close"
+                                        isMuted={isMuted}
+                                        onClick={() => {
+                                            setShowPicker(false);
+                                        }}
+                                        isMobilePortrait={isMobilePortrait}
+                                    />
                                     {ALPHABET_GROUPS.map(group => (
                                         <button
                                             key={group.label}
                                             onClick={() => setActiveTab(group.label)}
-                                            className={`px-3 py-2 rounded-lg font-bold flex-1 whitespace-nowrap transition-colors
-                                            ${activeTab === group.label ? "bg-main text-white" : "bg-[#ffdfa6] text-main hover:bg-[#ffecc2]"}`}
+                                            className={`h-12 w-12 transition-colors bg-[url('/images/button-base.webp')] bg-no-repeat bg-contain bg-center
+                                            ${activeTab === group.label ? "brightness-150 pointer-events-none" : "hover:brightness-125 clickable"}`}
                                         >
-                                            {group.label}
+                                            <span className={`text-2xl whitespace-nowrap transition-colors ${activeTab === group.label ? "text-[#88403F]" : "text-white"}`}>{group.label}</span>
                                         </button>
                                     ))}
+                                    <CustomButton
+                                        variant="icon"
+                                        icon={showIcons ? "/images/game/hint-on.webp" : "/images/game/hint-off.webp"}
+                                        label="Toggle Hint Icons"
+                                        isMuted={isMuted}
+                                        onClick={() => {
+                                            setShowIcons(!showIcons);
+                                        }}
+                                        showLabel={true}
+                                        isMobilePortrait={isMobilePortrait}
+                                        soundPath={"/sounds/modal.mp3"}
+                                    />
                                 </div>
-
-                                <div className="overflow-y-auto flex-1 p-2">
-                                    <div className="grid gap-2 grid-cols-3 sm:grid-cols-4">
+                                <div className={`overflow-y-auto overflow-x-hidden flex-1 p-2 ${scrollbarStyles}`}>
+                                    <div className={`flex flex-wrap gap-2 justify-center items-center px-2`}>
                                         {filteredMinerals.map(item => (
                                             <button
                                                 key={item.name}
@@ -233,16 +264,21 @@ export default function GeologyGame({ gameState, updateGameState, isMobilePortra
                                                     setSelectedItem(item);
                                                     setShowPicker(false);
                                                 }}
-                                                className={`p-2 border-2 rounded font-bold text-main hover:bg-[#ffecc2] transition-colors flex flex-col items-center
-                                                ${selectedItem?.name === item.name ? "bg-[#ffecc2] border-main" : "bg-white border-[#d5a05a]"}`}
+                                                style={{
+                                                    backgroundImage: `url('/images/minigames/wideTile.webp')`,
+                                                    backgroundSize: "100% 100%",
+                                                    backgroundPosition: "center",
+                                                    backgroundRepeat: "no-repeat",
+                                                }}
+                                                className={`p-2 font-bold text-main clickable relative w-[45%]`}
                                             >
-
-                                                <div
-                                                    style={getSpriteStyle("geology", item.index, 0)}
-                                                    className="scale-75 mb-1"
-                                                />
-
-                                                <span className="text-xs text-center leading-tight">{formatName(item.name)}</span>
+                                                {selectedItem?.name === item.name &&
+                                                    <div className={`absolute top-0 left-0 w-full h-full opacity-60 mix-blend-screen bg-yellow-100`} />
+                                                }
+                                                <div className="flex justify-start items-center gap-3 w-full h-12">
+                                                    {showIcons && <div style={getSpriteStyle("geology", item.index)} className="scale-[87.5%] grayscale brightness-50" />}
+                                                    <div className={` text-xl font-medium text-main z-10 ${showIcons ? "w-2/3 text-left" : "w-full text-center"}`}>{item.name}</div>
+                                                </div>
                                             </button>
                                         ))}
 

@@ -38,8 +38,10 @@ export default function SpritePixelator({
             ref={canvasRef}
             width={internalResolution}
             height={internalResolution}
-            className="rounded-lg bg-black/5"
             style={{
+                backgroundImage: "url('/images/minigames/boxMediumInner.webp')",
+                backgroundSize: "100% 100%",
+                backgroundRepeat: "no-repeat",
                 width: '192px',
                 height: '192px',
                 imageRendering: 'pixelated',

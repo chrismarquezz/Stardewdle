@@ -136,9 +136,10 @@ export default function Landing() {
               </h2>
 
               <div className="mt-6 space-y-10 text-gray-600 text-left text-3xl md:text-4xl leading-none overflow-y-auto">
-                <p>- Built by Chris and Omar.</p>
+                <p>- Built by <a href="https://github.com/chrismarquezz" className="underline clickable">Chris</a> and <a href="https://github.com/osid54 clickable" className="underline">Omar</a>.</p>
                 <p>- Artwork and sounds by ConcernedApe.</p>
                 <p>- Inspired by Wordle and Stardew Valley.</p>
+                <p>- Stardewdle.com is the only site associated with us.</p>
               </div>
             </div>
           </div>

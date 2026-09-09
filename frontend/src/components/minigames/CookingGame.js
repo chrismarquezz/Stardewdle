@@ -15,7 +15,6 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
     const [selectedFood, setSelectedFood] = useState(null);
     const [showPicker, setShowPicker] = useState(false);
     const [viewMode, setViewMode] = useState("grid");
-    const [cols, setCols] = useState(4);
 
     if (!targetFood) {
         console.log("NO FOOD");
@@ -49,13 +48,14 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
             ...gameState,
             guesses: newGuesses,
             win: gameState.win || isCorrect,
-            complete: gameState.complete || isCorrect || newGuesses.length >= 80
+            complete: gameState.complete || isCorrect || newGuesses.length >= 15
         });
 
         setSelectedFood(null);
         setShowPicker(false);
         if (!isMuted) new Audio(isCorrect ? "/sounds/reward.mp3" : "/sounds/sell.mp3").play();
     };
+
     return (
         <div className={`flex flex-row items-center h-full gap-4`}>
             <div className="flex flex-col justify-center items-center w-1/2 h-full p-4 relative gap-4">
@@ -71,12 +71,12 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
                 <div className="flex flex-col justify-center items-center bg-[url('/images/game/guesses.webp')] bg-no-repeat p-4 bg-contain bg-center aspect-[5/3]">
                     <h3 className="text-5xl text-main pb-4">Ingredients Needed:</h3>
 
-                    <div className="flex gap-4 pb-8">
+                    <div className="flex gap-8 pb-8 px-4">
                         {Object.entries(targetFood.ingredients).map(([ingName, count]) => {
                             const ingredientIndex = masterIngredientList.indexOf(ingName);
 
                             return (
-                                <div className="flex flex-col justify-center items-center gap-2 p-2">
+                                <div className="relative flex flex-col justify-center items-center p-2">
                                     <div
                                         className={`w-18 h-18 p-1 flex items-center justify-center`}
                                         style={{
@@ -93,13 +93,7 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
                                     </div>
 
                                     <div
-                                        className="relative -bottom-1 px-3 py-1 flex items-center justify-center text-xl font-medium text-main text-center whitespace-nowrap"
-                                        style={{
-                                            backgroundImage: "url('/images/label.webp')",
-                                            backgroundSize: "100% 100%",
-                                            backgroundRepeat: "no-repeat",
-                                            height: "28px",
-                                        }}
+                                        className="absolute -bottom-6 px-3 py-1 flex items-center justify-center text-xl font-medium text-main text-center whitespace-nowrap"
                                     >
                                         {count}x {formatName(ingName)}
                                     </div>
@@ -117,7 +111,7 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
                     backgroundPosition: "center",
                     backgroundRepeat: "no-repeat",
                 }}>
-                <div className={`flex flex-wrap gap-2 items-center justify-center max-h-[60%] max-w-[80%] overflow-y-auto overflow-x-hidden ${scrollbarStyles} pb-8`}>
+                <div className={`flex flex-wrap gap-2 items-center justify-center max-h-[50%] max-w-[80%] overflow-y-auto overflow-x-hidden ${scrollbarStyles} pb-8 px-10`}>
                     {gameState.guesses.map((guess, idx) => {
                         const isCorrect = guess === targetFood.name;
 
@@ -145,7 +139,7 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
                                         className="z-10 scale-[87.5%]"
                                     />
                                     <div
-                                        className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-medium text-main text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
+                                        className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-medium text-main text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50 whitespace-nowrap"
                                         style={{
                                             backgroundImage: "url('/images/label.webp')",
                                             backgroundSize: "100% 100%",
@@ -208,8 +202,7 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
                                     />
                                     : <img src="images/minigames/search.webp" className="scale-[2.5]" />
                                 }
-                                <div className="absolute inset-0 bg-white/50 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none rounded-[12px]"
-                                />
+                                <div className="absolute inset-0 bg-white/50 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none rounded-[12px]" />
 
                             </button>
 
@@ -220,31 +213,44 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
                                 onClick={handleSubmit}
                                 isMuted={isMuted}
                                 className={!selectedFood ? "opacity-50 pointer-events-none" : ""}
-                            />
+                            >
+                                    <p className="text-main text-center text-xl italic">Guesses left: {15 - gameState.guesses.length}/15</p>
+                            </CustomButton>
                         </div>
 
                         {showPicker && (
-                            <div className="absolute top-0 bg-[#fcedd2] border-4 border-[#d5a05a] rounded-xl w-full h-full p-4 z-50 flex flex-col shadow-2xl">
-
-                                <div className="flex justify-between mb-4 pb-2 border-b-2 border-[#d5a05a]">
-                                    <button onClick={() => setViewMode(v => v === "grid" ? "list" : "grid")} className="bg-[#d5a05a] text-white px-3 py-1 rounded font-bold">
-                                        Toggle {viewMode === "grid" ? "List" : "Grid"}
-                                    </button>
-                                    {viewMode === "grid" && (
-                                        <div className="flex gap-2 items-center text-main font-bold">
-                                            Cols:
-                                            {[3, 4, 5].map(num => (
-                                                <button key={num} onClick={() => setCols(num)} className={`px-2 py-1 rounded ${cols === num ? 'bg-main text-white' : 'bg-white/50'}`}>
-                                                    {num}
-                                                </button>
-                                            ))}
-                                        </div>
-                                    )}
+                            <div className="absolute w-[90%] h-[90%] p-8 z-50 flex flex-col"
+                                style={{
+                                    backgroundImage: "url('/images/game/cropgrid-bg.webp')",
+                                    backgroundSize: "100% 100%",
+                                    backgroundPosition: "center",
+                                    backgroundRepeat: "no-repeat",
+                                }}
+                            >
+                                <div className="flex justify-between mb-2 pb-2 border-b-2 border-main">
+                                    <CustomButton
+                                        variant="share"
+                                        icon="/images/minigames/arrowBack.webp"
+                                        label="Close"
+                                        isMuted={isMuted}
+                                        onClick={() => {
+                                            setShowPicker(false);
+                                        }}
+                                        isMobilePortrait={isMobilePortrait}
+                                    />
+                                    <CustomButton
+                                        variant="icon"
+                                        icon={`/images/minigames/${viewMode === "grid" ? "list" : "grid"}Button.webp`}
+                                        label={`Toggle ${viewMode === "grid" ? "List" : "Grid"} View`}
+                                        isMuted={isMuted}
+                                        onClick={() => setViewMode(v => v === "grid" ? "list" : "grid")}
+                                        showLabel={true}
+                                        isMobilePortrait={isMobilePortrait}
+                                    />
                                 </div>
 
-                                <div className={`overflow-y-auto flex-1 p-2 ${scrollbarStyles}`}>
-                                    <div className={viewMode === "grid" ? `grid gap-2 grid-cols-${cols}` : "flex flex-col gap-2"}
-                                        style={{ columns: viewMode === "grid" ? cols : 1 }}>
+                                <div className={`overflow-y-auto overflow-x-hidden flex-1 p-2 ${scrollbarStyles}`}>
+                                    <div className={`flex flex-wrap gap-2 justify-center items-center px-4`}>
                                         {cooking?.foods?.filter(food => !gameState.guesses.includes(food.name)).map(food => (
                                             <button
                                                 key={food.name}
@@ -252,33 +258,42 @@ export default function CookingGame({ gameState, updateGameState, isMobilePortra
                                                     setSelectedFood(food);
                                                     setShowPicker(false);
                                                 }}
-                                                className={`p-2 border-2 rounded font-bold text-main hover:bg-[#ffecc2] transition-colors
-                                                ${selectedFood?.name === food.name ? "bg-[#ffecc2] border-main" : "bg-white border-[#d5a05a]"}`}
+                                                style={{
+                                                    backgroundImage: `url('/images/${viewMode === "grid" ? "game/tile-bg" : "minigames/wideTile"}.webp')`,
+                                                    backgroundSize: "100% 100%",
+                                                    backgroundPosition: "center",
+                                                    backgroundRepeat: "no-repeat",
+                                                }}
+                                                className={`p-2 font-bold text-main clickable relative
+                                                ${viewMode === "grid" ? "" : "w-[45%]"}`}
                                             >
+                                                {selectedFood?.name === food.name &&
+                                                    <div className={`absolute top-0 left-0 w-full h-full opacity-60 mix-blend-screen bg-yellow-100`} />
+                                                }
                                                 {viewMode === "grid" ? (
-                                                    <div className="flex flex-col items-center">
+                                                    <div className="relative group flex flex-col items-center">
                                                         <div
                                                             style={getSpriteStyle("cooking", food.index, 1)}
-                                                            className="scale-75 mb-1"
+                                                            className="scale-[87.5%]"
                                                         />
+                                                        <div
+                                                            className="absolute -top-5 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-medium text-main text-center transition-opacity duration-300 opacity-0 group-hover:opacity-100 pointer-events-none z-50 whitespace-nowrap"
+                                                            style={{
+                                                                backgroundImage: "url('/images/label.webp')",
+                                                                backgroundSize: "100% 100%",
+                                                                backgroundRepeat: "no-repeat",
+                                                                height: "28px",
+                                                            }}
+                                                        >
+                                                            {formatName(food.name)}
+                                                        </div>
                                                     </div>
                                                 ) : (
-                                                    <div className="flex items-center gap-3">
-                                                        <div style={getSpriteStyle("cooking", food.index, 1)} className="scale-50 -ml-2" />
-                                                        <div className="text-left text-lg">{formatName(food.name)}</div>
+                                                    <div className="flex justify-start items-center gap-3 w-full">
+                                                        <div style={getSpriteStyle("cooking", food.index, 1)} className="scale-[87.5%]" />
+                                                        <div className="w-3/5 text-xl font-medium text-main text-left leading-none z-10">{formatName(food.name)}</div>
                                                     </div>
                                                 )}
-                                                <div
-                                                    className="absolute -top-5 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-medium text-main text-center transition-opacity duration-300 opacity-0 group-hover:opacity-100 pointer-events-none z-50 whitespace-nowrap"
-                                                    style={{
-                                                        backgroundImage: "url('/images/label.webp')",
-                                                        backgroundSize: "100% 100%",
-                                                        backgroundRepeat: "no-repeat",
-                                                        height: "28px",
-                                                    }}
-                                                >
-                                                    {formatName(food.name)}
-                                                </div>
                                             </button>
                                         ))}
                                     </div>

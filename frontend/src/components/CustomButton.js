@@ -11,6 +11,7 @@ const CustomButton = ({
     shouldPulse = false,
     showLabel = false,
     mobilePortrait = false,
+    children
 }) => {
 
     // Mapping variants to Tailwind classes
@@ -40,48 +41,51 @@ const CustomButton = ({
     };
 
     return (
-        <div
-            onClick={handleClick}
-            className={`group relative clickable transition-transform duration-200 hover:scale-105 active:scale-95 
-        ${variantStyles[variant] || variantStyles.icon}
-        ${shouldPulse ? "animate-bounceHard" : ""} 
-        ${className}`}
-        >
-            {/* Base Image */}
-            <img src={icon} alt={label} className="w-full h-full object-contain" />
+        <div className='relative'>
+            <div
+                onClick={handleClick}
+                className={`group relative clickable transition-transform duration-200 hover:scale-105 active:scale-95 
+                            ${variantStyles[variant] || variantStyles.icon}
+                            ${shouldPulse ? "animate-bounceHard" : ""} 
+                            ${className}`
+                }
+            >
+                <img src={icon} alt={label} className="w-full h-full object-contain" />
 
-            {/* Multiply Overlay (Replaces separate hover images) */}
-            {variant !== "title" && (
-                <div className="absolute inset-0 bg-white/50 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none"
-                    style={{
-                        // This tells the browser: "Only show this black tint where the icon image exists"
-                        WebkitMaskImage: `url(${icon})`,
-                        maskImage: `url(${icon})`,
-                        WebkitMaskSize: 'contain',
-                        maskSize: 'contain',
-                        WebkitMaskRepeat: 'no-repeat',
-                        maskRepeat: 'no-repeat',
-                        WebkitMaskPosition: 'center',
-                        maskPosition: 'center',
-                    }}
-                />
-            )}
+                {variant !== "title" && (
+                    <div className="absolute inset-0 bg-white/50 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none"
+                        style={{
+                            WebkitMaskImage: `url(${icon})`,
+                            maskImage: `url(${icon})`,
+                            WebkitMaskSize: 'contain',
+                            maskSize: 'contain',
+                            WebkitMaskRepeat: 'no-repeat',
+                            maskRepeat: 'no-repeat',
+                            WebkitMaskPosition: 'center',
+                            maskPosition: 'center',
+                        }}
+                    />
+                )}
 
-            {/* Optional Tooltip Label */}
-            {showLabel && (
-                <div
-                    className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-lg font-medium text-main text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
-                    style={{
-                        backgroundImage: "url('/images/label.webp')",
-                        backgroundSize: "100% 100%",
-                        backgroundRepeat: "no-repeat",
-                        height: "28px",
-                    }}
-                >
-                    {label}
-                </div>
-            )}
-        </div>
+
+                {showLabel && (
+                    <div
+                        className="absolute -top-8 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-lg font-medium text-main text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap"
+                        style={{
+                            backgroundImage: "url('/images/label.webp')",
+                            backgroundSize: "100% 100%",
+                            backgroundRepeat: "no-repeat",
+                            height: "28px",
+                        }}
+                    >
+                        {label}
+                    </div>
+                )}
+            </div>
+            <div className='absolute flex justify-center items-center w-full'>
+                {children}
+            </div>
+        </div >
     );
 };
 

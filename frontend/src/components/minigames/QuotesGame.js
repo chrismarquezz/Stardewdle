@@ -196,30 +196,44 @@ export default function QuotesGame({ gameState, updateGameState, isMobilePortrai
                                 onClick={handleSubmit}
                                 isMuted={isMuted}
                                 className={!selectedVillager ? "opacity-50 pointer-events-none" : ""}
-                            />
+                            >
+                                <p className="text-main text-center text-xl italic">Guesses left: {maxGuesses - currentGuesses.length}/{maxGuesses}</p>
+                            </CustomButton>
                         </div>
 
                         {showPicker && (
-                            <div className="absolute top-0 bg-[#fcedd2] border-4 border-[#d5a05a] rounded-xl w-full h-full p-4 z-50 flex flex-col shadow-2xl">
-
-                                <div className="flex justify-between mb-4 pb-2 border-b-2 border-[#d5a05a]">
-                                    <button onClick={() => setViewMode(v => v === "grid" ? "list" : "grid")} className="bg-[#d5a05a] text-white px-3 py-1 rounded font-bold hover:bg-[#c98a42]">
-                                        Toggle {viewMode === "grid" ? "List" : "Grid"}
-                                    </button>
-                                    {viewMode === "grid" && (
-                                        <div className="flex gap-2 items-center text-main font-bold">
-                                            Cols:
-                                            {[3, 4, 5, 6].map(num => (
-                                                <button key={num} onClick={() => setCols(num)} className={`px-2 py-1 rounded ${cols === num ? 'bg-main text-white' : 'bg-white/50 hover:bg-white/80'}`}>
-                                                    {num}
-                                                </button>
-                                            ))}
-                                        </div>
-                                    )}
+                            <div className="absolute w-[90%] h-[90%] p-8 z-50 flex flex-col"
+                                style={{
+                                    backgroundImage: "url('/images/game/cropgrid-bg.webp')",
+                                    backgroundSize: "100% 100%",
+                                    backgroundPosition: "center",
+                                    backgroundRepeat: "no-repeat",
+                                }}
+                            >
+                                <div className="flex justify-between mb-2 pb-2 border-b-2 border-main">
+                                    <CustomButton
+                                        variant="share"
+                                        icon="/images/minigames/arrowBack.webp"
+                                        label="Close"
+                                        isMuted={isMuted}
+                                        onClick={() => {
+                                            setShowPicker(false);
+                                        }}
+                                        isMobilePortrait={isMobilePortrait}
+                                    />
+                                    <CustomButton
+                                        variant="icon"
+                                        icon={`/images/minigames/${viewMode === "grid" ? "list" : "grid"}Button.webp`}
+                                        label={`Toggle ${viewMode === "grid" ? "List" : "Grid"} View`}
+                                        isMuted={isMuted}
+                                        onClick={() => setViewMode(v => v === "grid" ? "list" : "grid")}
+                                        showLabel={true}
+                                        isMobilePortrait={isMobilePortrait}
+                                    />
                                 </div>
 
-                                <div className="overflow-y-auto flex-1 p-2">
-                                    <div className={viewMode === "grid" ? `grid gap-2 grid-cols-${cols}` : "flex flex-col gap-2"}>
+                                <div className={`overflow-y-auto overflow-x-hidden flex-1 p-2 ${scrollbarStyles}`}>
+                                    <div className={`flex flex-wrap gap-2 justify-center items-center px-4`}>
                                         {quotes.filter(villager => !gameState.guesses.includes(villager.name)).map(villager => (
                                             <button
                                                 key={villager.name}
@@ -227,23 +241,37 @@ export default function QuotesGame({ gameState, updateGameState, isMobilePortrai
                                                     setSelectedVillager(villager);
                                                     setShowPicker(false);
                                                 }}
-                                                className={`p-2 border-2 rounded font-bold text-main hover:bg-[#ffecc2] transition-colors
-                                                ${selectedVillager?.name === villager.name ? "bg-[#ffecc2] border-main" : "bg-white border-[#d5a05a]"}`}
+                                                style={{
+                                                    backgroundImage: `url('/images/${viewMode === "grid" ? "game/tile-bg" : "minigames/wideTile"}.webp')`,
+                                                    backgroundSize: "100% 100%",
+                                                    backgroundPosition: "center",
+                                                    backgroundRepeat: "no-repeat",
+                                                }}
+                                                className={`p-2 font-bold text-main clickable relative flex items-center justify-center
+                                                ${viewMode === "grid" ? "w-24 h-24" : "w-[45%] h-24"}`}
                                             >
                                                 {viewMode === "grid" ? (
-                                                    <div className="flex flex-col items-center">
-
+                                                    <div className="relative group flex flex-col items-center">
                                                         <div
                                                             style={getSpriteStyle("villagers", villager.index, 0, 128)}
-                                                            className="scale-75 mb-1"
+                                                            className="scale-[58%]"
                                                         />
-
-                                                        <span className="text-sm">{formatName(villager.name)}</span>
+                                                        <div
+                                                            className="absolute top-1 left-1/2 -translate-x-1/2 px-3 py-1 flex items-center justify-center text-xl font-medium text-main text-center transition-opacity duration-300 opacity-0 group-hover:opacity-100 pointer-events-none z-50 whitespace-nowrap"
+                                                            style={{
+                                                                backgroundImage: "url('/images/label.webp')",
+                                                                backgroundSize: "100% 100%",
+                                                                backgroundRepeat: "no-repeat",
+                                                                height: "28px",
+                                                            }}
+                                                        >
+                                                            {formatName(villager.name)}
+                                                        </div>
                                                     </div>
                                                 ) : (
-                                                    <div className="flex items-center gap-3">
-                                                        <div style={getSpriteStyle("villagers", villager.index, 0, 128)} className="scale-50 -ml-2" />
-                                                        <div className="text-left text-lg">{formatName(villager.name)}</div>
+                                                    <div className="flex justify-start items-center w-full h-full">
+                                                        <div style={getSpriteStyle("villagers", villager.index, 0, 128)} className="scale-[58%] -ml-6" />
+                                                        <div className="w-1/4 text-xl font-medium text-main text-left leading-none z-10">{formatName(villager.name)}</div>
                                                     </div>
                                                 )}
                                             </button>

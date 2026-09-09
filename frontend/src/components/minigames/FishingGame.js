@@ -167,7 +167,9 @@ export default function FishingGame({ gameState, updateGameState, isMobilePortra
                         onClick={handleSubmit}
                         isMuted={isMuted}
                         className={!selectedLetter ? "opacity-50 pointer-events-none" : ""}
-                    />
+                    >
+                        <p className="text-main text-center text-xl italic">Guesses left: {livesRemaining}/{maxLives}</p>
+                    </CustomButton>
                 ) : (
                     <div className="text-4xl font-bold">
                         {gameState.win ? (
@@ -180,9 +182,9 @@ export default function FishingGame({ gameState, updateGameState, isMobilePortra
             </div>
             <div className='flex flex-col gap-4 h-full w-1/4 justify-center items-center '>
                 <div className={`relative w-[133px] h-[525px] bg-[url('/images/minigames/fishingRod.webp')] bg-contain bg-no-repeat bg-center`}>
-                    <img className={`absolute scale-[3.5] translate-x-1/2 -translate-y-1/2 right-[43%] ${ROD_STYLES[livesLost].rod_pos}`} src="/images/minigames/fishBar.webp" />
-                    <img className={`absolute scale-[2] translate-x-1/2 -translate-y-1/2 right-[43%] ${ROD_STYLES[livesLost].fish_pos}`} src="/images/minigames/fishIcon.webp" />
-                    <div className={`absolute w-[14px] bottom-[14px] right-[7px] ${ROD_STYLES[livesLost].color}`} src="/images/minigames/fishIcon.webp" />
+                    <img className={`absolute scale-[3.5] translate-x-1/2 -translate-y-1/2 right-[43%] ${ROD_STYLES[livesLost].rod_pos} transition-all duration-200`} src="/images/minigames/fishBar.webp" />
+                    <img className={`absolute scale-[2] translate-x-1/2 -translate-y-1/2 right-[43%] ${ROD_STYLES[livesLost].fish_pos} transition-all duration-200`} src="/images/minigames/fishIcon.webp" />
+                    <div className={`absolute w-[14px] bottom-[14px] right-[7px] ${ROD_STYLES[livesLost].color} transition-all duration-200`} src="/images/minigames/fishIcon.webp" />
                 </div>
             </div>
         </div>
